@@ -10,10 +10,11 @@ pub mod rm_mv_unwanted;
 
 fn main() {
     let _remove_unwanted = rm_mv_unwanted::rm_unwanted_files("/media/pi/USB128/Images".to_string());
-    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
 
 
-    // let _extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
+    let extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
+    println!("extlist: {:?}", extlist);
     // let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pi/USB128/Images".to_string());
 
     // let new_ext_list = gen_ext_list("/media/pi/USB128/Images".to_string());
