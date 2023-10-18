@@ -50,8 +50,11 @@ fn gen_ext_list(apath: String) -> bool {
             println!("fname: {:#?}", fname.extension());
             if let Some(extension) = fname.extension() {
                 let ext = extension.to_owned().to_str().unwrap().to_string();
-                println!("extension: {:?}", ext);
-                ext_list.push(ext);
+                if !ext_list.contains(&ext) {
+                    ext_list.push(ext);
+                }
+                // println!("extension: {:?}", ext);
+                // ext_list.push(ext);
             };
 
 
