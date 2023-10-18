@@ -1,6 +1,7 @@
 use image::GenericImageView;
 // use std::sync::mpsc::channel;
 // use threadpool::ThreadPool;
+use walkdir::WalkDir;
 pub mod walk_dirs;
 pub mod rm_mv_unwanted;
 // use std::fs;
@@ -12,7 +13,8 @@ fn main() {
     let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
 
 
-    gen_ext_list("/media/pi/USB128/Images".to_string());
+    let ext_list = gen_ext_list("/media/pi/USB128/Images".to_string());
+    println!("ext_list: {:#?}", ext_list);
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -33,13 +35,36 @@ fn main() {
 }
 
 fn gen_ext_list(apath: String) {
-    let mut faxvec: Vec<std::path::PathBuf> = Vec::new();
-    for element in std::path::Path::new(&apath).read_dir().unwrap() {
-        let path = element.unwrap().path();
-        if let Some(extension) = path.extension() {
-            if extension == "txt" {
-                faxvec.push(path);
+
+    let mut ext_list: Vec<std::path::PathBuf> = Vec::new();
+
+    for e in WalkDir::new(apath)
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        if e.metadata().unwrap().is_file() {
+            let fname = e.path();
+            if let Some(extension) = fname.extension() {
+                ext_list.push(extension.to_owned().into());
             }
+
+
+
+
+
+
+
+
+    // let mut faxvec: Vec<std::path::PathBuf> = Vec::new();
+    // for element in std::path::Path::new(&apath).read_dir().unwrap() {
+    //     let path = element.unwrap().path();
+    //     if let Some(extension) = path.extension() {
+    //         if extension == "txt" {
+    //             faxvec.push(path);
+    //         }
+    //     }
+    // }
         }
     }
 }
