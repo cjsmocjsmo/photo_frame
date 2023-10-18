@@ -1,26 +1,28 @@
 use image::GenericImageView;
-use std::sync::mpsc::channel;
-use threadpool::ThreadPool;
+// use std::sync::mpsc::channel;
+// use threadpool::ThreadPool;
 pub mod walk_dirs;
+pub mod rm_unwanted;
 
 
 fn main() {
-    let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
-    let pool = ThreadPool::new(num_cpus::get());
-    let (tx, rx) = channel();
-    for k in kvec {
-        let tx = tx.clone();
-        pool.execute(move || {
-            find(k);
-            tx.send(()).unwrap();
-        });
-    }
-    drop(tx);
-    for t in rx.iter() {
-        let _info = t;
-    }
+    let _remove_unwanted = rm_unwanted::rm_unwanted_files("/media/pi/USB128/Images".to_string());
+    // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
+    // let pool = ThreadPool::new(num_cpus::get());
+    // let (tx, rx) = channel();
+    // for k in kvec {
+    //     let tx = tx.clone();
+    //     pool.execute(move || {
+    //         find(k);
+    //         tx.send(()).unwrap();
+    //     });
+    // }
+    // drop(tx);
+    // for t in rx.iter() {
+    //     let _info = t;
+    // }
 
-    println!("threads complete")
+    // println!("threads complete")
 }
 
 fn find(k: String) {
