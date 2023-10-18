@@ -36,7 +36,7 @@ fn main() {
 
 fn gen_ext_list(apath: String) {
 
-    let mut ext_list: Vec<std::path::PathBuf> = Vec::new();
+    let mut ext_list: Vec<String> = Vec::new();
 
     for e in WalkDir::new(apath)
         .follow_links(true)
@@ -51,7 +51,7 @@ fn gen_ext_list(apath: String) {
             if let Some(extension) = fname.extension() {
                 let ext = extension.to_owned();
                 println!("extension: {:?}", ext);
-                ext_list.push(extension.to_owned().into());
+                ext_list.push(ext.to_str().unwrap().to_string());
             }
 
 
