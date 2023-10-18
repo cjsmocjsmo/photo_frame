@@ -100,12 +100,15 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
     ];
 
     let mut listvec = Vec::new();
+    let mut count = 0;
     for e in WalkDir::new(apath)
         .follow_links(true)
         .into_iter()
         .filter_map(|e| e.ok())
     {
         if e.metadata().unwrap().is_file() {
+            count += 1;
+            println!("count: {}", count);
             let fname = e.path();
             let filename = e.path().to_string_lossy().to_string();
             if let Some(extension) = fname.extension() {
