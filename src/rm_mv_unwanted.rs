@@ -29,17 +29,27 @@ pub fn mv_vid_files(fname: String) {
         "gz", "bz2",
     ];
 
-    let parts = &fname.split(".").collect::<Vec<&str>>();
+    for e in WalkDir::new(fname)
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        if e.metadata().unwrap().is_file() {
+            let fname = e.path().to_string_lossy().to_string();
 
-    let ext = parts.last().unwrap();
-    if mvlist.contains(&ext) {
-        let fparts = fname.split("/").collect::<Vec<&str>>();
-        let filename = fparts.last().unwrap().replace(" ", "_");
-        let addr = "/media/pi/USB128/AV/".to_string() + &filename;
-        match fs::rename(&fname, &addr) {
-            Ok(_) => println!("Moved: {}", addr),
-            Err(e) => println!("Error: {}", e),
-        };
-        println!("{:#?}", parts.last().unwrap())
-    };
+            let parts = &fname.split(".").collect::<Vec<&str>>();
+
+            let ext = parts.last().unwrap();
+            if mvlist.contains(&ext) {
+                let fparts = fname.split("/").collect::<Vec<&str>>();
+                let filename = fparts.last().unwrap().replace(" ", "_");
+                let addr = "/media/pi/USB128/AV/".to_string() + &filename;
+                match fs::rename(&fname, &addr) {
+                    Ok(_) => println!("Moved: {}", addr),
+                    Err(e) => println!("Error: {}", e),
+                };
+                println!("{:#?}", parts.last().unwrap())
+            };
+        }
+    }
 }
