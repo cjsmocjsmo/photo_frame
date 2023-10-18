@@ -2,16 +2,14 @@ use image::GenericImageView;
 // use std::sync::mpsc::channel;
 // use threadpool::ThreadPool;
 use walkdir::WalkDir;
-pub mod walk_dirs;
 pub mod rm_mv_unwanted;
+pub mod walk_dirs;
 // use std::fs;
 // use std::path::Path;
-
 
 fn main() {
     let _remove_unwanted = rm_mv_unwanted::rm_unwanted_files("/media/pi/USB128/Images".to_string());
     let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
-
 
     let extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
     println!("extlist: {:?}", extlist);
@@ -21,7 +19,12 @@ fn main() {
     println!("new_ext_list: {:?}", new_ext_list);
 
     let ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
-    println!("ar: {:?}", ar);
+    for a in ar{
+        if a[2] > 1.9 {
+            println!("a: {:?}", a);
+        };
+    }
+    // println!("ar: {:?}", ar);
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -82,11 +85,21 @@ fn gen_ext_list(apath: String) -> Vec<String> {
 
 // }
 
-fn get_aspect_ratio(apath: String) -> Vec<f64> {
+fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
     let keeplist = [
-        "jpg".to_string(), "JPG".to_string(), "bmp".to_string(), "BMP".to_string(), "gif".to_string(), "png".to_string(), "tif".to_string(), "jpeg".to_string(), "PNG".to_string(), "GIF".to_string(),
+        "jpg".to_string(),
+        "JPG".to_string(),
+        "bmp".to_string(),
+        "BMP".to_string(),
+        "gif".to_string(),
+        "png".to_string(),
+        "tif".to_string(),
+        "jpeg".to_string(),
+        "PNG".to_string(),
+        "GIF".to_string(),
     ];
-    let av_vec = Vec::new();
+
+    let mut listvec = Vec::new();
     for e in WalkDir::new(apath)
         .follow_links(true)
         .into_iter()
@@ -97,6 +110,7 @@ fn get_aspect_ratio(apath: String) -> Vec<f64> {
             let filename = e.path().to_string_lossy().to_string();
             if let Some(extension) = fname.extension() {
                 let ext = extension.to_owned().to_str().unwrap().to_string();
+                let av_vec = Vec::new();
                 if keeplist.contains(&ext) {
                     let image = image::open(filename.clone()).expect(&filename);
                     let (width, height) = image.dimensions();
@@ -108,12 +122,11 @@ fn get_aspect_ratio(apath: String) -> Vec<f64> {
                     av_vec.push(oldwidth.clone());
                     av_vec.push(oldheight.clone());
                     av_vec.push(aspect_ratio.clone());
-
-                    return av_vec;
                 };
-                }
+                listvec.push(av_vec);
             };
-        }
+        };
+    };
 
-    av_vec
+    listvec
 }
