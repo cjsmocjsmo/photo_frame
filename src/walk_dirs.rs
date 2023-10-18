@@ -1,41 +1,14 @@
-// use crate::setup::rusic_walk_dirs;
-// use std::env;
-// use image::*;
-// use image::{DynamicImage, ImageBuffer, ImageFormat};
 use md5::compute;
 use std::fs;
 use std::path::Path;
 use walkdir::WalkDir;
-// use self::webp::Encoder;
-// use self::webp::WebPMemory;
-
-// use std::fs::File;
-// use std::io::Write;
 
 pub fn walk_dir(apath: String) -> Vec<String> {
-    // let ext_vec: Vec<String> = Vec::new();
     let mut keeper_vec = Vec::new();
     let mut idx = 0;
-    let rmlist = [
-        "zip", "tar", "pdf", "torrent", "3gp", "info", "epp", "THM", "db", "mix", "txt", "xml",
-        "log", "INI", "dat", "dll", "chm", "u3p", "inf", "swa", "cct", "lang", "master", "lck",
-        "exe", "html", "bat", "ini", "py", "lst", "rdb", "jar", "bin", "js", "pyd", "uue", "out",
-        "au", "doc", "icns", "pyw", "def", "xpt", "res", "com", "class", "xsl", "cfg", "key", "ht",
-        "TAB", "tree", "css", "xlc", "xba", "xlb", "bau", "fmt", "soe", "soc", "soh", "sog", "sod",
-        "sob", "thm", "sdv", "odb", "dbf", "dbt", "dic", "map", "xcu", "sample", "xcs", "htm",
-        "sxw", "stw", "otp", "ott", "wmf", "ots", "sdg", "xdl", "pl", "asp", "inc", "idx", "aff",
-        "dtd", "mod", "java", "bsh", "nsi", "ico", "yos", "gps", "CSS", "itl", "DS_Store", "ssf",
-        "bak", "ctl", "lnk", " SF", "jpgblk", "ps1", "m3u", "nfo",
-    ];
-    // let mvlist = [
-    //     "pdf", "PDF", "mp4", "MPG", "avi", "AVI", "mp3", "wav", "m4p", "m4a", "MP3", "zip", "ZIP",
-    //     "gz", "bz2",
-    // ];
     let keeplist = [
         "jpg", "JPG", "bmp", "BMP", "gif", "png", "tif", "jpeg", "PNG", "GIF",
     ];
-
-
 
     for e in WalkDir::new(apath)
         .follow_links(true)
@@ -45,16 +18,6 @@ pub fn walk_dir(apath: String) -> Vec<String> {
         if e.metadata().unwrap().is_file() {
             idx += 1;
             let fname = e.path().to_string_lossy().to_string();
-            // println!("fname: {}", fname);
-            // if fname.contains("System/Apps") {
-            //     fs::remove_file(&fname).unwrap();
-            // };
-            // if fname.contains("openoffice") {
-            //     fs::remove_file(&fname).unwrap();
-            // };
-            // if fname.contains("OpenOffice") {
-            //     fs::remove_file(&fname).unwrap();
-            // };
 
             let path = Path::new(&fname);
 
@@ -64,22 +27,7 @@ pub fn walk_dir(apath: String) -> Vec<String> {
                 let ext = parts.last().unwrap();
                 // println!("ext: {}", ext);
 
-                if rmlist.contains(&ext) {
-                    match fs::remove_file(&fname) {
-                        Ok(_) => println!("Removed: {}", &fname),
-                        Err(e) => println!("Error: {}", e),
-                    };
-                };
-                // if mvlist.contains(&ext) {
-                //     let fparts = fname.split("/").collect::<Vec<&str>>();
-                //     let filename = fparts.last().unwrap().replace(" ", "_");
-                //     let addr = "/media/pi/USB128/AV/".to_string() + &filename;
-                //     match fs::rename(&fname, &addr) {
-                //         Ok(_) => println!("Moved: {}", addr),
-                //         Err(e) => println!("Error: {}", e),
-                //     };
-                //     println!("{:#?}", parts.last().unwrap())
-                // };
+
 
                 // let mut keeper_vec = Vec::new();
                 if keeplist.contains(&ext) {

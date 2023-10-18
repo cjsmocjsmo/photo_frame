@@ -1,4 +1,4 @@
-// use image::GenericImageView;
+use image::GenericImageView;
 // use std::sync::mpsc::channel;
 // use threadpool::ThreadPool;
 use walkdir::WalkDir;
@@ -19,6 +19,9 @@ fn main() {
 
     let new_ext_list = gen_ext_list("/media/pi/USB128/Images".to_string());
     println!("new_ext_list: {:?}", new_ext_list);
+
+    let ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
+    println!("ar: {:?}", ar);
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -79,17 +82,38 @@ fn gen_ext_list(apath: String) -> Vec<String> {
 
 // }
 
-// fn get_aspect_ratio(apath: String) -> Vec<f64> {
-//     let image = image::open(apath.clone()).expect(&apath);
-//     let (width, height) = image.dimensions();
-//     let oldwidth = width.clone() as f64;
-//     let oldheight = height.clone() as f64;
-//     let aspect_ratio = oldwidth / oldheight;
-//     let mut av_vec = Vec::new();
-//     // av_vec.push(apath);
-//     av_vec.push(oldwidth.clone());
-//     av_vec.push(oldheight.clone());
-//     av_vec.push(aspect_ratio.clone());
+fn get_aspect_ratio(apath: String) -> Vec<f64> {
+    let keeplist = [
+        "jpg".to_string(), "JPG".to_string(), "bmp".to_string(), "BMP".to_string(), "gif".to_string(), "png".to_string(), "tif".to_string(), "jpeg".to_string(), "PNG".to_string(), "GIF".to_string(),
+    ];
+    let av_vec = Vec::new();
+    for e in WalkDir::new(apath)
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        if e.metadata().unwrap().is_file() {
+            let fname = e.path();
+            let filename = e.path().to_string_lossy().to_string();
+            if let Some(extension) = fname.extension() {
+                let ext = extension.to_owned().to_str().unwrap().to_string();
+                if keeplist.contains(&ext) {
+                    let image = image::open(filename.clone()).expect(&filename);
+                    let (width, height) = image.dimensions();
+                    let oldwidth = width.clone() as f64;
+                    let oldheight = height.clone() as f64;
+                    let aspect_ratio = oldwidth / oldheight;
+                    let mut av_vec = Vec::new();
+                    // av_vec.push(fname);
+                    av_vec.push(oldwidth.clone());
+                    av_vec.push(oldheight.clone());
+                    av_vec.push(aspect_ratio.clone());
 
-//     av_vec
-// }
+                    return av_vec;
+                };
+                }
+            };
+        }
+
+    av_vec
+}
