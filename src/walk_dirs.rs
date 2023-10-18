@@ -27,10 +27,10 @@ pub fn walk_dir(apath: String) -> Vec<String> {
         "dtd", "mod", "java", "bsh", "nsi", "ico", "yos", "gps", "CSS", "itl", "DS_Store", "ssf",
         "bak", "ctl", "lnk", " SF", "jpgblk", "ps1", "m3u", "nfo",
     ];
-    let mvlist = [
-        "pdf", "PDF", "mp4", "MPG", "avi", "AVI", "mp3", "wav", "m4p", "m4a", "MP3", "zip", "ZIP",
-        "gz", "bz2",
-    ];
+    // let mvlist = [
+    //     "pdf", "PDF", "mp4", "MPG", "avi", "AVI", "mp3", "wav", "m4p", "m4a", "MP3", "zip", "ZIP",
+    //     "gz", "bz2",
+    // ];
     let keeplist = [
         "jpg", "JPG", "bmp", "BMP", "gif", "png", "tif", "jpeg", "PNG", "GIF",
     ];
@@ -46,15 +46,15 @@ pub fn walk_dir(apath: String) -> Vec<String> {
             idx += 1;
             let fname = e.path().to_string_lossy().to_string();
             // println!("fname: {}", fname);
-            if fname.contains("System/Apps") {
-                fs::remove_file(&fname).unwrap();
-            };
-            if fname.contains("openoffice") {
-                fs::remove_file(&fname).unwrap();
-            };
-            if fname.contains("OpenOffice") {
-                fs::remove_file(&fname).unwrap();
-            };
+            // if fname.contains("System/Apps") {
+            //     fs::remove_file(&fname).unwrap();
+            // };
+            // if fname.contains("openoffice") {
+            //     fs::remove_file(&fname).unwrap();
+            // };
+            // if fname.contains("OpenOffice") {
+            //     fs::remove_file(&fname).unwrap();
+            // };
 
             let path = Path::new(&fname);
 
@@ -70,16 +70,16 @@ pub fn walk_dir(apath: String) -> Vec<String> {
                         Err(e) => println!("Error: {}", e),
                     };
                 };
-                if mvlist.contains(&ext) {
-                    let fparts = fname.split("/").collect::<Vec<&str>>();
-                    let filename = fparts.last().unwrap().replace(" ", "_");
-                    let addr = "/media/pi/USB128/AV/".to_string() + &filename;
-                    match fs::rename(&fname, &addr) {
-                        Ok(_) => println!("Moved: {}", addr),
-                        Err(e) => println!("Error: {}", e),
-                    };
-                    println!("{:#?}", parts.last().unwrap())
-                };
+                // if mvlist.contains(&ext) {
+                //     let fparts = fname.split("/").collect::<Vec<&str>>();
+                //     let filename = fparts.last().unwrap().replace(" ", "_");
+                //     let addr = "/media/pi/USB128/AV/".to_string() + &filename;
+                //     match fs::rename(&fname, &addr) {
+                //         Ok(_) => println!("Moved: {}", addr),
+                //         Err(e) => println!("Error: {}", e),
+                //     };
+                //     println!("{:#?}", parts.last().unwrap())
+                // };
 
                 // let mut keeper_vec = Vec::new();
                 if keeplist.contains(&ext) {

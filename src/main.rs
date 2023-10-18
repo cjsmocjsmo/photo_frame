@@ -2,11 +2,12 @@ use image::GenericImageView;
 // use std::sync::mpsc::channel;
 // use threadpool::ThreadPool;
 pub mod walk_dirs;
-pub mod rm_unwanted;
+pub mod rm_mv_unwanted;
 
 
 fn main() {
-    let _remove_unwanted = rm_unwanted::rm_unwanted_files("/media/pi/USB128/Images".to_string());
+    let _remove_unwanted = rm_mv_unwanted::rm_unwanted_files("/media/pi/USB128/Images".to_string());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
     // let (tx, rx) = channel();
