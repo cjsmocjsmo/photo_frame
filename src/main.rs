@@ -52,6 +52,7 @@ fn gen_ext_list(apath: String) -> Vec<String> {
             };
         }
     }
+    println!("ext_list: {:?}", ext_list);
 
     ext_list
 }
