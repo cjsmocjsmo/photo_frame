@@ -13,8 +13,8 @@ fn main() {
     let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
 
 
-    let ext_list = gen_ext_list("/media/pi/USB128/Images".to_string());
-    println!("ext_list: {:#?}", ext_list);
+    let _extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
+    // println!("ext_list: {:#?}", extlist);
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -34,7 +34,7 @@ fn main() {
     // println!("threads complete")
 }
 
-fn gen_ext_list(apath: String) {
+fn gen_ext_list(apath: String) -> bool {
 
     let mut ext_list: Vec<String> = Vec::new();
 
@@ -52,7 +52,7 @@ fn gen_ext_list(apath: String) {
                 let ext = extension.to_owned().to_str().unwrap().to_string();
                 println!("extension: {:?}", ext);
                 ext_list.push(ext);
-            }
+            };
 
 
 
@@ -61,17 +61,11 @@ fn gen_ext_list(apath: String) {
 
 
 
-    // let mut faxvec: Vec<std::path::PathBuf> = Vec::new();
-    // for element in std::path::Path::new(&apath).read_dir().unwrap() {
-    //     let path = element.unwrap().path();
-    //     if let Some(extension) = path.extension() {
-    //         if extension == "txt" {
-    //             faxvec.push(path);
-    //         }
-    //     }
-    // }
+
         }
     }
+    println!("ext_list: {:#?}", ext_list);
+    true
 }
 
 fn find(k: String) {
