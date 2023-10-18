@@ -45,29 +45,15 @@ fn gen_ext_list(apath: String) -> bool {
     {
         if e.metadata().unwrap().is_file() {
             let fname = e.path();
-
-            println!("fname: {}", fname.display());
-            println!("fname: {:#?}", fname.extension());
             if let Some(extension) = fname.extension() {
                 let ext = extension.to_owned().to_str().unwrap().to_string();
                 if !ext_list.contains(&ext) {
                     ext_list.push(ext);
-                }
-                // println!("extension: {:?}", ext);
-                // ext_list.push(ext);
+                };
             };
-
-
-
-
-
-
-
-
-
         }
     }
-    println!("ext_list: {:#?}", ext_list);
+    println!("ext_list: {:?}", ext_list);
     true
 }
 
