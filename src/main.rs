@@ -15,10 +15,10 @@ fn main() {
 
     let extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
     println!("extlist: {:?}", extlist);
-    // let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pi/USB128/Images".to_string());
+    let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pi/USB128/Images".to_string());
 
-    // let new_ext_list = gen_ext_list("/media/pi/USB128/Images".to_string());
-    // println!("new_ext_list: {:?}", new_ext_list);
+    let new_ext_list = gen_ext_list("/media/pi/USB128/Images".to_string());
+    println!("new_ext_list: {:?}", new_ext_list);
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
