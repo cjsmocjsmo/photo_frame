@@ -45,6 +45,7 @@ fn gen_ext_list(apath: String) {
     {
         if e.metadata().unwrap().is_file() {
             let fname = e.path();
+            println!("fname: {}", fname.display());
             if let Some(extension) = fname.extension() {
                 ext_list.push(extension.to_owned().into());
             }
