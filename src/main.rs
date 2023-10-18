@@ -13,8 +13,9 @@ fn main() {
     let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
 
 
-    let extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
-    println!("ext_list: {:#?}", extlist);
+    let _extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
+    let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pi/USB128/Images".to_string());
+
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
