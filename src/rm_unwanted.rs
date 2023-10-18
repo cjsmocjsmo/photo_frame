@@ -18,16 +18,16 @@ pub fn rm_unwanted_files(apath: String) {
                 println!("Removed: {}", &fname);
                 fs::remove_file(&fname).unwrap();
             };
-            if fname.contains("openoffice") {
-                rmcount += 1;
-                println!("Removed: {}", &fname);
-                fs::remove_file(&fname).unwrap();
-            };
-            if fname.contains("OpenOffice") {
-                rmcount += 1;
-                println!("Removed: {}", &fname);
-                fs::remove_file(&fname).unwrap();
-            };
+            // if fname.contains("openoffice") {
+            //     rmcount += 1;
+            //     println!("Removed: {}", &fname);
+            //     fs::remove_file(&fname).unwrap();
+            // };
+            // if fname.contains("OpenOffice") {
+            //     rmcount += 1;
+            //     println!("Removed: {}", &fname);
+            //     fs::remove_file(&fname).unwrap();
+            // };
         }
     }
     println!("Start count: {}\nFiles removed: {}", idx, rmcount);
