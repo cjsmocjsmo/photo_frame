@@ -3,11 +3,17 @@ use image::GenericImageView;
 // use threadpool::ThreadPool;
 pub mod walk_dirs;
 pub mod rm_mv_unwanted;
+// use std::fs;
+// use std::path::Path;
 
 
 fn main() {
     let _remove_unwanted = rm_mv_unwanted::rm_unwanted_files("/media/pi/USB128/Images".to_string());
     let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
+
+
+    gen_ext_list("/media/pi/USB128/Images".to_string());
+
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
     // let (tx, rx) = channel();
@@ -24,6 +30,18 @@ fn main() {
     // }
 
     // println!("threads complete")
+}
+
+fn gen_ext_list(apath: String) {
+    let mut faxvec: Vec<std::path::PathBuf> = Vec::new();
+    for element in std::path::Path::new(&apath).read_dir().unwrap() {
+        let path = element.unwrap().path();
+        if let Some(extension) = path.extension() {
+            if extension == "txt" {
+                faxvec.push(path);
+            }
+        }
+    }
 }
 
 fn find(k: String) {
