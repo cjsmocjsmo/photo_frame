@@ -1,5 +1,5 @@
-use walkdir::WalkDir;
 use std::fs;
+use walkdir::WalkDir;
 
 pub fn rm_unwanted_files(apath: String) {
     let mut idx = 0;
@@ -14,18 +14,21 @@ pub fn rm_unwanted_files(apath: String) {
             let fname = e.path().to_string_lossy().to_string();
             // println!("fname: {}", fname);
             if fname.contains("System/Apps") {
-                fs::remove_file(&fname).unwrap();
                 rmcount += 1;
+                println!("Removed: {}", &fname);
+                fs::remove_file(&fname).unwrap();
             };
             if fname.contains("openoffice") {
-                fs::remove_file(&fname).unwrap();
                 rmcount += 1;
+                println!("Removed: {}", &fname);
+                fs::remove_file(&fname).unwrap();
             };
             if fname.contains("OpenOffice") {
-                fs::remove_file(&fname).unwrap();
                 rmcount += 1;
+                println!("Removed: {}", &fname);
+                fs::remove_file(&fname).unwrap();
             };
         }
-    };
+    }
     println!("Start count: {}\nFiles removed: {}", idx, rmcount);
 }
