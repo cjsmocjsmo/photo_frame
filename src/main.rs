@@ -1,4 +1,4 @@
-use image::GenericImageView;
+// use image::GenericImageView;
 // use std::sync::mpsc::channel;
 // use threadpool::ThreadPool;
 use walkdir::WalkDir;
@@ -13,8 +13,8 @@ fn main() {
     let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
 
 
-    let _extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
-    // println!("ext_list: {:#?}", extlist);
+    let extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
+    println!("ext_list: {:#?}", extlist);
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -34,10 +34,8 @@ fn main() {
     // println!("threads complete")
 }
 
-fn gen_ext_list(apath: String) -> bool {
-
+fn gen_ext_list(apath: String) -> Vec<String> {
     let mut ext_list: Vec<String> = Vec::new();
-
     for e in WalkDir::new(apath)
         .follow_links(true)
         .into_iter()
@@ -53,41 +51,41 @@ fn gen_ext_list(apath: String) -> bool {
             };
         }
     }
-    println!("ext_list: {:?}", ext_list);
-    true
+
+    ext_list
 }
 
-fn find(k: String) {
+// fn find(k: String) {
 
-        let dims = get_aspect_ratio(k.clone());
-        let width: f64 = dims[0];
-        let height: f64 = dims[1];
-        let aspect_ratio: f64 = dims[2];
-        let _mvsmimg = walk_dirs::mv_small_images(width as f64, height, k.clone());
-        let new_dims = walk_dirs::calc_new_dims(width, height, aspect_ratio);
-        let newwidth = new_dims.0;
-        let newheight = new_dims.1;
+//         let dims = get_aspect_ratio(k.clone());
+//         let width: f64 = dims[0];
+//         let height: f64 = dims[1];
+//         let aspect_ratio: f64 = dims[2];
+//         let _mvsmimg = walk_dirs::mv_small_images(width as f64, height, k.clone());
+//         let new_dims = walk_dirs::calc_new_dims(width, height, aspect_ratio);
+//         let newwidth = new_dims.0;
+//         let newheight = new_dims.1;
 
-        let out_file = walk_dirs::create_outfile(k.clone());
-        let _pimage = walk_dirs::convert_image_to_jpg(&k, &out_file, newwidth, newheight);
-        println!(
-            "width: {}\nheight: {}\naspect_ratio: {}\n",
-            width, height, aspect_ratio
-        );
+//         let out_file = walk_dirs::create_outfile(k.clone());
+//         let _pimage = walk_dirs::convert_image_to_jpg(&k, &out_file, newwidth, newheight);
+//         println!(
+//             "width: {}\nheight: {}\naspect_ratio: {}\n",
+//             width, height, aspect_ratio
+//         );
 
-}
+// }
 
-fn get_aspect_ratio(apath: String) -> Vec<f64> {
-    let image = image::open(apath.clone()).expect(&apath);
-    let (width, height) = image.dimensions();
-    let oldwidth = width.clone() as f64;
-    let oldheight = height.clone() as f64;
-    let aspect_ratio = oldwidth / oldheight;
-    let mut av_vec = Vec::new();
-    // av_vec.push(apath);
-    av_vec.push(oldwidth.clone());
-    av_vec.push(oldheight.clone());
-    av_vec.push(aspect_ratio.clone());
+// fn get_aspect_ratio(apath: String) -> Vec<f64> {
+//     let image = image::open(apath.clone()).expect(&apath);
+//     let (width, height) = image.dimensions();
+//     let oldwidth = width.clone() as f64;
+//     let oldheight = height.clone() as f64;
+//     let aspect_ratio = oldwidth / oldheight;
+//     let mut av_vec = Vec::new();
+//     // av_vec.push(apath);
+//     av_vec.push(oldwidth.clone());
+//     av_vec.push(oldheight.clone());
+//     av_vec.push(aspect_ratio.clone());
 
-    av_vec
-}
+//     av_vec
+// }

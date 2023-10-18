@@ -36,10 +36,10 @@ pub fn mv_vid_files(fname: String) {
     {
         if e.metadata().unwrap().is_file() {
             let fname = e.path().to_string_lossy().to_string();
-
             let parts = &fname.split(".").collect::<Vec<&str>>();
 
             let ext = parts.last().unwrap();
+
             if mvlist.contains(&ext) {
                 let fparts = fname.split("/").collect::<Vec<&str>>();
                 let filename = fparts.last().unwrap().replace(" ", "_");
@@ -52,4 +52,36 @@ pub fn mv_vid_files(fname: String) {
             };
         }
     }
+}
+
+pub fn rm_by_extension(apath: String) -> bool {
+    let rm_list = [
+        "key", "htm", "txt", "ps1", "jar", "dat", "3gp", "nfo", "m3u", "jpgblk", "THM", "torrent",
+        "info", "epp", "db", "mix", "xml", "doc", "itl", "ssf", "bak", "ctl", "lnk", " SF", "exe",
+        "thm", "docx",
+    ];
+    let mut count = 0;
+    let mut rmcount = 0;
+
+    for e in WalkDir::new(&apath)
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        if e.metadata().unwrap().is_file() {
+            count += 1;
+            let fname = e.path().to_string_lossy().to_string();
+            let parts = &fname.split(".").collect::<Vec<&str>>();
+
+            let ext = parts.last().unwrap();
+            if rm_list.contains(&ext) {
+                println!("Removed: {}", &fname);
+                fs::remove_file(&fname).unwrap();
+                rmcount += 1;
+            };
+        };
+    }
+    println!("Start count: {}\nFiles removed: {}", count, rmcount);
+
+    true
 }
