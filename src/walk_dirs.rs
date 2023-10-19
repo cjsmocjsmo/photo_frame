@@ -27,50 +27,10 @@ pub fn walk_dir(apath: String) -> Vec<String> {
                 let ext = parts.last().unwrap();
                 // println!("ext: {}", ext);
 
-
-
                 // let mut keeper_vec = Vec::new();
                 if keeplist.contains(&ext) {
                     // println!("fname: {}", fname);
                     keeper_vec.push(fname.clone());
-                    // let oldfilename = fname.clone();
-                    // println!("oldfilename {}", oldfilename);
-
-                    // let mut newwidth = 0.0;
-                    // let mut newheight = 0.0;
-                    // if oldwidth < 200.0 as f64 {
-                    //     let old_fn = fname.clone();
-                    //     let fn_parts = old_fn.split("/").collect::<Vec<&str>>();
-                    //     let fnam = fn_parts.last().unwrap();
-                    //     let new_fn = "/media/pi/USB128/SmallPics/".to_string() + fnam;
-                    //     match fs::rename(&fname, &new_fn) {
-                    //         Ok(_) => println!("Moved: {}", new_fn),
-                    //         Err(e) => println!("Error: {}", e),
-                    //     };
-                    // } else if oldwidth > oldheight {
-                    //     println!("landscape");
-                    //     if oldwidth > 800.0 as f64 {
-                    //         newwidth = 800.0 as f64;
-                    //         newheight = 800.0 as f64 / aspect_ratio.clone();
-                    //     };
-                    // } else if oldwidth < oldheight {
-                    //     println!("portrait");
-                    //     if oldheight > 800.0 as f64 {
-                    //         newheight = 800.0 as f64;
-                    //         newwidth = 800.0 as f64 / aspect_ratio.clone();
-                    //     };
-                    // } else {
-                    //     println!("square");
-                    // };
-                    // println!(
-                    //     "width: {}\nheight: {}\naspect_ratio: {}\nnewwidth: {}\nnewheight: {}\n",
-                    //     width, height, aspect_ratio, newwidth, newheight
-                    // );
-
-                    // let digest = compute(&oldfilename);
-                    // let a = "/media/pi/USB128/Webp/".to_string();
-                    // let b = format!("{:?}", digest) + ".jpg";
-                    // let newfilename = a + &b;
                     // let _convert =
                     //     convert_image_to_jpg(&oldfilename, &newfilename, newwidth, newheight);
                 };
@@ -146,12 +106,19 @@ pub fn mv_small_images(oldwidth: f64, oldheight: f64, fname: String) {
 //     av_vec
 // }
 
-pub fn convert_image_to_jpg(file_path: &str, output_path: &str, width: f64, height: f64) {
-    let image = image::open(file_path).unwrap();
-    let new_image = image.resize(
-        width as u32,
-        height as u32,
-        image::imageops::FilterType::Lanczos3,
-    );
-    new_image.save(output_path).unwrap();
+// pub fn convert_image_to_jpg(file_path: &str, output_path: &str, width: f64, height: f64) {
+//     let image = image::open(file_path).unwrap();
+//     let new_image = image.resize(
+//         width as u32,
+//         height as u32,
+//         image::imageops::FilterType::Lanczos3,
+//     );
+//     new_image.save(output_path).unwrap();
+// }
+// use image::{BmpDecoder, ImageFormat, JpegEncoder};
+
+pub fn convert_image_to_jpg(apath: String) {
+    let output_file = create_outfile(apath.clone());
+    let image = image::open(apath.clone()).unwrap();
+    let _save_image = image.save(output_file).unwrap();
 }
