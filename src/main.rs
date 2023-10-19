@@ -19,10 +19,8 @@ fn main() {
     println!("new_ext_list: {:?}", new_ext_list);
 
     let ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
-    for a in ar {
-        println!("a: {:?}", a);
-    };
-    // println!("ar: {:?}", ar);
+
+    println!("ar: {:?}", ar);
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -111,21 +109,20 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
             let filename = e.path().to_string_lossy().to_string();
             if let Some(extension) = fname.extension() {
                 let ext = extension.to_owned().to_str().unwrap().to_string();
-                let av_vec = Vec::new();
+                let mut av_vec = Vec::new();
                 if keeplist.contains(&ext) {
                     let image = image::open(filename.clone()).expect(&filename);
                     let (width, height) = image.dimensions();
                     let oldwidth = width.clone() as f64;
                     let oldheight = height.clone() as f64;
                     let aspect_ratio = oldwidth / oldheight;
-                    let mut av_vec = Vec::new();
                     // av_vec.push(fname);
                     av_vec.push(oldwidth.clone());
                     av_vec.push(oldheight.clone());
                     av_vec.push(aspect_ratio.clone());
                 };
-                listvec.push(av_vec);
-                println!("{:#?}", listvec)
+                listvec.push(av_vec.clone());
+                println!("{:#?}", av_vec.clone());
             };
         };
     }
