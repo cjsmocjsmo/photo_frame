@@ -85,6 +85,7 @@ fn mv_to_banner_folder(apath: String) {
     let fparts = apath.split("/").collect::<Vec<&str>>();
     let filename = fparts.last().unwrap().replace(" ", "_");
     let addr = "/media/pi/USB128/Banners/".to_string() + &filename;
+    println!("addr: {}\n apath: {}\n", addr, apath);
     match fs::rename(&apath, &addr) {
         Ok(_) => println!("Moved: {}", addr),
         Err(e) => println!("Error: {}", e),
