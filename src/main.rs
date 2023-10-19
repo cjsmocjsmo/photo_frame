@@ -4,7 +4,7 @@ use image::GenericImageView;
 use walkdir::WalkDir;
 pub mod rm_mv_unwanted;
 pub mod walk_dirs;
-// use std::fs;
+use std::fs;
 // use std::path::Path;
 
 fn main() {
@@ -81,6 +81,16 @@ fn gen_ext_list(apath: String) -> Vec<String> {
 
 // }
 
+fn mv_to_banner_folder(apath: String) {
+    let fparts = apath.split("/").collect::<Vec<&str>>();
+    let filename = fparts.last().unwrap().replace(" ", "_");
+    let addr = "/media/pi/USB128/Banners/".to_string() + &filename;
+    match fs::rename(&apath, &addr) {
+        Ok(_) => println!("Moved: {}", addr),
+        Err(e) => println!("Error: {}", e),
+    };
+}
+
 fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
     let keeplist = [
         "jpg".to_string(),
@@ -121,7 +131,7 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
                     av_vec.push(oldheight.clone());
                     av_vec.push(aspect_ratio.clone());
                     if aspect_ratio > 2.0 {
-
+                        let _mv_banner_image = mv_to_banner_folder(filename.clone());
                         println!("Filename: {}\n aspect_ratio: {}\n", filename, aspect_ratio);
                     }
                 };
