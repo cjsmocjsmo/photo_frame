@@ -127,6 +127,7 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
                     av_vec.push(aspect_ratio.clone());
                 };
                 listvec.push(av_vec);
+                println!("{:#?}", listvec)
             };
         };
     };
