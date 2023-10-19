@@ -120,9 +120,12 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
                     av_vec.push(oldwidth.clone());
                     av_vec.push(oldheight.clone());
                     av_vec.push(aspect_ratio.clone());
+                    if aspect_ratio > 2.0 {
+
+                        println!("Filename: {}\n aspect_ratio: {}\n", filename, aspect_ratio);
+                    }
                 };
                 listvec.push(av_vec.clone());
-                println!("{:#?}", av_vec.clone());
             };
         };
     }
