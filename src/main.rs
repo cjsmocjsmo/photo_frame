@@ -24,7 +24,6 @@ fn main() {
     let pool = ThreadPool::new(num_cpus::get());
     let (tx, rx) = channel();
     for k in kvec {
-        println!("k: {}", k);
         let tx = tx.clone();
         pool.execute(move || {
             get_aspect_ratio(k);
@@ -33,7 +32,8 @@ fn main() {
     }
     drop(tx);
     for t in rx.iter() {
-        let _info = t;
+        let info = t;
+        println!("info: {:?}", info)
     }
 
     println!("threads complete")
