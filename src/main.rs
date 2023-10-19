@@ -19,11 +19,9 @@ fn main() {
     println!("new_ext_list: {:?}", new_ext_list);
 
     let ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
-    for a in ar{
-        if a[2] > 1.9 {
-            println!("a: {:?}", a);
-        };
-    }
+    for a in ar {
+        println!("a: {:?}", a);
+    };
     // println!("ar: {:?}", ar);
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
@@ -130,7 +128,7 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
                 println!("{:#?}", listvec)
             };
         };
-    };
+    }
 
     listvec
 }
