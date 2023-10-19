@@ -18,7 +18,7 @@ fn main() {
     let new_ext_list = gen_ext_list("/media/pi/USB128/Images".to_string());
     println!("new_ext_list: {:?}", new_ext_list);
 
-    let ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
+    let _ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
 
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -125,6 +125,8 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
                     let oldwidth = width.clone() as f64;
                     let oldheight = height.clone() as f64;
                     let aspect_ratio = oldwidth / oldheight;
+
+
                     // av_vec.push(fname);
                     av_vec.push(oldwidth.clone());
                     av_vec.push(oldheight.clone());
@@ -132,6 +134,9 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
                     if aspect_ratio > 2.0 {
                         let _mv_banner_image = mv_to_banner_folder(filename.clone());
                         println!("Filename: {}\n aspect_ratio: {}\n", filename, aspect_ratio);
+                    } else {
+                        let output_file = walk_dirs::create_outfile(filename.clone());
+                        image.save(output_file.clone()).unwrap();
                     }
                 };
                 listvec.push(av_vec.clone());

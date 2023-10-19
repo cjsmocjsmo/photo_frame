@@ -44,11 +44,19 @@ pub fn walk_dir(apath: String) -> Vec<String> {
 
 pub fn create_outfile(fname: String) -> String {
     let digest = compute(&fname);
-    let a = "/media/pi/USB128/Webp/".to_string();
+    let a = "/media/pi/USB128/Resize/".to_string();
     let b = format!("{:?}", digest) + ".jpg";
     let newfilename = a + &b;
 
     newfilename
+}
+
+pub fn create_rename_output_file(fname: String) -> String {
+    let fparts = fname.split(".").collect::<Vec<&str>>();
+    let filename = fparts.first().unwrap().replace(" ", "_");
+    let addr = "/media/pi/USB128/Resize/".to_string() + &filename + ".jpg";
+
+    addr
 }
 
 pub fn calc_new_dims(oldwidth: f64, oldheight: f64, aspect: f64) -> (f64, f64) {
