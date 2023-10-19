@@ -20,8 +20,6 @@ fn main() {
 
     let ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
 
-    println!("ar: {:?}", ar);
-
     // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
     // let (tx, rx) = channel();
