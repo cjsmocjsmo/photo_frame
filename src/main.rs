@@ -1,11 +1,11 @@
 use image::GenericImageView;
-// use std::sync::mpsc::channel;
-// use threadpool::ThreadPool;
+use std::sync::mpsc::channel;
+use threadpool::ThreadPool;
 use walkdir::WalkDir;
 pub mod rm_mv_unwanted;
 pub mod walk_dirs;
 use std::fs;
-// use std::path::Path;
+use std::path::Path;
 
 fn main() {
     let _remove_unwanted = rm_mv_unwanted::rm_unwanted_files("/media/pi/USB128/Images".to_string());
@@ -20,22 +20,22 @@ fn main() {
 
     let _ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
 
-    // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/WendyPics".to_string());
-    // let pool = ThreadPool::new(num_cpus::get());
-    // let (tx, rx) = channel();
-    // for k in kvec {
-    //     let tx = tx.clone();
-    //     pool.execute(move || {
-    //         find(k);
-    //         tx.send(()).unwrap();
-    //     });
-    // }
-    // drop(tx);
-    // for t in rx.iter() {
-    //     let _info = t;
-    // }
+    let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/".to_string());
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for k in kvec {
+        let tx = tx.clone();
+        pool.execute(move || {
+            get_aspect_ratio(k);
+            tx.send(()).unwrap();
+        });
+    }
+    drop(tx);
+    for t in rx.iter() {
+        let _info = t;
+    }
 
-    // println!("threads complete")
+    println!("threads complete")
 }
 
 fn gen_ext_list(apath: String) -> Vec<String> {
@@ -90,6 +90,61 @@ fn mv_to_banner_folder(apath: String) {
     };
 }
 
+// fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
+//     let keeplist = [
+//         "jpg".to_string(),
+//         "JPG".to_string(),
+//         "bmp".to_string(),
+//         "BMP".to_string(),
+//         "gif".to_string(),
+//         "png".to_string(),
+//         "tif".to_string(),
+//         "jpeg".to_string(),
+//         "PNG".to_string(),
+//         "GIF".to_string(),
+//     ];
+
+//     let mut listvec = Vec::new();
+//     let mut count = 0;
+//     for e in WalkDir::new(apath)
+//         .follow_links(true)
+//         .into_iter()
+//         .filter_map(|e| e.ok())
+//     {
+//         if e.metadata().unwrap().is_file() {
+//             count += 1;
+//             println!("count: {}", count);
+//             let fname = e.path();
+//             let filename = e.path().to_string_lossy().to_string();
+//             if let Some(extension) = fname.extension() {
+//                 let ext = extension.to_owned().to_str().unwrap().to_string();
+//                 let mut av_vec = Vec::new();
+//                 if keeplist.contains(&ext) {
+//                     let image = image::open(filename.clone()).expect(&filename);
+//                     let (width, height) = image.dimensions();
+//                     let oldwidth = width.clone() as f64;
+//                     let oldheight = height.clone() as f64;
+//                     let aspect_ratio = oldwidth / oldheight;
+//                     av_vec.push(oldwidth.clone());
+//                     av_vec.push(oldheight.clone());
+//                     av_vec.push(aspect_ratio.clone());
+//                     if aspect_ratio > 2.0 {
+//                         let _mv_banner_image = mv_to_banner_folder(filename.clone());
+//                         println!("Filename: {}\n aspect_ratio: {}\n", filename, aspect_ratio);
+//                     } else {
+//                         let output_file = walk_dirs::create_outfile(filename.clone());
+//                         image.save(output_file.clone()).unwrap();
+//                     }
+//                 };
+//                 listvec.push(av_vec.clone());
+//             };
+//         };
+//     }
+
+//     listvec
+// }
+
+
 fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
     let keeplist = [
         "jpg".to_string(),
@@ -105,17 +160,10 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
     ];
 
     let mut listvec = Vec::new();
-    let mut count = 0;
-    for e in WalkDir::new(apath)
-        .follow_links(true)
-        .into_iter()
-        .filter_map(|e| e.ok())
-    {
-        if e.metadata().unwrap().is_file() {
-            count += 1;
-            println!("count: {}", count);
-            let fname = e.path();
-            let filename = e.path().to_string_lossy().to_string();
+
+
+            let fname = Path::new(&apath);
+            let filename = fname.to_string_lossy().to_string();
             if let Some(extension) = fname.extension() {
                 let ext = extension.to_owned().to_str().unwrap().to_string();
                 let mut av_vec = Vec::new();
@@ -125,9 +173,6 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
                     let oldwidth = width.clone() as f64;
                     let oldheight = height.clone() as f64;
                     let aspect_ratio = oldwidth / oldheight;
-
-
-                    // av_vec.push(fname);
                     av_vec.push(oldwidth.clone());
                     av_vec.push(oldheight.clone());
                     av_vec.push(aspect_ratio.clone());
@@ -141,8 +186,7 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
                 };
                 listvec.push(av_vec.clone());
             };
-        };
-    }
+
 
     listvec
 }
