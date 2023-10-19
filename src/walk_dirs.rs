@@ -44,7 +44,7 @@ pub fn walk_dir(apath: String) -> Vec<String> {
 
 pub fn create_outfile(fname: String) -> String {
     let digest = compute(&fname);
-    let a = "/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/converted/".to_string();
+    let a = "/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/Converted/".to_string();
     let b = format!("{:?}", digest) + ".jpg";
     let newfilename = a + &b;
 
@@ -54,7 +54,7 @@ pub fn create_outfile(fname: String) -> String {
 pub fn create_rename_output_file(fname: String) -> String {
     let fparts = fname.split(".").collect::<Vec<&str>>();
     let filename = fparts.first().unwrap().replace(" ", "_");
-    let addr = "/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/converted/".to_string() + &filename + ".jpg";
+    let addr = "/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/Converted/".to_string() + &filename + ".jpg";
 
     addr
 }
