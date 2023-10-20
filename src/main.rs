@@ -38,7 +38,7 @@ fn main() {
     //     println!("info: {:?}", info)
     // }
 
-    let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/".to_string());
+    let kvec = walk_dirs::walk_dir("/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/Converted/".to_string());
     let pool = ThreadPool::new(num_cpus::get());
     let (tx, rx) = channel();
     for k in kvec {
