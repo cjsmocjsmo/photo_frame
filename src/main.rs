@@ -1,4 +1,6 @@
 use image::GenericImageView;
+use image::imageops::FilterType::Lanczos3;
+use image::imageops::resize;
 use std::sync::mpsc::channel;
 use threadpool::ThreadPool;
 use walkdir::WalkDir;
@@ -20,13 +22,30 @@ fn main() {
 
     let _ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
 
+    // let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/".to_string());
+    // let pool = ThreadPool::new(num_cpus::get());
+    // let (tx, rx) = channel();
+    // for k in kvec {
+    //     let tx = tx.clone();
+    //     pool.execute(move || {
+    //         get_aspect_ratio(k);
+    //         tx.send(()).unwrap();
+    //     });
+    // }
+    // drop(tx);
+    // for t in rx.iter() {
+    //     let info = t;
+    //     println!("info: {:?}", info)
+    // }
+
     let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/".to_string());
     let pool = ThreadPool::new(num_cpus::get());
     let (tx, rx) = channel();
     for k in kvec {
+        println!("k: {}", k);
         let tx = tx.clone();
         pool.execute(move || {
-            get_aspect_ratio(k);
+            resize_jpg(k);
             tx.send(()).unwrap();
         });
     }
@@ -35,6 +54,7 @@ fn main() {
         let info = t;
         println!("info: {:?}", info)
     }
+
 
     println!("threads complete")
 }
@@ -190,4 +210,22 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
 
 
     listvec
+}
+
+fn resize_jpg(ajpg: String) {
+    let image = image::open(ajpg.clone()).expect(&ajpg);
+    let (width, height) = image.dimensions();
+    let oldwidth = width.clone() as f64;
+    let oldheight = height.clone() as f64;
+    let aspect_ratio = oldwidth / oldheight;
+    let new_dims = walk_dirs::calc_new_dims(oldwidth, oldheight, aspect_ratio);
+    let newwidth = new_dims.0;
+    let newheight = new_dims.1;
+    let output_file = walk_dirs::create_outfile(ajpg.clone());
+    let resized = resize(&image, newwidth as u32, newheight as u32, Lanczos3);
+    resized.save(output_file.clone()).unwrap();
+    println!(
+        "width: {}\nheight: {}\naspect_ratio: {}\n",
+        width, height, aspect_ratio
+    );
 }
