@@ -10,34 +10,34 @@ use std::fs;
 use std::path::Path;
 
 fn main() {
-    let _remove_unwanted = rm_mv_unwanted::rm_unwanted_files("/media/pi/USB128/Images".to_string());
-    let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/USB128/Images".to_string());
+    let _remove_unwanted = rm_mv_unwanted::rm_unwanted_files("/media/pi/0123-4567/Images".to_string());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/0123-4567/Images".to_string());
 
-    let extlist = gen_ext_list("/media/pi/USB128/Images".to_string());
+    let extlist = gen_ext_list("/media/pi/0123-4567/Images".to_string());
     println!("extlist: {:?}", extlist);
-    let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pi/USB128/Images".to_string());
+    let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pi/0123-4567/Images".to_string());
 
-    let new_ext_list = gen_ext_list("/media/pi/USB128/Images".to_string());
+    let new_ext_list = gen_ext_list("/media/pi/0123-4567/Images".to_string());
     println!("new_ext_list: {:?}", new_ext_list);
 
-    let _ar = get_aspect_ratio("/media/pi/USB128/Images".to_string());
+    // let _ar = get_aspect_ratio("/media/pi/0123-4567/Images".to_string());
 
-    let kvec = walk_dirs::walk_dir("/media/pi/USB128/Images/".to_string());
-    let pool = ThreadPool::new(num_cpus::get());
-    let (tx, rx) = channel();
-    for k in kvec {
-        println!("k: {}", k);
-        let tx = tx.clone();
-        pool.execute(move || {
-            get_aspect_ratio(k);
-            tx.send(()).unwrap();
-        });
-    }
-    drop(tx);
-    for t in rx.iter() {
-        let info = t;
-        println!("info: {:?}", info)
-    }
+    // let kvec = walk_dirs::walk_dir("/media/pi/0123-4567/Images/".to_string());
+    // let pool = ThreadPool::new(num_cpus::get());
+    // let (tx, rx) = channel();
+    // for k in kvec {
+    //     println!("k: {}", k);
+    //     let tx = tx.clone();
+    //     pool.execute(move || {
+    //         get_aspect_ratio(k);
+    //         tx.send(()).unwrap();
+    //     });
+    // }
+    // drop(tx);
+    // for t in rx.iter() {
+    //     let info = t;
+    //     println!("info: {:?}", info)
+    // }
 
     // let kvec = walk_dirs::walk_dir(
     //     "/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/Converted/".to_string(),
@@ -105,7 +105,7 @@ fn gen_ext_list(apath: String) -> Vec<String> {
 fn mv_to_banner_folder(apath: String) {
     let fparts = apath.split("/").collect::<Vec<&str>>();
     let filename = fparts.last().unwrap().replace(" ", "_");
-    let addr = "/media/pi/USB128/Banners/".to_string() + &filename;
+    let addr = "/media/pi/0123-4567/Banners/".to_string() + &filename;
     println!("addr: {}\n apath: {}\n", addr, apath);
     match fs::rename(&apath, &addr) {
         Ok(_) => println!("Moved: {}", addr),

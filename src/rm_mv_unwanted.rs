@@ -43,7 +43,7 @@ pub fn mv_vid_files(fname: String) {
             if mvlist.contains(&ext) {
                 let fparts = fname.split("/").collect::<Vec<&str>>();
                 let filename = fparts.last().unwrap().replace(" ", "_");
-                let addr = "/media/pi/USB128/AV/".to_string() + &filename;
+                let addr = "/media/pi/0123-4567/AV/".to_string() + &filename;
                 match fs::rename(&fname, &addr) {
                     Ok(_) => println!("Moved: {}", addr),
                     Err(e) => println!("Error: {}", e),

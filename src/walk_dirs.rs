@@ -44,7 +44,7 @@ pub fn walk_dir(apath: String) -> Vec<String> {
 
 pub fn create_outfile(fname: String) -> String {
     let digest = compute(&fname);
-    let a = "/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/Converted/".to_string();
+    let a = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
     let b = format!("{:?}", digest) + ".jpg";
     let newfilename = a + &b;
 
@@ -54,7 +54,7 @@ pub fn create_outfile(fname: String) -> String {
 pub fn create_rename_output_file(fname: String) -> String {
     let fparts = fname.split(".").collect::<Vec<&str>>();
     let filename = fparts.first().unwrap().replace(" ", "_");
-    let addr = "/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/Converted/".to_string() + &filename + ".jpg";
+    let addr = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string() + &filename + ".jpg";
 
     addr
 }
@@ -87,7 +87,7 @@ pub fn mv_small_images(oldwidth: f64, oldheight: f64, fname: String) {
         let old_fn = fname.clone();
         let fn_parts = old_fn.split("/").collect::<Vec<&str>>();
         let fnam = fn_parts.last().unwrap();
-        let new_fn = "/media/pi/USB128/SmallPics/".to_string() + fnam;
+        let new_fn = "/media/pi/0123-4567/SmallPics/".to_string() + fnam;
         match fs::rename(&fname, &new_fn) {
             Ok(_) => println!("Moved: {}", new_fn),
             Err(e) => println!("Error: {}", e),
