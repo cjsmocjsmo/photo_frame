@@ -1,13 +1,13 @@
 // use image::imageops::resize;
 // use image::imageops::FilterType::Lanczos3;
 // use image::GenericImageView;
-// use std::sync::mpsc::channel;
-// use threadpool::ThreadPool;
-use walkdir::WalkDir;
+use std::sync::mpsc::channel;
+use threadpool::ThreadPool;
+// use walkdir::WalkDir;
 
 // use std::fs;
-use std::path::Path;
 use std::fs::rename;
+use std::path::Path;
 
 // use crate::factory::convert_image_to_jpg;
 
@@ -51,58 +51,46 @@ fn main() {
     //     println!("info: {:?}", info)
     // }
 
-    let _mv_all_jpgs = mv_all_jpgs("/media/pi/0123-4567/Images".to_string());
+    // let _mv_all_jpgs = mv_all_jpgs("/media/pi/0123-4567/Images".to_string());
 
-    // let kvec = walk_dirs::walk_dir(
-    //     "/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/Converted/".to_string(),
-    // );
-    // let pool = ThreadPool::new(num_cpus::get());
-    // let (tx, rx) = channel();
-    // for k in kvec {
-    //     println!("k: {}", k);
-    //     let tx = tx.clone();
-    //     pool.execute(move || {
-    //         resize_jpg(k);
-    //         tx.send(()).unwrap();
-    //     });
-    // }
-    // drop(tx);
-    // for t in rx.iter() {
-    //     let info = t;
-    //     println!("info: {:?}", info)
-    // }
+    let all_jpgs = walk_dirs::walk_dir(
+        "/media/pi/0123-4567/Images".to_string(),
+    );
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for jpg in all_jpgs {
+        println!("jpg {}", jpg);
+        let tx = tx.clone();
+        pool.execute(move || {
+            mv_jpgs(jpg.clone());
+            tx.send(()).unwrap();
+        });
+    }
+    drop(tx);
+    for t in rx.iter() {
+        let info = t;
+        println!("info: {:?}", info)
+    }
 
     println!("threads complete")
 }
 
-fn mv_all_jpgs(apath: String) {
-    for e in WalkDir::new(apath)
-        .follow_links(true)
-        .into_iter()
-        .filter_map(|e| e.ok())
-    {
-        if e.metadata().unwrap().is_file() {
-            let fname = e.path().to_string_lossy().to_string();
-            if fname.contains(".jpg") {
-                let fparts = fname.split("/").collect::<Vec<&str>>();
-                let filename = fparts.last().unwrap().replace(" ", "_");
-                let addr = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string() + &filename;
-                println!("addr: {}\n apath: {}\n", addr, fname);
-                match rename(&fname, &addr) {
-                    Ok(_) => println!("Moved: {}", addr),
-                    Err(e) => println!("Error: {}", e),
-                };
-            }
-
-            // let fname = e.path();
-            // if let Some(extension) = fname.extension() {
-            //     let ext = extension.to_owned().to_str().unwrap().to_string();
-            //     if !ext_list.contains(&ext) {
-            //         ext_list.push(ext);
-            //     };
-            // };
-        }
+fn mv_jpgs(fname: String) -> String {
+    let pf = factory::Factory{path: fname.clone()};
+    let outfile = pf.create_outfile();
+    if fname.contains(".jpg") {
+        let image = image::open(fname.clone()).expect(&fname);
+        // let fparts = fname.split("/").collect::<Vec<&str>>();
+        // let filename = fparts.last().unwrap().replace(" ", "_");
+        // let addr =
+        //     "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string() + &filename;
+        // println!("addr: {}\n apath: {}\n", addr, fname);
+        image.save(outfile.clone()).unwrap()
     }
+
+    let foo = format!("Moved {:?}\n to {:?}", fname, outfile.clone());
+
+    foo
 }
 
 // fn mv_to_banner_folder(apath: String) {
