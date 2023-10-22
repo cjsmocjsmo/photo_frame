@@ -25,8 +25,13 @@ fn main() {
     println!("new_ext_list: {:?}", new_ext_list);
 
     let pic_list = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+
+    // for pic in pic_list {
+    //     let _sanatize = sanitize_filename(Path::new(&pic));
+    // }
+
     for pic in pic_list {
-        let _sanatize = sanitize_filename(Path::new(&pic));
+        let _fix_fuckup = fix_fuckup(pic);
     }
 
     // let _ar = get_aspect_ratio("/media/pi/0123-4567/Images".to_string());
@@ -70,29 +75,60 @@ fn main() {
     println!("threads complete")
 }
 
-fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
-    let filename = path.file_name().unwrap().to_str().unwrap();
-    let extension = path.extension().unwrap().to_str().unwrap();
-
-    let mut new_filename = String::new();
-
-    for c in filename.chars() {
-        if c.is_alphanumeric() || c == '_' || c == '-' {
-            new_filename.push(c);
-        }
+fn fix_fuckup(oldfn: String) {
+    if oldfn.clone().contains("jpg.jpg") {
+        let newfn = oldfn.replace("jpg.jpg", ".jpg");
+        rename(oldfn.clone(), newfn.clone()).unwrap();
+        println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+    } else if oldfn.clone().contains("bmp.bmp") {
+        let newfn = oldfn.replace("bmp.bmp", ".bmp");
+        rename(oldfn.clone(), newfn.clone()).unwrap();
+        println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+    } else if oldfn.clone().contains("gif.gif") {
+        let newfn = oldfn.replace("gif.gif", ".gif");
+        rename(oldfn.clone(), newfn.clone()).unwrap();
+        println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+    } else if oldfn.clone().contains("png.png") {
+        let newfn = oldfn.replace("png.png", ".png");
+        rename(oldfn.clone(), newfn.clone()).unwrap();
+        println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+    } else if oldfn.clone().contains("jpeg.jpeg") {
+        let newfn = oldfn.replace("jpeg.jpeg", ".jpg");
+        rename(oldfn.clone(), newfn.clone()).unwrap();
+        println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+    } else {
+        println!("{}", oldfn)
     }
 
-    let new_filename = new_filename.to_lowercase();
-    let new_filename = format!("{}.{}", new_filename, extension.to_lowercase());
 
-    let new_path = path.parent().unwrap().join(&new_filename);
 
-    println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
 
-    rename(path, &new_path)?;
 
-    Ok(new_filename)
 }
+
+// fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
+//     let filename = path.file_name().unwrap().to_str().unwrap();
+//     let extension = path.extension().unwrap().to_str().unwrap();
+
+//     let mut new_filename = String::new();
+
+//     for c in filename.chars() {
+//         if c.is_alphanumeric() || c == '_' || c == '-' || c == '.' {
+//             new_filename.push(c);
+//         }
+//     }
+
+//     let new_filename = new_filename.to_lowercase();
+//     let new_filename = format!("{}.{}", new_filename, extension.to_lowercase());
+
+//     let new_path = path.parent().unwrap().join(&new_filename);
+
+//     println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
+
+//     rename(path, &new_path)?;
+
+//     Ok(new_filename)
+// }
 
 fn gen_ext_list(apath: String) -> Vec<String> {
     let mut ext_list: Vec<String> = Vec::new();
