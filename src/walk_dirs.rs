@@ -1,4 +1,4 @@
-use md5::compute;
+// use md5::compute;
 use std::fs;
 use std::path::Path;
 use walkdir::WalkDir;
@@ -42,22 +42,22 @@ pub fn walk_dir(apath: String) -> Vec<String> {
     keeper_vec
 }
 
-pub fn create_outfile(fname: String) -> String {
-    let digest = compute(&fname);
-    let a = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
-    let b = format!("{:?}", digest) + ".jpg";
-    let newfilename = a + &b;
+// pub fn create_outfile(fname: String) -> String {
+//     let digest = compute(&fname);
+//     let a = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
+//     let b = format!("{:?}", digest) + ".jpg";
+//     let newfilename = a + &b;
 
-    newfilename
-}
+//     newfilename
+// }
 
-pub fn create_rename_output_file(fname: String) -> String {
-    let fparts = fname.split(".").collect::<Vec<&str>>();
-    let filename = fparts.first().unwrap().replace(" ", "_");
-    let addr = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string() + &filename + ".jpg";
+// pub fn create_rename_output_file(fname: String) -> String {
+//     let fparts = fname.split(".").collect::<Vec<&str>>();
+//     let filename = fparts.first().unwrap().replace(" ", "_");
+//     let addr = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string() + &filename + ".jpg";
 
-    addr
-}
+//     addr
+// }
 
 pub fn calc_new_dims(oldwidth: f64, oldheight: f64, aspect: f64) -> (f64, f64) {
     let mut newwidth = 0.0;
@@ -125,8 +125,15 @@ pub fn mv_small_images(oldwidth: f64, oldheight: f64, fname: String) {
 // }
 // use image::{BmpDecoder, ImageFormat, JpegEncoder};
 
-pub fn convert_image_to_jpg(apath: String) {
-    let output_file = create_outfile(apath.clone());
-    let image = image::open(apath.clone()).unwrap();
-    let _save_image = image.save(output_file).unwrap();
-}
+// pub fn convert_image_to_jpg(apath: String) {
+//     let output_file = replace_extension_with_jpg(Path::new(&apath));
+//     let image = image::open(apath.clone()).unwrap();
+//     let _save_image = image.save(output_file).unwrap();
+// }
+
+// pub fn replace_extension_with_jpg(path: &Path) -> String {
+//     let new_filename = path.file_name().unwrap().to_str().unwrap().to_owned() + ".jpg";
+//     let new_path = path.parent().unwrap().join(&new_filename);
+
+//     new_path.to_string_lossy().to_string()
+// }

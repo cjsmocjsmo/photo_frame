@@ -25,3 +25,29 @@ fn main() {
         }
     }
 }
+
+// fn fix_fuckup(oldfn: String) {
+//     if oldfn.clone().contains("jpg.jpg") {
+//         let newfn = oldfn.replace("jpg.jpg", ".jpg");
+//         rename(oldfn.clone(), newfn.clone()).unwrap();
+//         println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+//     } else if oldfn.clone().contains("bmp.bmp") {
+//         let newfn = oldfn.replace("bmp.bmp", ".bmp");
+//         rename(oldfn.clone(), newfn.clone()).unwrap();
+//         println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+//     } else if oldfn.clone().contains("gif.gif") {
+//         let newfn = oldfn.replace("gif.gif", ".gif");
+//         rename(oldfn.clone(), newfn.clone()).unwrap();
+//         println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+//     } else if oldfn.clone().contains("png.png") {
+//         let newfn = oldfn.replace("png.png", ".png");
+//         rename(oldfn.clone(), newfn.clone()).unwrap();
+//         println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+//     } else if oldfn.clone().contains("jpeg.jpeg") {
+//         let newfn = oldfn.replace("jpeg.jpeg", ".jpg");
+//         rename(oldfn.clone(), newfn.clone()).unwrap();
+//         println!("oldfn: {}\n newfn: {}\n", oldfn.clone(), newfn.clone())
+//     } else {
+//         println!("{}", oldfn)
+//     }
+// }
