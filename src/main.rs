@@ -1,13 +1,13 @@
 // use image::imageops::resize;
 // use image::imageops::FilterType::Lanczos3;
 // use image::GenericImageView;
-use std::sync::mpsc::channel;
-use threadpool::ThreadPool;
-// use walkdir::WalkDir;
+// use std::sync::mpsc::channel;
+// use threadpool::ThreadPool;
+use walkdir::WalkDir;
 
 // use std::fs;
-// use std::path::Path;
-// use std::fs::rename;
+use std::path::Path;
+use std::fs::rename;
 
 // use crate::factory::convert_image_to_jpg;
 
@@ -27,46 +27,31 @@ fn main() {
     let new_ext_list = factory::gen_ext_list("/media/pi/0123-4567/Images".to_string());
     println!("new_ext_list: {:?}", new_ext_list);
 
-    let pic_list = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
-
-    // for pic in pic_list {
+    // let pic_list = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    // for pic in pic_list.clone() {
     //     let _sanatize = sanitize_filename(Path::new(&pic));
     // }
 
-    // for pic in pic_list {
-    //     let _fix_fuckup = fix_fuckup(pic);
-    // }
-
-    // for pic in pic_list {
+    // let pic_list2 = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    // let pool = ThreadPool::new(num_cpus::get());
+    // let (tx, rx) = channel();
+    // for pic in pic_list2.clone() {
+    //     println!("Pic {}", pic);
     //     if !pic.contains(".jpg") {
-    //         factory::convert_image_to_jpg(pic.clone())
-    //     }
+    //         let tx = tx.clone();
+    //         pool.execute(move || {
+    //             factory::convert_image_to_jpg(pic.clone());
+    //             tx.send(()).unwrap();
+    //         });
+    //     };
+    // }
+    // drop(tx);
+    // for t in rx.iter() {
+    //     let info = t;
+    //     println!("info: {:?}", info)
     // }
 
-    // let pf = factory::Factory {
-    //     path: "/media/pi/0123-4567/Images".to_string(),
-    // };
-
-    // let _ar = get_aspect_ratio("/media/pi/0123-4567/Images".to_string());
-
-    // let kvec = walk_dirs::walk_dir("/media/pi/0123-4567/Images/".to_string());
-    let pool = ThreadPool::new(num_cpus::get());
-    let (tx, rx) = channel();
-    for pic in pic_list {
-        println!("Pic {}", pic);
-        if !pic.contains(".jpg") {
-            let tx = tx.clone();
-            pool.execute(move || {
-                factory::convert_image_to_jpg(pic.clone());
-                tx.send(()).unwrap();
-            });
-        };
-    }
-    drop(tx);
-    for t in rx.iter() {
-        let info = t;
-        println!("info: {:?}", info)
-    }
+    let _mv_all_jpgs = mv_all_jpgs("/media/pi/0123-4567/Images".to_string());
 
     // let kvec = walk_dirs::walk_dir(
     //     "/media/pi/58f141b6-81b1-414b-8999-1c86128192c6/Converted/".to_string(),
@@ -90,26 +75,35 @@ fn main() {
     println!("threads complete")
 }
 
-// fn gen_ext_list(apath: String) -> Vec<String> {
-//     let mut ext_list: Vec<String> = Vec::new();
-//     for e in WalkDir::new(apath)
-//         .follow_links(true)
-//         .into_iter()
-//         .filter_map(|e| e.ok())
-//     {
-//         if e.metadata().unwrap().is_file() {
-//             let fname = e.path();
-//             if let Some(extension) = fname.extension() {
-//                 let ext = extension.to_owned().to_str().unwrap().to_string();
-//                 if !ext_list.contains(&ext) {
-//                     ext_list.push(ext);
-//                 };
-//             };
-//         }
-//     }
+fn mv_all_jpgs(apath: String) {
+    for e in WalkDir::new(apath)
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        if e.metadata().unwrap().is_file() {
+            let fname = e.path().to_string_lossy().to_string();
+            if fname.contains(".jpg") {
+                let fparts = fname.split("/").collect::<Vec<&str>>();
+                let filename = fparts.last().unwrap().replace(" ", "_");
+                let addr = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string() + &filename;
+                println!("addr: {}\n apath: {}\n", addr, fname);
+                match rename(&fname, &addr) {
+                    Ok(_) => println!("Moved: {}", addr),
+                    Err(e) => println!("Error: {}", e),
+                };
+            }
 
-//     ext_list
-// }
+            // let fname = e.path();
+            // if let Some(extension) = fname.extension() {
+            //     let ext = extension.to_owned().to_str().unwrap().to_string();
+            //     if !ext_list.contains(&ext) {
+            //         ext_list.push(ext);
+            //     };
+            // };
+        }
+    }
+}
 
 // fn mv_to_banner_folder(apath: String) {
 //     let fparts = apath.split("/").collect::<Vec<&str>>();
@@ -205,25 +199,25 @@ fn main() {
 //     );
 // }
 
-// fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
-//     let filename = path.file_name().unwrap().to_str().unwrap();
-//     let extension = path.extension().unwrap().to_str().unwrap();
+fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
+    let filename = path.file_name().unwrap().to_str().unwrap();
+    // let extension = path.extension().unwrap().to_str().unwrap();
 
-//     let mut new_filename = String::new();
+    let mut new_filename = String::new();
 
-//     for c in filename.chars() {
-//         if c.is_alphanumeric() || c == '_' || c == '-' || c == '.' {
-//             new_filename.push(c);
-//         }
-//     }
+    for c in filename.chars() {
+        if c.is_alphanumeric() || c == '_' || c == '-' || c == '.' {
+            new_filename.push(c);
+        }
+    }
 
-//     let new_filename = new_filename.to_lowercase();
+    let new_filename = new_filename.to_lowercase();
 
-//     let new_path = path.parent().unwrap().join(&new_filename);
+    let new_path = path.parent().unwrap().join(&new_filename);
 
-//     println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
+    println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
 
-//     rename(path, &new_path)?;
+    rename(path, &new_path)?;
 
-//     Ok(new_filename)
-// }
+    Ok(new_filename)
+}
