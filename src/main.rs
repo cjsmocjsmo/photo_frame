@@ -1,8 +1,8 @@
-use image::imageops::resize;
-use image::imageops::FilterType::Lanczos3;
+// use image::imageops::resize;
+// use image::imageops::FilterType::Lanczos3;
 use image::GenericImageView;
-use std::sync::mpsc::channel;
-use threadpool::ThreadPool;
+// use std::sync::mpsc::channel;
+// use threadpool::ThreadPool;
 use walkdir::WalkDir;
 pub mod rm_mv_unwanted;
 pub mod walk_dirs;
@@ -113,61 +113,9 @@ fn mv_to_banner_folder(apath: String) {
     };
 }
 
-// fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
-//     let keeplist = [
-//         "jpg".to_string(),
-//         "JPG".to_string(),
-//         "bmp".to_string(),
-//         "BMP".to_string(),
-//         "gif".to_string(),
-//         "png".to_string(),
-//         "tif".to_string(),
-//         "jpeg".to_string(),
-//         "PNG".to_string(),
-//         "GIF".to_string(),
-//     ];
 
-//     let mut listvec = Vec::new();
-//     let mut count = 0;
-//     for e in WalkDir::new(apath)
-//         .follow_links(true)
-//         .into_iter()
-//         .filter_map(|e| e.ok())
-//     {
-//         if e.metadata().unwrap().is_file() {
-//             count += 1;
-//             println!("count: {}", count);
-//             let fname = e.path();
-//             let filename = e.path().to_string_lossy().to_string();
-//             if let Some(extension) = fname.extension() {
-//                 let ext = extension.to_owned().to_str().unwrap().to_string();
-//                 let mut av_vec = Vec::new();
-//                 if keeplist.contains(&ext) {
-//                     let image = image::open(filename.clone()).expect(&filename);
-//                     let (width, height) = image.dimensions();
-//                     let oldwidth = width.clone() as f64;
-//                     let oldheight = height.clone() as f64;
-//                     let aspect_ratio = oldwidth / oldheight;
-//                     av_vec.push(oldwidth.clone());
-//                     av_vec.push(oldheight.clone());
-//                     av_vec.push(aspect_ratio.clone());
-//                     if aspect_ratio > 2.0 {
-//                         let _mv_banner_image = mv_to_banner_folder(filename.clone());
-//                         println!("Filename: {}\n aspect_ratio: {}\n", filename, aspect_ratio);
-//                     } else {
-//                         let output_file = walk_dirs::create_outfile(filename.clone());
-//                         image.save(output_file.clone()).unwrap();
-//                     }
-//                 };
-//                 listvec.push(av_vec.clone());
-//             };
-//         };
-//     }
 
-//     listvec
-// }
-
-fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
+fn filter_by_aspect_ratio(apath: String) -> bool {
     let keeplist = [
         "jpg".to_string(),
         "JPG".to_string(),
@@ -181,42 +129,55 @@ fn get_aspect_ratio(apath: String) -> Vec<Vec<f64>> {
         "GIF".to_string(),
     ];
 
-    let mut listvec = Vec::new();
+    // let mut listvec = Vec::new();
 
     let fname = Path::new(&apath);
     let filename = fname.to_string_lossy().to_string();
     if let Some(extension) = fname.extension() {
         let ext = extension.to_owned().to_str().unwrap().to_string();
-        let mut av_vec = Vec::new();
+        // let mut av_vec = Vec::new();
         if keeplist.contains(&ext) {
             let image = image::open(filename.clone()).expect(&filename);
             let (width, height) = image.dimensions();
             let oldwidth = width.clone() as f64;
             let oldheight = height.clone() as f64;
             let aspect_ratio = oldwidth / oldheight;
-            av_vec.push(oldwidth.clone());
-            av_vec.push(oldheight.clone());
-            av_vec.push(aspect_ratio.clone());
-            if aspect_ratio > 2.0 {
-                let _mv_banner_image = mv_to_banner_folder(filename.clone());
-                println!("Filename: {}\n aspect_ratio: {}\n", filename, aspect_ratio);
+            if oldwidth > oldheight {
+                println!("landscape");
+
+            } else if oldwidth < oldheight {
+                print!("portrait")
+
+            } else if oldwidth == oldheight {
+                println!("square")
+
             } else {
-                let new_dims = walk_dirs::calc_new_dims(oldwidth, oldheight, aspect_ratio);
-                let newwidth = new_dims.0;
-                let newheight = new_dims.1;
-                let output_file = walk_dirs::create_outfile(filename.clone());
-                let resized = resize(&image, newwidth as u32, newheight as u32, Lanczos3);
-                resized.save(output_file.clone()).unwrap();
-                println!(
-                    "width: {}\nheight: {}\naspect_ratio: {}\n",
-                    width, height, aspect_ratio
-                );
+
             }
+            // av_vec.push(oldwidth.clone());
+            // av_vec.push(oldheight.clone());
+            // av_vec.push(aspect_ratio.clone());
+            // if aspect_ratio > 2.0 {
+            //     let _mv_banner_image = mv_to_banner_folder(filename.clone());
+            //     println!("Filename: {}\n aspect_ratio: {}\n", filename, aspect_ratio);
+            // } else {
+            //     let new_dims = walk_dirs::calc_new_dims(oldwidth, oldheight, aspect_ratio);
+            //     let newwidth = new_dims.0;
+            //     let newheight = new_dims.1;
+            //     let output_file = walk_dirs::create_outfile(filename.clone());
+            //     let resized = resize(&image, newwidth as u32, newheight as u32, Lanczos3);
+            //     resized.save(output_file.clone()).unwrap();
+            //     println!(
+            //         "width: {}\nheight: {}\naspect_ratio: {}\n",
+            //         width, height, aspect_ratio
+            //     );
+            // }
         };
-        listvec.push(av_vec.clone());
+        // listvec.push(av_vec.clone());
     };
 
-    listvec
+    // listvec
+    true
 }
 
 // fn resize_jpg(ajpg: String) {

@@ -25,7 +25,7 @@ pub fn rm_unwanted_files(apath: String) {
 
 pub fn mv_vid_files(fname: String) {
     let mvlist = [
-        "pdf", "PDF", "mp4", "MPG", "avi", "AVI", "mp3", "wav", "m4p", "m4a", "MP3", "zip", "ZIP",
+        "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "mp3", "wav", "m4p", "m4a", "MP3", "zip", "ZIP",
         "gz", "bz2",
     ];
 
