@@ -4,10 +4,14 @@ use image::GenericImageView;
 // use std::sync::mpsc::channel;
 // use threadpool::ThreadPool;
 use walkdir::WalkDir;
-pub mod rm_mv_unwanted;
-pub mod walk_dirs;
+
 use std::fs;
 use std::path::Path;
+use std::fs::rename;
+
+pub mod rm_mv_unwanted;
+pub mod walk_dirs;
+
 
 fn main() {
     let _remove_unwanted = rm_mv_unwanted::rm_unwanted_files("/media/pi/0123-4567/Images".to_string());
@@ -19,6 +23,11 @@ fn main() {
 
     let new_ext_list = gen_ext_list("/media/pi/0123-4567/Images".to_string());
     println!("new_ext_list: {:?}", new_ext_list);
+
+    let pic_list = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    for pic in pic_list {
+        let _sanatize = sanitize_filename(Path::new(&pic));
+    }
 
     // let _ar = get_aspect_ratio("/media/pi/0123-4567/Images".to_string());
 
@@ -61,6 +70,30 @@ fn main() {
     println!("threads complete")
 }
 
+fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
+    let filename = path.file_name().unwrap().to_str().unwrap();
+    let extension = path.extension().unwrap().to_str().unwrap();
+
+    let mut new_filename = String::new();
+
+    for c in filename.chars() {
+        if c.is_alphanumeric() || c == '_' || c == '-' {
+            new_filename.push(c);
+        }
+    }
+
+    let new_filename = new_filename.to_lowercase();
+    let new_filename = format!("{}.{}", new_filename, extension.to_lowercase());
+
+    let new_path = path.parent().unwrap().join(&new_filename);
+
+    println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
+
+    rename(path, &new_path)?;
+
+    Ok(new_filename)
+}
+
 fn gen_ext_list(apath: String) -> Vec<String> {
     let mut ext_list: Vec<String> = Vec::new();
     for e in WalkDir::new(apath)
@@ -81,26 +114,6 @@ fn gen_ext_list(apath: String) -> Vec<String> {
 
     ext_list
 }
-
-// fn find(k: String) {
-
-//         let dims = get_aspect_ratio(k.clone());
-//         let width: f64 = dims[0];
-//         let height: f64 = dims[1];
-//         let aspect_ratio: f64 = dims[2];
-//         let _mvsmimg = walk_dirs::mv_small_images(width as f64, height, k.clone());
-//         let new_dims = walk_dirs::calc_new_dims(width, height, aspect_ratio);
-//         let newwidth = new_dims.0;
-//         let newheight = new_dims.1;
-
-//         let out_file = walk_dirs::create_outfile(k.clone());
-//         let _pimage = walk_dirs::convert_image_to_jpg(&k, &out_file, newwidth, newheight);
-//         println!(
-//             "width: {}\nheight: {}\naspect_ratio: {}\n",
-//             width, height, aspect_ratio
-//         );
-
-// }
 
 fn mv_to_banner_folder(apath: String) {
     let fparts = apath.split("/").collect::<Vec<&str>>();
