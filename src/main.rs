@@ -14,6 +14,7 @@ use std::path::Path;
 pub mod factory;
 pub mod rm_mv_unwanted;
 pub mod walk_dirs;
+pub mod dedup;
 
 fn main() {
     let _remove_unwanted =
@@ -67,6 +68,8 @@ fn main() {
         let info = t;
         println!("info: {:?}", info)
     }
+
+    let _dedup = dedup::dedup("/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string());
 
     println!("threads complete")
 }

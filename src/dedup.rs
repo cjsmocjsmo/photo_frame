@@ -4,10 +4,10 @@ use std::fs::{read_dir, metadata};
 use std::path::Path;
 // use opencv::prelude::*;
 
-fn main() {
+fn dedup(apath: String) {
     let mut image_set = HashSet::new();
 
-    for path in read_dir("/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/").unwrap() {
+    for path in read_dir(apath).unwrap() {
         let path = path.unwrap().path();
 
         if metadata(&path).unwrap().is_file() && path.extension().unwrap() == "jpg" {
