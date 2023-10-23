@@ -18,22 +18,22 @@ pub mod dedup;
 
 fn main() {
     let _remove_unwanted =
-        rm_mv_unwanted::rm_unwanted_files("/media/pi/0123-4567/Images".to_string());
-    let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/0123-4567/Images".to_string());
+        rm_mv_unwanted::rm_unwanted_files("/media/pipi/0123-4567/Images".to_string());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pipi/0123-4567/Images".to_string());
 
-    let extlist = factory::gen_ext_list("/media/pi/0123-4567/Images".to_string());
+    let extlist = factory::gen_ext_list("/media/pipi/0123-4567/Images".to_string());
     println!("extlist: {:?}", extlist);
-    let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pi/0123-4567/Images".to_string());
+    let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pipi/0123-4567/Images".to_string());
 
-    let new_ext_list = factory::gen_ext_list("/media/pi/0123-4567/Images".to_string());
+    let new_ext_list = factory::gen_ext_list("/media/pipi/0123-4567/Images".to_string());
     println!("new_ext_list: {:?}", new_ext_list);
 
-    let pic_list = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    let pic_list = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
     // for pic in pic_list.clone() {
     //     let _sanatize = sanitize_filename(Path::new(&pic));
     // }
 
-    // let pic_list2 = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    // let pic_list2 = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
     // let (tx, rx) = channel();
     // for pic in pic_list2.clone() {
@@ -52,7 +52,7 @@ fn main() {
     //     println!("info: {:?}", info)
     // }
 
-    // let all_jpgs = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    // let all_jpgs = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
     // let (tx, rx) = channel();
     // for jpg in all_jpgs {
@@ -93,7 +93,7 @@ fn mv_jpgs(fname: String) -> String {
 // fn mv_to_banner_folder(apath: String) {
 //     let fparts = apath.split("/").collect::<Vec<&str>>();
 //     let filename = fparts.last().unwrap().replace(" ", "_");
-//     let addr = "/media/pi/0123-4567/Banners/".to_string() + &filename;
+//     let addr = "/media/pipi/0123-4567/Banners/".to_string() + &filename;
 //     println!("addr: {}\n apath: {}\n", addr, apath);
 //     match fs::rename(&apath, &addr) {
 //         Ok(_) => println!("Moved: {}", addr),

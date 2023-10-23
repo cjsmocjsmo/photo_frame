@@ -65,7 +65,7 @@ pub fn mv_small_images(oldwidth: f64, oldheight: f64, fname: String) {
         let old_fn = fname.clone();
         let fn_parts = old_fn.split("/").collect::<Vec<&str>>();
         let fnam = fn_parts.last().unwrap();
-        let new_fn = "/media/pi/0123-4567/SmallPics/".to_string() + fnam;
+        let new_fn = "/media/pipi/0123-4567/SmallPics/".to_string() + fnam;
         match fs::rename(&fname, &new_fn) {
             Ok(_) => println!("Moved: {}", new_fn),
             Err(e) => println!("Error: {}", e),

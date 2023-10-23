@@ -12,7 +12,7 @@ pub struct Factory {
 impl Factory {
     pub fn create_outfile(&self) -> String {
         let digest = compute(&self.path);
-        let a = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
+        let a = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
         let b = format!("{:?}", digest) + ".jpg";
         let newfilename = a + &b;
 
@@ -22,7 +22,7 @@ impl Factory {
     pub fn create_rename_output_file(&self) -> String {
         let fparts = self.path.split(".").collect::<Vec<&str>>();
         let filename = fparts.first().unwrap().replace(" ", "_");
-        let addr = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string()
+        let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string()
             + &filename
             + ".jpg";
 

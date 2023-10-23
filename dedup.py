@@ -58,7 +58,7 @@ def check_for_duplicate_photos(photo_gallery_directory):
 
 if __name__ == '__main__':
     # Get the path to the photo gallery directory.
-    photo_gallery_directory = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/"
+    photo_gallery_directory = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/"
 
     # Check for duplicate photos in the photo gallery directory.
     duplicate_photos = check_for_duplicate_photos(photo_gallery_directory)
