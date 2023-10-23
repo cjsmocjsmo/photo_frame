@@ -6,7 +6,7 @@ use std::path::Path;
 fn main() {
     let mut image_set = HashSet::new();
 
-    for path in read_dir("/path/to/photo/gallery").unwrap() {
+    for path in read_dir("/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/").unwrap() {
         let path = path.unwrap().path();
 
         if metadata(&path).unwrap().is_file() && path.extension().unwrap() == "jpg" {
@@ -16,6 +16,7 @@ fn main() {
             let features = imgproc::SIFT_create().detect_and_compute(&image, None).unwrap();
 
             image_set.insert(features);
+            println!("path: {}", features);
         }
     }
 

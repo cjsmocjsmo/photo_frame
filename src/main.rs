@@ -17,77 +17,69 @@ pub mod walk_dirs;
 
 fn main() {
     let _remove_unwanted =
-        rm_mv_unwanted::rm_unwanted_files("/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string());
-    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/0123-4567/Images".to_string());
+        rm_mv_unwanted::rm_unwanted_files("/media/pi/0123-4567/Images".to_string());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pi/0123-4567/Images".to_string());
 
-    // let extlist = factory::gen_ext_list("/media/pi/0123-4567/Images".to_string());
-    // println!("extlist: {:?}", extlist);
-    // let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pi/0123-4567/Images".to_string());
+    let extlist = factory::gen_ext_list("/media/pi/0123-4567/Images".to_string());
+    println!("extlist: {:?}", extlist);
+    let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pi/0123-4567/Images".to_string());
 
-    // let new_ext_list = factory::gen_ext_list("/media/pi/0123-4567/Images".to_string());
-    // println!("new_ext_list: {:?}", new_ext_list);
+    let new_ext_list = factory::gen_ext_list("/media/pi/0123-4567/Images".to_string());
+    println!("new_ext_list: {:?}", new_ext_list);
 
     // let pic_list = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
     // for pic in pic_list.clone() {
     //     let _sanatize = sanitize_filename(Path::new(&pic));
     // }
 
-    // let pic_list2 = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
-    // let pool = ThreadPool::new(num_cpus::get());
-    // let (tx, rx) = channel();
-    // for pic in pic_list2.clone() {
-    //     println!("Pic {}", pic);
-    //     if !pic.contains(".jpg") {
-    //         let tx = tx.clone();
-    //         pool.execute(move || {
-    //             factory::convert_image_to_jpg(pic.clone());
-    //             tx.send(()).unwrap();
-    //         });
-    //     };
-    // }
-    // drop(tx);
-    // for t in rx.iter() {
-    //     let info = t;
-    //     println!("info: {:?}", info)
-    // }
+    let pic_list2 = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for pic in pic_list2.clone() {
+        println!("Pic {}", pic);
+        if !pic.contains(".jpg") {
+            let tx = tx.clone();
+            pool.execute(move || {
+                factory::convert_image_to_jpg(pic.clone());
+                tx.send(()).unwrap();
+            });
+        };
+    }
+    drop(tx);
+    for t in rx.iter() {
+        let info = t;
+        println!("info: {:?}", info)
+    }
 
-    // let _mv_all_jpgs = mv_all_jpgs("/media/pi/0123-4567/Images".to_string());
-
-    // let all_jpgs = walk_dirs::walk_dir(
-    //     "/media/pi/0123-4567/Images".to_string(),
-    // );
-    // let pool = ThreadPool::new(num_cpus::get());
-    // let (tx, rx) = channel();
-    // for jpg in all_jpgs {
-    //     println!("jpg {}", jpg);
-    //     let tx = tx.clone();
-    //     pool.execute(move || {
-    //         mv_jpgs(jpg.clone());
-    //         tx.send(()).unwrap();
-    //     });
-    // }
-    // drop(tx);
-    // for t in rx.iter() {
-    //     let info = t;
-    //     println!("info: {:?}", info)
-    // }
+    let all_jpgs = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for jpg in all_jpgs {
+        println!("jpg {}", jpg);
+        let tx = tx.clone();
+        pool.execute(move || {
+            mv_jpgs(jpg.clone());
+            tx.send(()).unwrap();
+        });
+    }
+    drop(tx);
+    for t in rx.iter() {
+        let info = t;
+        println!("info: {:?}", info)
+    }
 
     println!("threads complete")
 }
 
 fn mv_jpgs(fname: String) -> String {
-    let pf = factory::Factory{path: fname.clone()};
+    let pf = factory::Factory {
+        path: fname.clone(),
+    };
     let outfile = pf.create_outfile();
     if fname.contains(".jpg") {
         let image = image::open(fname.clone()).expect(&fname);
-        // let fparts = fname.split("/").collect::<Vec<&str>>();
-        // let filename = fparts.last().unwrap().replace(" ", "_");
-        // let addr =
-        //     "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string() + &filename;
-        // println!("addr: {}\n apath: {}\n", addr, fname);
         image.save(outfile.clone()).unwrap()
     }
-
     let foo = format!("Moved {:?}\n to {:?}", fname, outfile.clone());
 
     foo
