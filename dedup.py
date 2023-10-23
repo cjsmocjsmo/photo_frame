@@ -36,6 +36,7 @@ def check_for_duplicate_photos(photo_gallery_directory):
     # Iterate over the images in the photo gallery directory.
     for image_path in os.listdir(photo_gallery_directory):
         image = cv2.imread(os.path.join(photo_gallery_directory, image_path))
+        image = image.astype('float32')
 
         # Calculate the perceptual hash of the image.
         perceptual_hash = calculate_perceptual_hash(image)
