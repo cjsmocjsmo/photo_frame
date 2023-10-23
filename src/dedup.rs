@@ -2,6 +2,7 @@ use cv::imgproc;
 use std::collections::HashSet;
 use std::fs::{read_dir, metadata};
 use std::path::Path;
+// use opencv::prelude::*;
 
 fn main() {
     let mut image_set = HashSet::new();
