@@ -1,8 +1,8 @@
 // use image::imageops::resize;
 // use image::imageops::FilterType::Lanczos3;
 // use image::GenericImageView;
-use std::sync::mpsc::channel;
-use threadpool::ThreadPool;
+// use std::sync::mpsc::channel;
+// use threadpool::ThreadPool;
 // use walkdir::WalkDir;
 
 // use std::fs;
@@ -28,10 +28,12 @@ fn main() {
     let new_ext_list = factory::gen_ext_list("/media/pipi/0123-4567/Images".to_string());
     println!("new_ext_list: {:?}", new_ext_list);
 
-    let pic_list = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
+    // let pic_list = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
     // for pic in pic_list.clone() {
     //     let _sanatize = sanitize_filename(Path::new(&pic));
     // }
+
+    let pic_list2 = walk_dirs::walk_dir("/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string());
 
     // let pic_list2 = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -69,7 +71,7 @@ fn main() {
     //     println!("info: {:?}", info)
     // }
 
-    for pic in pic_list {
+    for pic in pic_list2 {
         let _dedup = dedup::calc_hash(pic);
     };
 
