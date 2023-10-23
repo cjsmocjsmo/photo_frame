@@ -14,6 +14,7 @@ use std::path::Path;
 pub mod factory;
 pub mod rm_mv_unwanted;
 pub mod walk_dirs;
+pub mod dedup;
 
 fn main() {
     let _remove_unwanted =
@@ -27,7 +28,7 @@ fn main() {
     let new_ext_list = factory::gen_ext_list("/media/pi/0123-4567/Images".to_string());
     println!("new_ext_list: {:?}", new_ext_list);
 
-    // let pic_list = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    let pic_list = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
     // for pic in pic_list.clone() {
     //     let _sanatize = sanitize_filename(Path::new(&pic));
     // }
@@ -68,7 +69,10 @@ fn main() {
         println!("info: {:?}", info)
     }
 
-    // let _dedup = dedup::dedup("/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string());
+    for pic in pic_list {
+        let _dedup = dedup::calc_hash(pic);
+
+    };
 
     println!("threads complete")
 }
