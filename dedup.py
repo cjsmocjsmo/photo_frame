@@ -17,7 +17,8 @@ def calculate_perceptual_hash(image):
     image = image[0:8, 0:8]
     image = image / 255.0
     image = image.flatten()
-    image = cv2.p_hash(image, cv2.HASH_SIZE_64)
+
+    image = cv2.phash(image, cv2.HASH_SIZE_64)
     return image
 
 def check_for_duplicate_photos(photo_gallery_directory):
