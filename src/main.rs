@@ -33,45 +33,44 @@ fn main() {
     //     let _sanatize = sanitize_filename(Path::new(&pic));
     // }
 
-    let pic_list2 = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
-    let pool = ThreadPool::new(num_cpus::get());
-    let (tx, rx) = channel();
-    for pic in pic_list2.clone() {
-        println!("Pic {}", pic);
-        if !pic.contains(".jpg") {
-            let tx = tx.clone();
-            pool.execute(move || {
-                factory::convert_image_to_jpg(pic.clone());
-                tx.send(()).unwrap();
-            });
-        };
-    }
-    drop(tx);
-    for t in rx.iter() {
-        let info = t;
-        println!("info: {:?}", info)
-    }
+    // let pic_list2 = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    // let pool = ThreadPool::new(num_cpus::get());
+    // let (tx, rx) = channel();
+    // for pic in pic_list2.clone() {
+    //     println!("Pic {}", pic);
+    //     if !pic.contains(".jpg") {
+    //         let tx = tx.clone();
+    //         pool.execute(move || {
+    //             factory::convert_image_to_jpg(pic.clone());
+    //             tx.send(()).unwrap();
+    //         });
+    //     };
+    // }
+    // drop(tx);
+    // for t in rx.iter() {
+    //     let info = t;
+    //     println!("info: {:?}", info)
+    // }
 
-    let all_jpgs = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
-    let pool = ThreadPool::new(num_cpus::get());
-    let (tx, rx) = channel();
-    for jpg in all_jpgs {
-        println!("jpg {}", jpg);
-        let tx = tx.clone();
-        pool.execute(move || {
-            mv_jpgs(jpg.clone());
-            tx.send(()).unwrap();
-        });
-    }
-    drop(tx);
-    for t in rx.iter() {
-        let info = t;
-        println!("info: {:?}", info)
-    }
+    // let all_jpgs = walk_dirs::walk_dir("/media/pi/0123-4567/Images".to_string());
+    // let pool = ThreadPool::new(num_cpus::get());
+    // let (tx, rx) = channel();
+    // for jpg in all_jpgs {
+    //     println!("jpg {}", jpg);
+    //     let tx = tx.clone();
+    //     pool.execute(move || {
+    //         mv_jpgs(jpg.clone());
+    //         tx.send(()).unwrap();
+    //     });
+    // }
+    // drop(tx);
+    // for t in rx.iter() {
+    //     let info = t;
+    //     println!("info: {:?}", info)
+    // }
 
     for pic in pic_list {
         let _dedup = dedup::calc_hash(pic);
-
     };
 
     println!("threads complete")
