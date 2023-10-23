@@ -3,7 +3,7 @@ use md5::compute;
 // use std::{path::PathBuf, str::FromStr};
 use std::path::Path;
 use walkdir::WalkDir;
-
+use image::GenericImageView;
 #[derive(Debug)]
 pub struct Factory {
     pub path: String,
@@ -28,6 +28,39 @@ impl Factory {
 
         addr
     }
+    pub fn resize_landscape_image(&self) {
+        let image = image::open(self.path.clone()).unwrap();
+        let img_dims = image.dimensions();
+        let aspect = img_dims.0 as f64 / img_dims.1 as f64;
+
+        let (newwidth, newheight) = calc_new_landscape_dims(image.width() as f64, image.height() as f64, aspect);
+
+        let resized = image.resize(newwidth as u32, newheight as u32, image::imageops::FilterType::Lanczos3);
+        let _save_image = resized.save(self.create_outfile()).unwrap();
+    }
+}
+
+pub fn calc_new_landscape_dims(oldwidth: f64, oldheight: f64, aspect: f64) -> (f64, f64) {
+    let mut newwidth = 0.0;
+    let mut newheight = 0.0;
+    if oldwidth > 800.0 as f64 {
+        newwidth = 800.0 as f64;
+        newheight = 800.0 as f64 / aspect.clone();
+    } else if oldwidth < oldheight {
+        println!("portrait");
+        if oldheight > 800.0 as f64 {
+            newheight = 800.0 as f64;
+            newwidth = 800.0 as f64 / aspect.clone();
+        };
+    } else {
+        println!("square");
+    };
+    println!(
+        "width: {}\nheight: {}\naspect_ratio: {}\nnewwidth: {}\nnewheight: {}\n",
+        oldwidth, oldheight, aspect, newwidth, newheight
+    );
+
+    (newwidth, newheight)
 }
 
 pub fn gen_ext_list(apath: String) -> Vec<String> {

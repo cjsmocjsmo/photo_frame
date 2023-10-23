@@ -25,14 +25,9 @@ pub fn walk_dir(apath: String) -> Vec<String> {
                 let parts = &fname.split(".").collect::<Vec<&str>>();
 
                 let ext = parts.last().unwrap();
-                // println!("ext: {}", ext);
 
-                // let mut keeper_vec = Vec::new();
                 if keeplist.contains(&ext) {
-                    // println!("fname: {}", fname);
                     keeper_vec.push(fname.clone());
-                    // let _convert =
-                    //     convert_image_to_jpg(&oldfilename, &newfilename, newwidth, newheight);
                 };
             };
         };
@@ -42,45 +37,28 @@ pub fn walk_dir(apath: String) -> Vec<String> {
     keeper_vec
 }
 
-// pub fn create_outfile(fname: String) -> String {
-//     let digest = compute(&fname);
-//     let a = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
-//     let b = format!("{:?}", digest) + ".jpg";
-//     let newfilename = a + &b;
+// pub fn calc_new_dims(oldwidth: f64, oldheight: f64, aspect: f64) -> (f64, f64) {
+//     let mut newwidth = 0.0;
+//     let mut newheight = 0.0;
+//     if oldwidth > 800.0 as f64 {
+//         newwidth = 800.0 as f64;
+//         newheight = 800.0 as f64 / aspect.clone();
+//     } else if oldwidth < oldheight {
+//         println!("portrait");
+//         if oldheight > 800.0 as f64 {
+//             newheight = 800.0 as f64;
+//             newwidth = 800.0 as f64 / aspect.clone();
+//         };
+//     } else {
+//         println!("square");
+//     };
+//     println!(
+//         "width: {}\nheight: {}\naspect_ratio: {}\nnewwidth: {}\nnewheight: {}\n",
+//         oldwidth, oldheight, aspect, newwidth, newheight
+//     );
 
-//     newfilename
+//     (newwidth, newheight)
 // }
-
-// pub fn create_rename_output_file(fname: String) -> String {
-//     let fparts = fname.split(".").collect::<Vec<&str>>();
-//     let filename = fparts.first().unwrap().replace(" ", "_");
-//     let addr = "/media/pi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string() + &filename + ".jpg";
-
-//     addr
-// }
-
-pub fn calc_new_dims(oldwidth: f64, oldheight: f64, aspect: f64) -> (f64, f64) {
-    let mut newwidth = 0.0;
-    let mut newheight = 0.0;
-    if oldwidth > 800.0 as f64 {
-        newwidth = 800.0 as f64;
-        newheight = 800.0 as f64 / aspect.clone();
-    } else if oldwidth < oldheight {
-        println!("portrait");
-        if oldheight > 800.0 as f64 {
-            newheight = 800.0 as f64;
-            newwidth = 800.0 as f64 / aspect.clone();
-        };
-    } else {
-        println!("square");
-    };
-    println!(
-        "width: {}\nheight: {}\naspect_ratio: {}\nnewwidth: {}\nnewheight: {}\n",
-        oldwidth, oldheight, aspect, newwidth, newheight
-    );
-
-    (newwidth, newheight)
-}
 
 pub fn mv_small_images(oldwidth: f64, oldheight: f64, fname: String) {
     if oldwidth < 200.0 as f64 || oldheight < 100.0 as f64 {
@@ -114,26 +92,3 @@ pub fn mv_small_images(oldwidth: f64, oldheight: f64, fname: String) {
 //     av_vec
 // }
 
-// pub fn convert_image_to_jpg(file_path: &str, output_path: &str, width: f64, height: f64) {
-//     let image = image::open(file_path).unwrap();
-//     let new_image = image.resize(
-//         width as u32,
-//         height as u32,
-//         image::imageops::FilterType::Lanczos3,
-//     );
-//     new_image.save(output_path).unwrap();
-// }
-// use image::{BmpDecoder, ImageFormat, JpegEncoder};
-
-// pub fn convert_image_to_jpg(apath: String) {
-//     let output_file = replace_extension_with_jpg(Path::new(&apath));
-//     let image = image::open(apath.clone()).unwrap();
-//     let _save_image = image.save(output_file).unwrap();
-// }
-
-// pub fn replace_extension_with_jpg(path: &Path) -> String {
-//     let new_filename = path.file_name().unwrap().to_str().unwrap().to_owned() + ".jpg";
-//     let new_path = path.parent().unwrap().join(&new_filename);
-
-//     new_path.to_string_lossy().to_string()
-// }
