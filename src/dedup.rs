@@ -12,7 +12,7 @@ pub fn calc_hash(apath: String) -> ImgHashStruct {
     let hasher_config = HasherConfig::new().to_hasher();
 
     // Read the image file.
-    let image = image::open(apath.clone()).unwrap();
+    let image = image::open(apath.clone()).expect(&apath);
 
     // Calculate the pHash of the image.
     let hashed = hasher_config.hash_image(&image);

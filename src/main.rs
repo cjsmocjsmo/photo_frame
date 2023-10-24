@@ -114,7 +114,7 @@ fn main() {
             let out_hash = bfile.hash.clone();
             if in_filename != out_filename {
                 let hammer = in_hash.dist(&out_hash);
-                if hammer < 10 {
+                if hammer < 8 {
                     duplicates.push(out_filename.clone());
                 }
             }
