@@ -23,7 +23,7 @@ pub fn calc_hash(apath: String) -> ImgHashStruct {
     };
 
     // Print the pHash.
-    println!("{:#?}", imghash);
+    // println!("{:#?}", imghash);
 
     imghash
 }
