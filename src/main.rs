@@ -130,6 +130,13 @@ fn main() {
 
     println!("dup_results: {:#?}", dup_results.len());
 
+    let json = serde_json::to_string(&dup_results).unwrap();
+
+    //write to file
+    let mut file = std::fs::File::create("/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/dups.json").unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+
+
     println!("threads complete")
 }
 
