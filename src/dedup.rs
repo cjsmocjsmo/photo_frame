@@ -4,7 +4,7 @@ use img_hash::ImageHash;
 
 #[derive(Clone, Debug)]
 pub struct ImgHashStruct {
-    pub path: String,
+    pub img_path: String,
     pub hash: ImageHash,
 }
 pub fn calc_hash(apath: String) -> ImgHashStruct {
@@ -18,12 +18,9 @@ pub fn calc_hash(apath: String) -> ImgHashStruct {
     let hashed = hasher_config.hash_image(&image);
 
     let imghash = ImgHashStruct {
-        path: apath.clone(),
+        img_path: apath.clone(),
         hash: hashed,
     };
-
-    // Print the pHash.
-    // println!("{:#?}", imghash);
 
     imghash
 }
