@@ -26,23 +26,36 @@ pub fn calc_hash(apath: String) -> ImgHashStruct {
 }
 
 
+#[derive(Clone, Debug)]
+    pub struct DupsEntry {
+        pub filename: String,
+        pub duplicates: Vec<String>,
+    }
+pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct> ) -> DupsEntry {
+    let info = calc_hash(afile.clone());
+    let in_filename = info.img_path.clone();
+    let in_hash = info.hash.clone();
+    let mut duplicates = Vec::new();
+    for bfile in img_hash_list.clone() {
+        let out_filename = bfile.img_path.clone();
+        let out_hash = bfile.hash.clone();
+        if in_filename != out_filename {
+            let hammer = in_hash.dist(&out_hash);
+            if hammer < 8 {
+                duplicates.push(out_filename.clone());
+            }
+        };
+    }
 
-// pub fn compare_hashes(hash1: &str, hash2: &str) -> f64 {
-    // Create a hasher config.
-    // let hasher_config = HasherConfig::new()
-    //     .hash_size(8, 8)
-    //     .hash_alg(HashAlg::DoubleGradient)
-    //     .to_hasher();
 
 
 
-    // // Parse the hashes.
-    // let parsed_hash1 = hash1.parse::<u64>().unwrap();
-    // let parsed_hash2 = hash2.parse::<u64>().unwrap();
 
-    // Calculate the distance between the hashes.
-//     let distance = hash1.dist(&hash2);
+        let dups_entry = DupsEntry {
+            filename: in_filename.clone(),
+            duplicates: duplicates.clone(),
+        };
+        println!("dups_entry: {:#?}", dups_entry);
 
-//     distance
-
-// }
+        dups_entry
+}

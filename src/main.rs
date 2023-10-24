@@ -90,44 +90,42 @@ fn main() {
         println!("info: {:?}", info.clone());
     }
 
-    println!("img_hash_list: {:?}", img_hash_list.len());
+    println!("img_hash_list: {:?}", img_hash_list.clone().len());
+
+
 
     let file_list = walk_dirs::walk_dir(
         "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string(),
     );
 
-    #[derive(Clone, Debug)]
-    pub struct DupsEntry {
-        pub filename: String,
-        pub duplicates: Vec<String>,
-    }
+
+
+    // #[derive(Clone, Debug)]
+    // pub struct DupsEntry {
+    //     pub filename: String,
+    //     pub duplicates: Vec<String>,
+    // }
 
     let mut dup_results = Vec::new();
 
-    for afile in file_list {
-        let info = dedup::calc_hash(afile.clone());
-        let in_filename = info.img_path.clone();
-        let in_hash = info.hash.clone();
-        let mut duplicates = Vec::new();
-        for bfile in img_hash_list.clone() {
-            let out_filename = bfile.img_path.clone();
-            let out_hash = bfile.hash.clone();
-            if in_filename != out_filename {
-                let hammer = in_hash.dist(&out_hash);
-                if hammer < 8 {
-                    duplicates.push(out_filename.clone());
-                }
-            }
-        }
-        if duplicates.len() > 0 {
-            let dups_entry = DupsEntry {
-                filename: in_filename.clone(),
-                duplicates: duplicates.clone(),
-            };
-            println!("dups_entry: {:#?}", dups_entry);
-            dup_results.push(dups_entry.clone());
-        }
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for jpg in file_list {
+        let image_hash_list2 = img_hash_list.clone();
+        println!("jpg {}", jpg);
+        let tx = tx.clone();
+        pool.execute(move || {
+            let dd = dedup::compare_hashes(jpg.clone(), image_hash_list2.clone());
+            tx.send(dd).unwrap();
+        });
     }
+    drop(tx);
+    for t in rx.iter() {
+        let info = t;
+        dup_results.push(info.clone());
+        println!("info: {:?}", info.clone());
+    }
+
 
     println!("dups_result count: {:#?}", dup_results.clone());
 
