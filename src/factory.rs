@@ -34,7 +34,7 @@ impl Factory {
         let fdigest = format!("{:?}", digest);
         let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/".to_string()
             + &fdigest
-            + ".jpg";
+            + "txt";
 
         addr
     }
