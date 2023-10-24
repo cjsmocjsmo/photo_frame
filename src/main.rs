@@ -11,7 +11,7 @@ use std::path::Path;
 
 // use crate::factory::convert_image_to_jpg;
 
-use std::io::Write;
+// use std::io::Write;
 pub mod dedup;
 pub mod factory;
 pub mod rm_mv_unwanted;
@@ -92,52 +92,25 @@ fn main() {
 
     println!("img_hash_list: {:?}", img_hash_list.clone().len());
 
-
-
     let file_list = walk_dirs::walk_dir(
         "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string(),
     );
 
-
-
-    // #[derive(Clone, Debug)]
-    // pub struct DupsEntry {
-    //     pub filename: String,
-    //     pub duplicates: Vec<String>,
-    // }
-
     let mut dup_results = Vec::new();
-
-    let pool = ThreadPool::new(num_cpus::get());
-    let (tx, rx) = channel();
     for jpg in file_list {
         let image_hash_list2 = img_hash_list.clone();
-        println!("jpg {}", jpg);
-        let tx = tx.clone();
-        pool.execute(move || {
-            let dd = dedup::compare_hashes(jpg.clone(), image_hash_list2.clone());
-            tx.send(dd).unwrap();
-        });
-    }
-    drop(tx);
-    for t in rx.iter() {
-        let info = t;
-        dup_results.push(info.clone());
-        println!("info: {:?}", info.clone());
+        let dd = dedup::compare_hashes(jpg.clone(), image_hash_list2.clone());
+        dup_results.push(dd.clone());
     }
 
-
-    println!("dups_result count: {:#?}", dup_results.clone());
-
-    let formated_dups = format!("{:#?}", dup_results.clone());
-
-    //write to file
-    let mut jsonfile = std::fs::File::create("/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/dups.json").unwrap();
-    jsonfile.write_all(formated_dups.as_bytes()).unwrap();
-
-
-    println!("threads complete")
+    println!("dups_result count: {:#?}\n threads complete", dup_results.clone());
 }
+
+
+
+
+
+
 
 fn mv_jpgs(fname: String) -> String {
     let pf = factory::Factory {

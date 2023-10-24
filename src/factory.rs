@@ -28,6 +28,16 @@ impl Factory {
 
         addr
     }
+
+    pub fn create_dedup_output_file(&self) -> String {
+        let digest = compute(&self.path);
+        let fdigest = format!("{:?}", digest);
+        let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/".to_string()
+            + &fdigest
+            + ".jpg";
+
+        addr
+    }
     pub fn resize_landscape_image(&self) {
         let image = image::open(self.path.clone()).unwrap();
         let img_dims = image.dimensions();

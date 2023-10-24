@@ -1,6 +1,8 @@
 extern crate img_hash;
 use img_hash::HasherConfig;
 use img_hash::ImageHash;
+use crate::factory;
+use std::io::Write;
 
 #[derive(Clone, Debug)]
 pub struct ImgHashStruct {
@@ -41,7 +43,8 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct> ) -> Dups
         let out_hash = bfile.hash.clone();
         if in_filename != out_filename {
             let hammer = in_hash.dist(&out_hash);
-            if hammer < 8 {
+            println!("hammer: {}", hammer);
+            if hammer < 5 {
                 duplicates.push(out_filename.clone());
             }
         };
@@ -55,6 +58,15 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct> ) -> Dups
             filename: in_filename.clone(),
             duplicates: duplicates.clone(),
         };
+
+        let formated_dups = format!("{:#?}", dups_entry.clone());
+        let f = factory::Factory{path: afile.clone()};
+        let ddoutfile = f.create_dedup_output_file();
+
+        let mut output_file_results =
+        std::fs::File::create(ddoutfile)
+            .unwrap();
+        output_file_results.write_all(formated_dups.as_bytes()).unwrap();
         println!("dups_entry: {:#?}", dups_entry);
 
         dups_entry
