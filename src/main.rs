@@ -11,10 +11,10 @@ use std::path::Path;
 
 // use crate::factory::convert_image_to_jpg;
 
+pub mod dedup;
 pub mod factory;
 pub mod rm_mv_unwanted;
 pub mod walk_dirs;
-pub mod dedup;
 
 fn main() {
     let _remove_unwanted =
@@ -32,8 +32,6 @@ fn main() {
     // for pic in pic_list.clone() {
     //     let _sanatize = sanitize_filename(Path::new(&pic));
     // }
-
-
 
     // let pic_list2 = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -70,8 +68,10 @@ fn main() {
     //     let info = t;
     //     println!("info: {:?}", info)
     // }
-let pic_list2 = walk_dirs::walk_dir("/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string());
-let pool = ThreadPool::new(num_cpus::get());
+    let pic_list2 = walk_dirs::walk_dir(
+        "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string(),
+    );
+    let pool = ThreadPool::new(num_cpus::get());
     let (tx, rx) = channel();
     for jpg in pic_list2 {
         println!("jpg {}", jpg);
@@ -82,12 +82,14 @@ let pool = ThreadPool::new(num_cpus::get());
         });
     }
     drop(tx);
+    let mut results = Vec::new();
     for t in rx.iter() {
         let info = t;
-        println!("info: {:?}", info)
+        results.push(info.clone());
+        println!("info: {:?}", info.clone());
     }
 
-
+    println!("results: {:?}", results.len());
 
     println!("threads complete")
 }
