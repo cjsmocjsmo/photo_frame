@@ -4,13 +4,14 @@
 use std::sync::mpsc::channel;
 use threadpool::ThreadPool;
 // use walkdir::WalkDir;
-
+// use serde_json;
 // use std::fs;
 use std::fs::rename;
 use std::path::Path;
 
 // use crate::factory::convert_image_to_jpg;
 
+use std::io::Write;
 pub mod dedup;
 pub mod factory;
 pub mod rm_mv_unwanted;
@@ -128,13 +129,15 @@ fn main() {
         }
     }
 
-    println!("dup_results: {:#?}", dup_results.len());
+    println!("dups_result count: {:#?}", dup_results.clone());
 
-    let json = serde_json::to_string(&dup_results).unwrap();
+    let formated_dups = format!("{:#?}", dup_results.clone());
+
+    // let json = serde_json::to_string(&dup_results).unwrap();
 
     //write to file
-    let mut file = std::fs::File::create("/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/dups.json").unwrap();
-    file.write_all(json.as_bytes()).unwrap();
+    let mut jsonfile = std::fs::File::create("/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/dups.json").unwrap();
+    jsonfile.write_all(formated_dups.as_bytes()).unwrap();
 
 
     println!("threads complete")
