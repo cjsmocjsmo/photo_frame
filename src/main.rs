@@ -133,8 +133,6 @@ fn main() {
 
     let formated_dups = format!("{:#?}", dup_results.clone());
 
-    // let json = serde_json::to_string(&dup_results).unwrap();
-
     //write to file
     let mut jsonfile = std::fs::File::create("/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/dups.json").unwrap();
     jsonfile.write_all(formated_dups.as_bytes()).unwrap();
