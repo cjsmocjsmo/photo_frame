@@ -77,8 +77,8 @@ let pool = ThreadPool::new(num_cpus::get());
         println!("jpg {}", jpg);
         let tx = tx.clone();
         pool.execute(move || {
-            dedup::calc_hash(jpg.clone());
-            tx.send(()).unwrap();
+            let dd = dedup::calc_hash(jpg.clone());
+            tx.send((dd)).unwrap();
         });
     }
     drop(tx);
