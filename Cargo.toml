@@ -13,5 +13,7 @@ threadpool = "1.8.1"
 num_cpus = "1.15.0"
 opencv = "0.85.3"
 img_hash = "3.2.0"
+serde = { version = "1.0.126", features = ["derive"] }
+serde_json = "1.0.64"
 
 

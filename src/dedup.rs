@@ -1,7 +1,8 @@
 extern crate img_hash;
+use crate::factory;
 use img_hash::HasherConfig;
 use img_hash::ImageHash;
-use crate::factory;
+use serde::Serialize;
 use std::io::Write;
 
 #[derive(Clone, Debug)]
@@ -27,13 +28,12 @@ pub fn calc_hash(apath: String) -> ImgHashStruct {
     imghash
 }
 
-
-#[derive(Clone, Debug)]
-    pub struct DupsEntry {
-        pub filename: String,
-        pub duplicates: Vec<String>,
-    }
-pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct> ) -> DupsEntry {
+#[derive(Serialize, Clone, Debug)]
+pub struct DupsEntry {
+    pub filename: String,
+    pub duplicates: Vec<String>,
+}
+pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsEntry {
     let info = calc_hash(afile.clone());
     let in_filename = info.img_path.clone();
     let in_hash = info.hash.clone();
@@ -43,31 +43,30 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct> ) -> Dups
         let out_hash = bfile.hash.clone();
         if in_filename != out_filename {
             let hammer = in_hash.dist(&out_hash);
-            println!("hammer: {}", hammer);
             if hammer < 5 {
+                println!("hammer: {}", hammer);
                 duplicates.push(out_filename.clone());
             }
         };
     }
 
+    let dups_entry = DupsEntry {
+        filename: in_filename.clone(),
+        duplicates: duplicates.clone(),
+    };
 
+    if duplicates.len() > 0 {
 
-
-
-        let dups_entry = DupsEntry {
-            filename: in_filename.clone(),
-            duplicates: duplicates.clone(),
+        let json = serde_json::to_string(&dups_entry).unwrap();
+        let f = factory::Factory {
+            path: afile.clone(),
         };
-
-        let formated_dups = format!("{:#?}", dups_entry.clone());
-        let f = factory::Factory{path: afile.clone()};
         let ddoutfile = f.create_dedup_output_file();
 
-        let mut output_file_results =
-        std::fs::File::create(ddoutfile)
-            .unwrap();
-        output_file_results.write_all(formated_dups.as_bytes()).unwrap();
-        println!("dups_entry: {:#?}", dups_entry);
+        let mut output_file_results = std::fs::File::create(ddoutfile).unwrap();
+        output_file_results.write_all(json.as_bytes()).unwrap();
+    }
+    println!("dups_entry: {:#?}", dups_entry);
 
-        dups_entry
+    dups_entry
 }
