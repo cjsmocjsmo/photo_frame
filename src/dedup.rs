@@ -68,7 +68,7 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
         let mut output_file_results = std::fs::File::create(ddoutfile).unwrap();
         output_file_results.write_all(json.as_bytes()).unwrap();
     }
-    println!("dups_entry: {:#?}", dups_entry);
+
 
     dups_entry
 }
@@ -99,6 +99,8 @@ fn transform_dup_entry_struct(dups_entry: DupsEntry) -> TransDupsEntry {
         duplicates: duplicates.clone(),
         httpduplicates: http_duplicates.clone(),
     };
+
+    println!("dups_entry: {:#?}", trans_dup_entry);
 
     trans_dup_entry
 }
