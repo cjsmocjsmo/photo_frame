@@ -84,12 +84,14 @@ fn transform_dup_entry_struct(dups_entry: DupsEntry) -> TransDupsEntry {
     let filename = dups_entry.filename.clone();
     let filename_parts = filename.split("/").collect::<Vec<&str>>();
     let http_filename = format!("http://192.168.0.91:8181/image/{}", filename_parts[1]);
+    println!("http_filename: {}", http_filename);
     let duplicates = dups_entry.duplicates.clone();
 
     let mut http_duplicates = Vec::new();
     for dup in dups_entry.duplicates.clone() {
         let dup_parts = dup.split("/").collect::<Vec<&str>>();
         let http_dup = format!("http://192.168.0.91:8181/image/{}", dup_parts[1]);
+        println!("http_dup: {}", http_dup);
         http_duplicates.push(http_dup);
     }
 
@@ -100,7 +102,7 @@ fn transform_dup_entry_struct(dups_entry: DupsEntry) -> TransDupsEntry {
         httpduplicates: http_duplicates.clone(),
     };
 
-    println!("dups_entry: {:#?}", trans_dup_entry);
+    // println!("dups_entry: {:#?}", trans_dup_entry);
 
     trans_dup_entry
 }
