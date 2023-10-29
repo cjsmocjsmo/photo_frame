@@ -76,29 +76,38 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
 pub struct TransDupsEntry {
     pub filename: String,
     pub httpfilename: String,
-    pub duplicates: Vec<String>,
-    pub httpduplicates: Vec<String>,
+    pub duplicates: Vec<DupStruct>,
 }
+
+#[derive(Serialize, Clone, Debug)]
+pub struct DupStruct {
+    pub strdups: String,
+    pub httpdups: String,
+}
+
 fn transform_dup_entry_struct(dups_entry: DupsEntry) -> TransDupsEntry {
     let filename = dups_entry.filename.clone();
     let filename_parts = filename.split("/").collect::<Vec<&str>>();
     let fname = filename_parts.len() - 1;
     let http_filename = "http://192.168.0.91:8181/image/".to_string() + filename_parts[fname];
-    let duplicates = dups_entry.duplicates.clone();
+    // let duplicates = dups_entry.duplicates.clone();
 
-    let mut http_duplicates = Vec::new();
+    let mut comp_duplicates = Vec::new();
     for dup in dups_entry.duplicates.clone() {
         let dup_parts = dup.split("/").collect::<Vec<&str>>();
         let dp = dup_parts.len() - 1;
         let http_dup = "http://192.168.0.91:8181/image/".to_string() + dup_parts[dp];
-        http_duplicates.push(http_dup);
+        let dupsstruct = DupStruct {
+            strdups: dup.clone(),
+            httpdups: http_dup.clone(),
+        };
+        comp_duplicates.push(dupsstruct);
     }
 
     let trans_dup_entry = TransDupsEntry {
         filename: filename.clone(),
         httpfilename: http_filename.clone(),
-        duplicates: duplicates.clone(),
-        httpduplicates: http_duplicates.clone(),
+        duplicates: comp_duplicates.clone(),
     };
 
     println!("dups_entry: {:#?}", trans_dup_entry);
