@@ -1,5 +1,7 @@
 use std::fs;
 use walkdir::WalkDir;
+use std::path::Path;
+
 
 pub fn rm_unwanted_files(apath: String) {
     let mut idx = 0;
@@ -26,6 +28,11 @@ pub fn mv_vid_files(fname: String) {
     let mvlist = [
         "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "mp3", "wav", "m4p", "m4a", "MP3",
     ];
+
+    let save_dir = Path::new("/media/pipi/0123-4567/AV/");
+    if !fs::metadata(save_dir).unwrap().is_dir() {
+        fs::create_dir(save_dir).unwrap();
+    }
 
     for e in WalkDir::new(fname)
         .follow_links(true)
