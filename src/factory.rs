@@ -1,9 +1,8 @@
+use image::GenericImageView;
 use md5::compute;
-// use std::fs;
-// use std::{path::PathBuf, str::FromStr};
 use std::path::Path;
 use walkdir::WalkDir;
-use image::GenericImageView;
+
 #[derive(Debug)]
 pub struct Factory {
     pub path: String,
@@ -42,10 +41,13 @@ impl Factory {
         let image = image::open(self.path.clone()).unwrap();
         let img_dims = image.dimensions();
         let aspect = img_dims.0 as f64 / img_dims.1 as f64;
-
-        let (newwidth, newheight) = calc_new_landscape_dims(image.width() as f64, image.height() as f64, aspect);
-
-        let resized = image.resize(newwidth as u32, newheight as u32, image::imageops::FilterType::Lanczos3);
+        let (newwidth, newheight) =
+            calc_new_landscape_dims(image.width() as f64, image.height() as f64, aspect);
+        let resized = image.resize(
+            newwidth as u32,
+            newheight as u32,
+            image::imageops::FilterType::Lanczos3,
+        );
         let _save_image = resized.save(self.create_outfile()).unwrap();
     }
 }
@@ -94,11 +96,12 @@ pub fn gen_ext_list(apath: String) -> Vec<String> {
     ext_list
 }
 
-pub fn convert_image_to_jpg(apath: String) {
-    let apath = Path::new(apath.as_str());
-    let new_filename = apath.file_name().unwrap().to_str().unwrap().to_owned() + ".jpg";
-    let new_path = apath.parent().unwrap().join(&new_filename);
-    new_path.to_string_lossy().to_string();
+pub fn convert_image_to_jpg(a_path: String) {
+    let apath = Path::new(a_path.as_str());
+    let pf = Factory {
+        path: a_path.clone(),
+    };
+    let outfile = pf.create_outfile();
     let image = image::open(apath).unwrap();
-    let _save_image = image.save(new_path).unwrap();
+    let _save_image = image.save(outfile).unwrap();
 }

@@ -1,77 +1,58 @@
-// use image::imageops::resize;
-// use image::imageops::FilterType::Lanczos3;
-// use image::GenericImageView;
-use std::sync::mpsc::channel;
-use threadpool::ThreadPool;
-// use walkdir::WalkDir;
-// use serde_json;
-// use std::fs;
 use std::fs::rename;
 use std::path::Path;
+use std::sync::mpsc::channel;
+use subprocess::Exec;
+use threadpool::ThreadPool;
 
-// use crate::factory::convert_image_to_jpg;
-
-// use std::io::Write;
 pub mod dedup;
 pub mod factory;
 pub mod rm_mv_unwanted;
 pub mod walk_dirs;
 
 fn main() {
-    let _remove_unwanted =
-        rm_mv_unwanted::rm_unwanted_files("/media/pipi/0123-4567/Images".to_string());
-    let _mv_vid_files = rm_mv_unwanted::mv_vid_files("/media/pipi/0123-4567/Images".to_string());
+    let url = "/media/pipi/0123-4567/Images".to_string();
+    let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
+    let url3 = "/home/pipi/photo_frame/extract.sh";
 
-    let extlist = factory::gen_ext_list("/media/pipi/0123-4567/Images".to_string());
+    let _cmd1 = Exec::cmd(url3);
+    let _cmd2 = Exec::cmd(url3);
+    let _cmd3 = Exec::cmd(url3);
+
+    let _remove_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+
+    let extlist = factory::gen_ext_list(url.clone());
     println!("extlist: {:?}", extlist);
-    let _rm_by_ext = rm_mv_unwanted::rm_by_extension("/media/pipi/0123-4567/Images".to_string());
+    let _rm_by_ext = rm_mv_unwanted::rm_by_extension(url.clone());
 
-    let new_ext_list = factory::gen_ext_list("/media/pipi/0123-4567/Images".to_string());
+    let new_ext_list = factory::gen_ext_list(url.clone());
     println!("new_ext_list: {:?}", new_ext_list);
 
-    // let pic_list = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
-    // for pic in pic_list.clone() {
-    //     let _sanatize = sanitize_filename(Path::new(&pic));
-    // }
+    let pic_list = walk_dirs::walk_dir(url.clone());
+    for pic in pic_list.clone() {
+        let _sanatize = sanitize_filename(Path::new(&pic));
+    }
 
-    // let pic_list2 = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
-    // let pool = ThreadPool::new(num_cpus::get());
-    // let (tx, rx) = channel();
-    // for pic in pic_list2.clone() {
-    //     println!("Pic {}", pic);
-    //     if !pic.contains(".jpg") {
-    //         let tx = tx.clone();
-    //         pool.execute(move || {
-    //             factory::convert_image_to_jpg(pic.clone());
-    //             tx.send(()).unwrap();
-    //         });
-    //     };
-    // }
-    // drop(tx);
-    // for t in rx.iter() {
-    //     let info = t;
-    //     println!("info: {:?}", info)
-    // }
+    let pic_list2 = walk_dirs::walk_dir(url.clone());
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for pic in pic_list2.clone() {
+        println!("Pic {}", pic);
+        if !pic.contains(".jpg") {
+            let tx = tx.clone();
+            pool.execute(move || {
+                factory::convert_image_to_jpg(pic.clone());
+                tx.send(()).unwrap();
+            });
+        };
+    }
+    drop(tx);
+    for t in rx.iter() {
+        let info = t;
+        println!("info: {:?}", info)
+    }
 
-    // let all_jpgs = walk_dirs::walk_dir("/media/pipi/0123-4567/Images".to_string());
-    // let pool = ThreadPool::new(num_cpus::get());
-    // let (tx, rx) = channel();
-    // for jpg in all_jpgs {
-    //     println!("jpg {}", jpg);
-    //     let tx = tx.clone();
-    //     pool.execute(move || {
-    //         mv_jpgs(jpg.clone());
-    //         tx.send(()).unwrap();
-    //     });
-    // }
-    // drop(tx);
-    // for t in rx.iter() {
-    //     let info = t;
-    //     println!("info: {:?}", info)
-    // }
-    let pic_list2 = walk_dirs::walk_dir(
-        "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string(),
-    );
+    let pic_list2 = walk_dirs::walk_dir(url2.clone());
     let pool = ThreadPool::new(num_cpus::get());
     let (tx, rx) = channel();
     for jpg in pic_list2 {
@@ -91,10 +72,7 @@ fn main() {
     }
 
     println!("img_hash_list: {:?}", img_hash_list.clone().len());
-
-    let file_list = walk_dirs::walk_dir(
-        "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string(),
-    );
+    let file_list = walk_dirs::walk_dir(url2.clone());
 
     let mut dup_results = Vec::new();
     for jpg in file_list {
@@ -103,28 +81,28 @@ fn main() {
         dup_results.push(dd.clone());
     }
 
-    println!("dups_result count: {:#?}\n threads complete", dup_results.clone());
+    println!(
+        "dups_result count: {:#?}\n threads complete",
+        dup_results.clone()
+    );
 }
 
-
-
-
-
-
-
-fn mv_jpgs(fname: String) -> String {
-    let pf = factory::Factory {
-        path: fname.clone(),
-    };
-    let outfile = pf.create_outfile();
-    if fname.contains(".jpg") {
-        let image = image::open(fname.clone()).expect(&fname);
-        image.save(outfile.clone()).unwrap()
+fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
+    let filename = path.file_name().unwrap().to_str().unwrap();
+    let mut new_filename = String::new();
+    for c in filename.chars() {
+        if c.is_alphanumeric() || c == '_' || c == '-' || c == '.' {
+            new_filename.push(c);
+        }
     }
-    let foo = format!("Moved {:?}\n to {:?}", fname, outfile.clone());
+    let new_filename = new_filename.to_lowercase();
+    let new_path = path.parent().unwrap().join(&new_filename);
+    println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
+    rename(path, &new_path)?;
 
-    foo
+    Ok(new_filename)
 }
+
 
 // fn mv_to_banner_folder(apath: String) {
 //     let fparts = apath.split("/").collect::<Vec<&str>>();
@@ -219,26 +197,3 @@ fn mv_jpgs(fname: String) -> String {
 //         width, height, aspect_ratio
 //     );
 // }
-
-fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
-    let filename = path.file_name().unwrap().to_str().unwrap();
-    // let extension = path.extension().unwrap().to_str().unwrap();
-
-    let mut new_filename = String::new();
-
-    for c in filename.chars() {
-        if c.is_alphanumeric() || c == '_' || c == '-' || c == '.' {
-            new_filename.push(c);
-        }
-    }
-
-    let new_filename = new_filename.to_lowercase();
-
-    let new_path = path.parent().unwrap().join(&new_filename);
-
-    println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
-
-    rename(path, &new_path)?;
-
-    Ok(new_filename)
-}

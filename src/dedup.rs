@@ -1,7 +1,6 @@
 extern crate img_hash;
 use crate::factory;
-use img_hash::HasherConfig;
-use img_hash::ImageHash;
+use img_hash::{HasherConfig, ImageHash};
 use serde::Serialize;
 use std::io::Write;
 
@@ -11,15 +10,9 @@ pub struct ImgHashStruct {
     pub hash: ImageHash,
 }
 pub fn calc_hash(apath: String) -> ImgHashStruct {
-    // Create a hasher config.
     let hasher_config = HasherConfig::new().to_hasher();
-
-    // Read the image file.
     let image = image::open(apath.clone()).expect(&apath);
-
-    // Calculate the pHash of the image.
     let hashed = hasher_config.hash_image(&image);
-
     let imghash = ImgHashStruct {
         img_path: apath.clone(),
         hash: hashed,
@@ -55,7 +48,6 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
     };
 
     if duplicates.len() > 0 {
-
         let transform = transform_dup_entry_struct(dups_entry.clone());
 
         let json = serde_json::to_string(&transform).unwrap();
@@ -67,7 +59,6 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
         let mut output_file_results = std::fs::File::create(ddoutfile).unwrap();
         output_file_results.write_all(json.as_bytes()).unwrap();
     }
-
 
     dups_entry
 }
@@ -90,8 +81,6 @@ fn transform_dup_entry_struct(dups_entry: DupsEntry) -> TransDupsEntry {
     let filename_parts = filename.split("/").collect::<Vec<&str>>();
     let fname = filename_parts.len() - 1;
     let http_filename = "http://192.168.0.91:8181/image/".to_string() + filename_parts[fname];
-    // let duplicates = dups_entry.duplicates.clone();
-
     let mut comp_duplicates = Vec::new();
     for dup in dups_entry.duplicates.clone() {
         let dup_parts = dup.split("/").collect::<Vec<&str>>();

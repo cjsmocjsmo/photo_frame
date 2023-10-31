@@ -12,7 +12,6 @@ pub fn rm_unwanted_files(apath: String) {
         if e.metadata().unwrap().is_file() {
             idx += 1;
             let fname = e.path().to_string_lossy().to_string();
-            // println!("fname: {}", fname);
             if fname.contains("System/Apps") {
                 rmcount += 1;
                 println!("Removed: {}", &fname);
@@ -25,8 +24,7 @@ pub fn rm_unwanted_files(apath: String) {
 
 pub fn mv_vid_files(fname: String) {
     let mvlist = [
-        "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "mp3", "wav", "m4p", "m4a", "MP3", "zip", "ZIP",
-        "gz", "bz2",
+        "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "mp3", "wav", "m4p", "m4a", "MP3",
     ];
 
     for e in WalkDir::new(fname)
@@ -37,9 +35,7 @@ pub fn mv_vid_files(fname: String) {
         if e.metadata().unwrap().is_file() {
             let fname = e.path().to_string_lossy().to_string();
             let parts = &fname.split(".").collect::<Vec<&str>>();
-
             let ext = parts.last().unwrap();
-
             if mvlist.contains(&ext) {
                 let fparts = fname.split("/").collect::<Vec<&str>>();
                 let filename = fparts.last().unwrap().replace(" ", "_");
@@ -56,6 +52,9 @@ pub fn mv_vid_files(fname: String) {
 
 pub fn rm_by_extension(apath: String) -> bool {
     let rm_list = [
+        "gz",
+        "zip",
+        "bz2",
         "key",
         "htm",
         "txt",

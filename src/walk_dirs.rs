@@ -1,4 +1,3 @@
-// use md5::compute;
 use std::fs;
 use std::path::Path;
 use walkdir::WalkDir;
@@ -18,14 +17,10 @@ pub fn walk_dir(apath: String) -> Vec<String> {
         if e.metadata().unwrap().is_file() {
             idx += 1;
             let fname = e.path().to_string_lossy().to_string();
-
             let path = Path::new(&fname);
-
             if path.is_file() {
                 let parts = &fname.split(".").collect::<Vec<&str>>();
-
                 let ext = parts.last().unwrap();
-
                 if keeplist.contains(&ext) {
                     keeper_vec.push(fname.clone());
                 };
@@ -35,6 +30,19 @@ pub fn walk_dir(apath: String) -> Vec<String> {
     println!("Total files: {}\n", idx);
 
     keeper_vec
+}
+
+pub fn mv_small_images(oldwidth: f64, oldheight: f64, fname: String) {
+    if oldwidth < 200.0 as f64 || oldheight < 100.0 as f64 {
+        let old_fn = fname.clone();
+        let fn_parts = old_fn.split("/").collect::<Vec<&str>>();
+        let fnam = fn_parts.last().unwrap();
+        let new_fn = "/media/pipi/0123-4567/SmallPics/".to_string() + fnam;
+        match fs::rename(&fname, &new_fn) {
+            Ok(_) => println!("Moved: {}", new_fn),
+            Err(e) => println!("Error: {}", e),
+        };
+    }
 }
 
 // pub fn calc_new_dims(oldwidth: f64, oldheight: f64, aspect: f64) -> (f64, f64) {
@@ -60,19 +68,6 @@ pub fn walk_dir(apath: String) -> Vec<String> {
 //     (newwidth, newheight)
 // }
 
-pub fn mv_small_images(oldwidth: f64, oldheight: f64, fname: String) {
-    if oldwidth < 200.0 as f64 || oldheight < 100.0 as f64 {
-        let old_fn = fname.clone();
-        let fn_parts = old_fn.split("/").collect::<Vec<&str>>();
-        let fnam = fn_parts.last().unwrap();
-        let new_fn = "/media/pipi/0123-4567/SmallPics/".to_string() + fnam;
-        match fs::rename(&fname, &new_fn) {
-            Ok(_) => println!("Moved: {}", new_fn),
-            Err(e) => println!("Error: {}", e),
-        };
-    }
-}
-
 // pub fn get_aspect_ratio(apath: String) -> Vec<String> {
 //     println!("apath: {}", apath);
 //     let image = image::open(apath.clone()).expect(&apath);
@@ -91,4 +86,3 @@ pub fn mv_small_images(oldwidth: f64, oldheight: f64, fname: String) {
 
 //     av_vec
 // }
-
