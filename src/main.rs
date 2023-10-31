@@ -3,6 +3,7 @@ use std::path::Path;
 use std::sync::mpsc::channel;
 use subprocess::Exec;
 use threadpool::ThreadPool;
+use std::time::Instant;
 
 pub mod dedup;
 pub mod factory;
@@ -10,6 +11,7 @@ pub mod rm_mv_unwanted;
 pub mod walk_dirs;
 
 fn main() {
+    let start = Instant::now();
     let url = "/media/pipi/0123-4567/Images".to_string();
     let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
     let url3 = "/home/pipi/photo_frame/extract.sh";
@@ -85,6 +87,9 @@ fn main() {
         "dups_result count: {:#?}\n threads complete",
         dup_results.clone()
     );
+    // let end = Instant::now();
+    let elapsed = start.elapsed().as_secs_f64();
+    println!("Execution time: {}", elapsed)
 }
 
 fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
