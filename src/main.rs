@@ -103,7 +103,7 @@ fn main() {
 fn prep_env() {
     let connected_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/";
     let connected_save_dir = Path::new(connected_path);
-    if fs::metadata(connected_save_dir).unwrap().is_dir() {
+    if fs::metadata(connected_save_dir).is_ok() {
         fs::remove_dir(connected_save_dir).expect("Unable to remove Connected directory");
         fs::create_dir(connected_save_dir).expect("Unable to create Connected directory");
     } else {
@@ -111,7 +111,7 @@ fn prep_env() {
     }
     let toremove_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/";
     let toremove_save_dir = Path::new(toremove_path);
-    if fs::metadata(toremove_save_dir).unwrap().is_dir() {
+    if fs::metadata(toremove_save_dir).is_ok() {
         fs::remove_dir(toremove_save_dir).expect("Unable to remove ToRemove directory");
         fs::create_dir(toremove_save_dir).expect("Unable to create ToRemove directory");
     } else {
@@ -120,7 +120,7 @@ fn prep_env() {
 
     let av_path = "/media/pipi/0123-4567/AV/";
     let av_save_dir = Path::new(av_path);
-    if !fs::metadata(av_save_dir).unwrap().is_dir() {
+    if !fs::metadata(av_save_dir).is_ok() {
         fs::create_dir(av_save_dir).expect("Unable to create AV directory");
     }
 
@@ -135,7 +135,7 @@ fn prep_env() {
 
     let gz2_path = "/media/pipi/0123-4567/GZ2/";
     let gz2_save_dir = Path::new(gz2_path);
-    if fs::metadata(gz2_save_dir).unwrap().is_dir() {
+    if fs::metadata(gz2_save_dir).is_ok() {
         fs::remove_dir(gz2_save_dir).expect("Unable to remove GZ2 directory");
         fs::create_dir(gz2_save_dir).expect("Unable to create GZ2 directory");
     } else {
@@ -144,7 +144,7 @@ fn prep_env() {
 
     let zip_path = "/media/pipi/0123-4567/ZIP/";
     let zip_save_dir = Path::new(zip_path);
-    if fs::metadata(zip_save_dir).unwrap().is_dir() {
+    if fs::metadata(zip_save_dir).is_ok() {
         fs::remove_dir(zip_save_dir).expect("Unable to remove ZIP directory");
         fs::create_dir(zip_save_dir).expect("Unable to create ZIP directory");
     } else {
@@ -153,7 +153,7 @@ fn prep_env() {
 
     let bz2_path = "/media/pipi/0123-4567/BZ2/";
     let bz2_save_dir = Path::new(bz2_path);
-    if fs::metadata(bz2_save_dir).unwrap().is_dir() {
+    if fs::metadata(bz2_save_dir).is_ok() {
         fs::remove_dir(bz2_save_dir).expect("Unable to remove BZ2 directory");
         fs::create_dir(bz2_save_dir).expect("Unable to create BZ2 directory");
     } else {
