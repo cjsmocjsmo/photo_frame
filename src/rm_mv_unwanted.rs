@@ -50,7 +50,7 @@ pub fn mv_zip_files(fname: String) {
                     let addr = "/media/pipi/0123-4567/ZIP/".to_string() + &filename;
                     match fs::rename(&fname, &addr) {
                         Ok(_) => println!("Moved: {}", addr),
-                        Err(e) => println!("Error: {}", e),
+                        Err(e) => println!("ZIP_Error: {}", e),
                     };
                 } else if ext == &"gz" || ext == &"GZ" {
                     let fparts = fname.split("/").collect::<Vec<&str>>();
@@ -58,7 +58,7 @@ pub fn mv_zip_files(fname: String) {
                     let addr = "/media/pipi/0123-4567/GZ1/".to_string() + &filename;
                     match fs::rename(&fname, &addr) {
                         Ok(_) => println!("Moved: {}", addr),
-                        Err(e) => println!("Error: {}", e),
+                        Err(e) => println!("GZ_Error: {}", e),
                     };
                 } else if ext == &"bz2" || ext == &"BZ2" {
                     let fparts = fname.split("/").collect::<Vec<&str>>();
@@ -66,7 +66,7 @@ pub fn mv_zip_files(fname: String) {
                     let addr = "/media/pipi/0123-4567/BZ2/".to_string() + &filename;
                     match fs::rename(&fname, &addr) {
                         Ok(_) => println!("Moved: {}", addr),
-                        Err(e) => println!("Error: {}", e),
+                        Err(e) => println!("BZ_Error: {}", e),
                     };
                 }
 
