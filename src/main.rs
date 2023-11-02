@@ -28,7 +28,7 @@ fn main() {
     let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
     let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
     // let _process_gz_files = zip::process_gz_files(url.clone());
-    // let _process_zip_files = zip::process_zip_files(url.clone());
+    let _process_zip_files = zip::process_zip_files(url.clone());
     // let _process_bz2_files = zip::process_bz2_files(url.clone());
 
     // let extlist = factory::gen_ext_list(url.clone());
