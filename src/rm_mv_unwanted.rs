@@ -55,7 +55,7 @@ pub fn mv_zip_files(fname: String) {
                 } else if ext == &"gz" || ext == &"GZ" {
                     let fparts = fname.split("/").collect::<Vec<&str>>();
                     let filename = fparts.last().unwrap().replace(" ", "_");
-                    let addr = "/media/pipi/0123-4567/GZ/".to_string() + &filename;
+                    let addr = "/media/pipi/0123-4567/GZ1/".to_string() + &filename;
                     match fs::rename(&fname, &addr) {
                         Ok(_) => println!("Moved: {}", addr),
                         Err(e) => println!("Error: {}", e),
