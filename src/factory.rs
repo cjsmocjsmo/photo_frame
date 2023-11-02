@@ -2,6 +2,10 @@ use image::GenericImageView;
 use md5::compute;
 use std::path::Path;
 use walkdir::WalkDir;
+// use std::fs::File;
+// use std::path::PathBuf;
+// use flate2::read::GzDecoder;
+// use tar::Archive;
 
 #[derive(Debug)]
 pub struct Factory {
@@ -34,6 +38,14 @@ impl Factory {
         let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/".to_string()
             + &fdigest
             + ".json";
+
+        addr
+    }
+    pub fn create_gz_out_dir(&self) -> String {
+        let digest = compute(&self.path);
+        let fdigest = format!("{:?}", digest);
+        let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/GZ/".to_string()
+            + &fdigest;
 
         addr
     }
@@ -102,6 +114,16 @@ pub fn convert_image_to_jpg(a_path: String) {
         path: a_path.clone(),
     };
     let outfile = pf.create_outfile();
-    let image = image::open(apath).unwrap();
+    let image_results = image::open(apath);
+    let image = match image_results {
+        Ok(image) => image,
+        Err(e) => {
+            println!("Error: {}", e);
+            std::fs::remove_file(apath).unwrap();
+            println!("Removed: {}", apath.display());
+            return;
+        }
+    };
     let _save_image = image.save(outfile).unwrap();
 }
+

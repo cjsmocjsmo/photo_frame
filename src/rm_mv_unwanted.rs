@@ -24,9 +24,62 @@ pub fn rm_unwanted_files(apath: String) {
     println!("Start count: {}\nFiles removed: {}", idx, rmcount);
 }
 
+pub fn mv_zip_files(fname: String) {
+    let ziplist = [
+        "zip", "ZIP", "gz", "GZ", "bz2", "BZ2",
+    ];
+
+    // let save_dir = Path::new("/media/pipi/0123-4567/AV/");
+    // if !fs::metadata(save_dir).unwrap().is_dir() {
+    //     fs::create_dir(save_dir).unwrap();
+    // }
+
+    for e in WalkDir::new(fname)
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        if e.metadata().unwrap().is_file() {
+            let fname = e.path().to_string_lossy().to_string();
+            let parts = &fname.split(".").collect::<Vec<&str>>();
+            let ext = parts.last().unwrap();
+            if ziplist.contains(&ext) {
+                if ext == &"zip" || ext == &"ZIP" {
+                    let fparts = fname.split("/").collect::<Vec<&str>>();
+                    let filename = fparts.last().unwrap().replace(" ", "_");
+                    let addr = "/media/pipi/0123-4567/ZIP/".to_string() + &filename;
+                    match fs::rename(&fname, &addr) {
+                        Ok(_) => println!("Moved: {}", addr),
+                        Err(e) => println!("Error: {}", e),
+                    };
+                } else if ext == &"gz" || ext == &"GZ" {
+                    let fparts = fname.split("/").collect::<Vec<&str>>();
+                    let filename = fparts.last().unwrap().replace(" ", "_");
+                    let addr = "/media/pipi/0123-4567/GZ/".to_string() + &filename;
+                    match fs::rename(&fname, &addr) {
+                        Ok(_) => println!("Moved: {}", addr),
+                        Err(e) => println!("Error: {}", e),
+                    };
+                } else if ext == &"bz2" || ext == &"BZ2" {
+                    let fparts = fname.split("/").collect::<Vec<&str>>();
+                    let filename = fparts.last().unwrap().replace(" ", "_");
+                    let addr = "/media/pipi/0123-4567/BZ2/".to_string() + &filename;
+                    match fs::rename(&fname, &addr) {
+                        Ok(_) => println!("Moved: {}", addr),
+                        Err(e) => println!("Error: {}", e),
+                    };
+                }
+
+
+                println!("Moved: {}", fname.clone())
+            };
+        }
+    }
+}
+
 pub fn mv_vid_files(fname: String) {
     let mvlist = [
-        "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "mp3", "wav", "m4p", "m4a", "MP3",
+        "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "mp3", "MP3", "wav", "WAV",
     ];
 
     let save_dir = Path::new("/media/pipi/0123-4567/AV/");
@@ -59,9 +112,8 @@ pub fn mv_vid_files(fname: String) {
 
 pub fn rm_by_extension(apath: String) -> bool {
     let rm_list = [
-        "gz",
-        "zip",
-        "bz2",
+        "m4p",
+        "m4a",
         "key",
         "htm",
         "txt",
