@@ -126,7 +126,7 @@ fn prep_env() {
 
     let gz1_path = "/media/pipi/0123-4567/GZ1/";
     let gz1_save_dir = Path::new(gz1_path);
-    if fs::metadata(gz1_save_dir).unwrap().is_dir() {
+    if fs::metadata(gz1_save_dir).is_ok() {
         fs::remove_dir(gz1_save_dir).expect("Unable to remove GZ1 directory");
         fs::create_dir(gz1_save_dir).expect("Unable to create GZ1 directory");
     } else {
