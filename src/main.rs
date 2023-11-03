@@ -15,22 +15,21 @@ pub mod zip;
 fn main() {
     let start = Instant::now();
 
-    // let _prepenv = prep_env();
+    let _prepenv = prep_env();
     let url = "/media/pipi/0123-4567/Images".to_string();
 
     // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
 
-    // let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
-    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
-    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
 
-    let zip_url = "/media/pipi/0123-4567/ZIP".to_string();
-    let _process_zip_files = zip::process_zip_files(zip_url.clone());
 
-    // let gz_url = "/media/pipi/0123-4567/GZ".to_string();
+    let _process_zip_files = zip::process_zip_files();
+
+
     // let _process_gz_files = zip::process_gz_files(url.clone());
 
-    // let bz2_url = "/media/pipi/0123-4567/BZ2".to_string();
     // let _process_bz2_files = zip::process_bz2_files(url.clone());
 
     // let extlist = factory::gen_ext_list(url.clone());
@@ -111,39 +110,38 @@ fn prep_env() {
 
     let converted_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/";
     let toremove_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/";
-    let g1_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/G1/";
-    let g2_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/G2/";
-    let zpath = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ZIP/";
-    let bpath = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/BZ2/";
     let gz1_path = "/media/pipi/0123-4567/GZ1/";
     let gz2_path = "/media/pipi/0123-4567/GZ2/";
     let zip_path = "/media/pipi/0123-4567/ZIP/";
     let bz2_path = "/media/pipi/0123-4567/BZ2/";
+    let gz1_unzip_path = "/media/pipi/0123-4567/Images/GZ1_Unzip/";
+    let gz2_unzip_path = "/media/pipi/0123-4567/Images/GZ2_Unzip/";
+    let zip_unzip_path = "/media/pipi/0123-4567/Images/ZIP_Unzip/";
+    let bz2_unzip_path = "/media/pipi/0123-4567/Images/BZ2_Unzip/";
 
-    let mut path_list = Vec::new();
-    path_list.push(converted_path);
-    path_list.push(toremove_path);
-    path_list.push(g1_path);
-    path_list.push(g2_path);
-    path_list.push(zpath);
-    path_list.push(bpath);
-    path_list.push(gz1_path);
-    path_list.push(gz2_path);
-    path_list.push(zip_path);
-    path_list.push(bz2_path);
+    let mut zip_list = Vec::new();
+    zip_list.push(converted_path);
+    zip_list.push(toremove_path);
+    zip_list.push(gz1_path);
+    zip_list.push(gz2_path);
+    zip_list.push(zip_path);
+    zip_list.push(bz2_path);
+    zip_list.push(gz1_unzip_path);
+    zip_list.push(gz2_unzip_path);
+    zip_list.push(zip_unzip_path);
+    zip_list.push(bz2_unzip_path);
 
-    for p in path_list {
-        let _cd = create_dir(&p);
-    }
+    let _: Vec<_> = zip_list.iter().map(|x| pf_create_dir(x)).collect();
+
 }
 
-fn create_dir(apath: &str) {
+pub fn pf_create_dir(apath: &str) {
     let save_dir = Path::new(apath);
     if fs::metadata(save_dir).is_ok() {
         fs::remove_dir_all(save_dir).expect("Unable to remove directory");
-        fs::create_dir(save_dir).expect("Unable to create directory");
+        fs::create_dir_all(save_dir).expect("Unable to create directory");
     } else {
-        fs::create_dir(save_dir).expect("Unable to create directory");
+        fs::create_dir_all(save_dir).expect("Unable to create directory");
     }
 }
 

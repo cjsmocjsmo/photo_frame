@@ -8,7 +8,8 @@ use walkdir::WalkDir;
 use bzip2::read::BzDecoder;
 
 
-pub fn process_gz_files(apath: String) {
+pub fn process_gz_files() {
+    let apath = "/media/pipi/0123-4567/GZ".to_string();
     let gzlist = ["gz", "GZ"];
 
     for e in WalkDir::new(apath)
@@ -18,6 +19,7 @@ pub fn process_gz_files(apath: String) {
     {
         if e.metadata().unwrap().is_file() {
             let fname = e.path().to_string_lossy().to_string();
+            println!("processing gz file: \n{}", fname);
             let path = Path::new(&fname);
             if path.is_file() {
                 let digest = compute(fname.clone());
@@ -28,19 +30,21 @@ pub fn process_gz_files(apath: String) {
                     let tar = fs::File::open(fname.clone()).unwrap();
                     let dec = GzDecoder::new(tar);
                     let mut a = Archive::new(dec);
-                    let outdir = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/GZ/".to_string()
+                    let outdir = "/media/pipi/0123-4567/Images/GZ1_Unzip/".to_string()
                         + &fdigest;
                     let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
                     let out_dir_path = Path::new(outdir.as_str());
 
                     a.unpack(out_dir_path).unwrap();
+                    fs::remove_file(fname).unwrap();
                 };
             };
         };
     }
 }
 
-pub fn process_zip_files(apath: String) {
+pub fn process_zip_files() {
+    let apath = "/media/pipi/0123-4567/ZIP".to_string();
     let ziplist = ["zip", "ZIP"];
 
     for e in WalkDir::new(apath)
@@ -50,6 +54,7 @@ pub fn process_zip_files(apath: String) {
     {
         if e.metadata().unwrap().is_file() {
             let fname = e.path().to_string_lossy().to_string();
+            println!("processing zip file: \n{}", fname);
             let path = Path::new(&fname);
             if path.is_file() {
                 let digest = compute(fname.clone());
@@ -58,7 +63,7 @@ pub fn process_zip_files(apath: String) {
                 let ext = parts.last().unwrap();
                 if ziplist.contains(&ext) {
                     let mut archive = ZipArchive::new(fs::File::open(fname.clone()).unwrap()).unwrap();
-                    let outdir = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ZIP/".to_string()
+                    let outdir = "/media/pipi/0123-4567/Images/ZIP_Unzip/".to_string()
                         + &fdigest;
                     let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
                     let out_dir_path = Path::new(outdir.as_str());
@@ -79,14 +84,16 @@ pub fn process_zip_files(apath: String) {
                             let mut outfile = fs::File::create(&outpath).unwrap();
                             std::io::copy(&mut file, &mut outfile).unwrap();
                         }
-                    }
+                    };
+                    fs::remove_file(fname.clone()).unwrap();
                 };
             };
         };
     }
 }
 
-pub fn process_bz2_files(apath: String) {
+pub fn process_bz2_files() {
+    let apath = "/media/pipi/0123-4567/BZ2".to_string();
     let bz2list = ["bz2", "BZ2"];
 
     for e in WalkDir::new(apath)
@@ -96,6 +103,7 @@ pub fn process_bz2_files(apath: String) {
     {
         if e.metadata().unwrap().is_file() {
             let fname = e.path().to_string_lossy().to_string();
+            println!("processing bz2 file: \n{}", fname);
             let path = Path::new(&fname);
             if path.is_file() {
                 let digest = compute(fname.clone());
@@ -106,12 +114,13 @@ pub fn process_bz2_files(apath: String) {
                     let tar = fs::File::open(fname.clone()).unwrap();
                     let dec = BzDecoder::new(tar);
                     let mut a = Archive::new(dec);
-                    let outdir = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/BZ2/".to_string()
+                    let outdir = "/media/pipi/0123-4567/Images/BZ2_Unzip/".to_string()
                         + &fdigest;
                     let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
                     let out_dir_path = Path::new(outdir.as_str());
 
                     a.unpack(out_dir_path).unwrap();
+                    fs::remove_file(fname).unwrap();
                 };
             };
         };
