@@ -30,7 +30,7 @@ pub fn process_gz_files(apath: String) {
                     let mut a = Archive::new(dec);
                     let outdir = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/GZ/".to_string()
                         + &fdigest;
-                    let _out_dir = fs::File::create(outdir.clone()).unwrap();
+                    let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
                     let out_dir_path = Path::new(outdir.as_str());
 
                     a.unpack(out_dir_path).unwrap();
@@ -60,7 +60,7 @@ pub fn process_zip_files(apath: String) {
                     let mut archive = ZipArchive::new(fs::File::open(fname.clone()).unwrap()).unwrap();
                     let outdir = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ZIP/".to_string()
                         + &fdigest;
-                    let _out_dir = fs::File::create(outdir.clone()).unwrap();
+                    let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
                     let out_dir_path = Path::new(outdir.as_str());
                     for i in 0..archive.len() {
                         let mut file = archive.by_index(i).unwrap();
@@ -108,7 +108,7 @@ pub fn process_bz2_files(apath: String) {
                     let mut a = Archive::new(dec);
                     let outdir = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/BZ2/".to_string()
                         + &fdigest;
-                    let _out_dir = fs::File::create(outdir.clone()).unwrap();
+                    let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
                     let out_dir_path = Path::new(outdir.as_str());
 
                     a.unpack(out_dir_path).unwrap();
