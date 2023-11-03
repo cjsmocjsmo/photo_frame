@@ -19,10 +19,6 @@ fn main() {
     let url = "/media/pipi/0123-4567/Images".to_string();
     // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
 
-    // let url3 = "/home/pipi/photo_frame/extract.sh";
-    // let _cmd1 = Exec::cmd(url3);
-    // let _cmd2 = Exec::cmd(url3);
-    // let _cmd3 = Exec::cmd(url3);
 
     let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
     let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
