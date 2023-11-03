@@ -25,29 +25,13 @@ fn main() {
     let _process_bz2_files = zip::process_bz2_files();
     let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
 
-    let zip_dir_path = Path::new("/home/pipi/0123-4567/ZIP");
-    let zip_dir_is_empty = zip_dir_path.read_dir().unwrap().next().is_none();
-    if !zip_dir_is_empty {
-        let _process_zip_files2 = zip::process_zip_files();
-    };
-
-    let gz_dir_path = Path:: new("/home/pipi/0123-4567/GZ1");
-    let gz_dir_is_empty = gz_dir_path.read_dir().unwrap().next().is_none();
-    if !gz_dir_is_empty {
-        let _process_gz_files2 = zip::process_gz_files();
-    };
-
-    let bz_dir_path = Path:: new("/home/pipi/0123-4567/BZ2");
-    let bz_dir_is_empty = bz_dir_path.read_dir().unwrap().next().is_none();
-    if !bz_dir_is_empty {
-        let _process_bz2_files2 = zip::process_bz2_files();
-    };
+    let _process_zip_files2 = zip::process_zip_files();
+    let _process_gz_files2 = zip::process_gz_files();
+    let _process_bz2_files2 = zip::process_bz2_files();
 
     let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
 
     // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
-
-
 
     let extlist = factory::gen_ext_list(url.clone());
     println!("extlist: {:?}", extlist);
