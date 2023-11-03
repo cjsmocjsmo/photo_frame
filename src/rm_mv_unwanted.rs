@@ -30,6 +30,9 @@ pub fn rm_unwanted_files(apath: String) {
             } else if fname.contains("jqm-pagination-master") {
                 rmcount += 1;
                 std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("pussy") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
             } else {
                 println!("fuck")
             }
