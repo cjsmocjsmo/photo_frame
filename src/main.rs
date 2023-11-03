@@ -20,7 +20,6 @@ fn main() {
 
     // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
 
-
     // let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
     // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
     // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
@@ -104,63 +103,47 @@ fn main() {
 }
 
 fn prep_env() {
-    let connected_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/";
-    let connected_save_dir = Path::new(connected_path);
-    if fs::metadata(connected_save_dir).is_ok() {
-        fs::remove_dir_all(connected_save_dir).expect("Unable to remove Connected directory");
-        fs::create_dir(connected_save_dir).expect("Unable to create Connected directory");
-    } else {
-        fs::create_dir(connected_save_dir).expect("Unable to create Connected directory");
-    }
-    let toremove_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/";
-    let toremove_save_dir = Path::new(toremove_path);
-    if fs::metadata(toremove_save_dir).is_ok() {
-        fs::remove_dir_all(toremove_save_dir).expect("Unable to remove ToRemove directory");
-        fs::create_dir(toremove_save_dir).expect("Unable to create ToRemove directory");
-    } else {
-        fs::create_dir(toremove_save_dir).expect("Unable to create ToRemove directory");
-    }
-
     let av_path = "/media/pipi/0123-4567/AV/";
     let av_save_dir = Path::new(av_path);
     if !fs::metadata(av_save_dir).is_ok() {
         fs::create_dir(av_save_dir).expect("Unable to create AV directory");
     }
 
+    let converted_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/";
+    let toremove_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/";
+    let g1_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/G1/";
+    let g2_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/G2/";
+    let zpath = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ZIP/";
+    let bpath = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/BZ2/";
     let gz1_path = "/media/pipi/0123-4567/GZ1/";
-    let gz1_save_dir = Path::new(gz1_path);
-    if fs::metadata(gz1_save_dir).is_ok() {
-        fs::remove_dir_all(gz1_save_dir).expect("Unable to remove GZ1 directory");
-        fs::create_dir(gz1_save_dir).expect("Unable to create GZ1 directory");
-    } else {
-        fs::create_dir(gz1_save_dir).expect("Unable to create GZ1 directory");
-    }
-
     let gz2_path = "/media/pipi/0123-4567/GZ2/";
-    let gz2_save_dir = Path::new(gz2_path);
-    if fs::metadata(gz2_save_dir).is_ok() {
-        fs::remove_dir_all(gz2_save_dir).expect("Unable to remove GZ2 directory");
-        fs::create_dir(gz2_save_dir).expect("Unable to create GZ2 directory");
-    } else {
-        fs::create_dir(gz2_save_dir).expect("Unable to create GZ2 directory");
-    }
-
     let zip_path = "/media/pipi/0123-4567/ZIP/";
-    let zip_save_dir = Path::new(zip_path);
-    if fs::metadata(zip_save_dir).is_ok() {
-        fs::remove_dir_all(zip_save_dir).expect("Unable to remove ZIP directory");
-        fs::create_dir(zip_save_dir).expect("Unable to create ZIP directory");
-    } else {
-        fs::create_dir(zip_save_dir).expect("Unable to create ZIP directory");
-    }
-
     let bz2_path = "/media/pipi/0123-4567/BZ2/";
-    let bz2_save_dir = Path::new(bz2_path);
-    if fs::metadata(bz2_save_dir).is_ok() {
-        fs::remove_dir_all(bz2_save_dir).expect("Unable to remove BZ2 directory");
-        fs::create_dir(bz2_save_dir).expect("Unable to create BZ2 directory");
+
+    let mut path_list = Vec::new();
+    path_list.push(converted_path);
+    path_list.push(toremove_path);
+    path_list.push(g1_path);
+    path_list.push(g2_path);
+    path_list.push(zpath);
+    path_list.push(bpath);
+    path_list.push(gz1_path);
+    path_list.push(gz2_path);
+    path_list.push(zip_path);
+    path_list.push(bz2_path);
+
+    for p in path_list {
+        let _cd = create_dir(&p);
+    }
+}
+
+fn create_dir(apath: &str) {
+    let save_dir = Path::new(apath);
+    if fs::metadata(save_dir).is_ok() {
+        fs::remove_dir_all(save_dir).expect("Unable to remove directory");
+        fs::create_dir(save_dir).expect("Unable to create directory");
     } else {
-        fs::create_dir(bz2_save_dir).expect("Unable to create BZ2 directory");
+        fs::create_dir(save_dir).expect("Unable to create directory");
     }
 }
 
