@@ -19,12 +19,16 @@ pub fn rm_unwanted_files(apath: String) {
                 println!("Removed: {}", &fname);
                 fs::remove_file(&fname).unwrap();
             } else if fname.contains("python3-openid") {
+                rmcount += 1;
                 std::fs::remove_file(fname.clone()).unwrap();
             } else if fname.contains("torando") {
+                rmcount += 1;
                 std::fs::remove_file(fname.clone()).unwrap();
             } else if fname.contains("DO.NOT.DELETE") {
+                rmcount += 1;
                 std::fs::remove_file(fname.clone()).unwrap();
             } else if fname.contains("jqm-pagination-master") {
+                rmcount += 1;
                 std::fs::remove_file(fname.clone()).unwrap();
             } else {
                 println!("fuck")

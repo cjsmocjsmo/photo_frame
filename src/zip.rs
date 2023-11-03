@@ -1,12 +1,11 @@
+use bzip2::read::BzDecoder;
 use flate2::read::GzDecoder;
 use md5::compute;
-use zip::ZipArchive;
 use std::fs;
 use std::path::Path;
 use tar::Archive;
 use walkdir::WalkDir;
-use bzip2::read::BzDecoder;
-
+use zip::ZipArchive;
 
 pub fn process_gz_files() {
     let apath = "/media/pipi/0123-4567/GZ1".to_string();
@@ -19,24 +18,34 @@ pub fn process_gz_files() {
     {
         if e.metadata().unwrap().is_file() {
             let fname = e.path().to_string_lossy().to_string();
-            println!("processing gz file: \n{}", fname);
-            let path = Path::new(&fname);
-            if path.is_file() {
-                let digest = compute(fname.clone());
-                let fdigest = format!("{:?}", digest);
-                let parts = &fname.split(".").collect::<Vec<&str>>();
-                let ext = parts.last().unwrap();
-                if gzlist.contains(&ext) {
-                    let tar = fs::File::open(fname.clone()).unwrap();
-                    let dec = GzDecoder::new(tar);
-                    let mut a = Archive::new(dec);
-                    let outdir = "/media/pipi/0123-4567/Images/GZ1_Unzip/".to_string()
-                        + &fdigest;
-                    let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
-                    let out_dir_path = Path::new(outdir.as_str());
+            if fname.contains("python3-openid") {
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("torando") {
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("DO.NOT.DELETE") {
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("jqm-pagination-master") {
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else {
+                println!("processing gz file: \n{}", fname);
+                let path = Path::new(&fname);
+                if path.is_file() {
+                    let digest = compute(fname.clone());
+                    let fdigest = format!("{:?}", digest);
+                    let parts = &fname.split(".").collect::<Vec<&str>>();
+                    let ext = parts.last().unwrap();
+                    if gzlist.contains(&ext) {
+                        let tar = fs::File::open(fname.clone()).unwrap();
+                        let dec = GzDecoder::new(tar);
+                        let mut a = Archive::new(dec);
+                        let outdir =
+                            "/media/pipi/0123-4567/Images/GZ1_Unzip/".to_string() + &fdigest;
+                        let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
+                        let out_dir_path = Path::new(outdir.as_str());
 
-                    a.unpack(out_dir_path).unwrap();
-                    fs::remove_file(fname).unwrap();
+                        a.unpack(out_dir_path).unwrap();
+                        fs::remove_file(fname).unwrap();
+                    };
                 };
             };
         };
@@ -62,9 +71,9 @@ pub fn process_zip_files() {
                 let parts = &fname.split(".").collect::<Vec<&str>>();
                 let ext = parts.last().unwrap();
                 if ziplist.contains(&ext) {
-                    let mut archive = ZipArchive::new(fs::File::open(fname.clone()).unwrap()).unwrap();
-                    let outdir = "/media/pipi/0123-4567/Images/ZIP_Unzip/".to_string()
-                        + &fdigest;
+                    let mut archive =
+                        ZipArchive::new(fs::File::open(fname.clone()).unwrap()).unwrap();
+                    let outdir = "/media/pipi/0123-4567/Images/ZIP_Unzip/".to_string() + &fdigest;
                     let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
                     let out_dir_path = Path::new(outdir.as_str());
                     for i in 0..archive.len() {
@@ -84,7 +93,7 @@ pub fn process_zip_files() {
                             let mut outfile = fs::File::create(&outpath).unwrap();
                             std::io::copy(&mut file, &mut outfile).unwrap();
                         }
-                    };
+                    }
                     fs::remove_file(fname.clone()).unwrap();
                 };
             };
@@ -114,8 +123,7 @@ pub fn process_bz2_files() {
                     let tar = fs::File::open(fname.clone()).unwrap();
                     let dec = BzDecoder::new(tar);
                     let mut a = Archive::new(dec);
-                    let outdir = "/media/pipi/0123-4567/Images/BZ2_Unzip/".to_string()
-                        + &fdigest;
+                    let outdir = "/media/pipi/0123-4567/Images/BZ2_Unzip/".to_string() + &fdigest;
                     let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
                     let out_dir_path = Path::new(outdir.as_str());
 
