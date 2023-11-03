@@ -15,16 +15,23 @@ pub mod zip;
 fn main() {
     let start = Instant::now();
 
-    let _prepenv = prep_env();
+    // let _prepenv = prep_env();
     let url = "/media/pipi/0123-4567/Images".to_string();
+
     // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
 
 
-    let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
-    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
-    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    // let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
+    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+
+    let zip_url = "/media/pipi/0123-4567/ZIP".to_string();
+    let _process_zip_files = zip::process_zip_files(zip_url.clone());
+
+    // let gz_url = "/media/pipi/0123-4567/GZ".to_string();
     // let _process_gz_files = zip::process_gz_files(url.clone());
-    let _process_zip_files = zip::process_zip_files(url.clone());
+
+    // let bz2_url = "/media/pipi/0123-4567/BZ2".to_string();
     // let _process_bz2_files = zip::process_bz2_files(url.clone());
 
     // let extlist = factory::gen_ext_list(url.clone());
