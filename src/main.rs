@@ -15,25 +15,42 @@ pub mod zip;
 fn main() {
     let start = Instant::now();
 
-    // let _prepenv = prep_env();
+    let _prepenv = prep_env();
     let url = "/media/pipi/0123-4567/Images".to_string();
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    let _process_zip_files = zip::process_zip_files();
+    let _process_gz_files = zip::process_gz_files();
+    let _process_bz2_files = zip::process_bz2_files();
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+
+    let zip_dir_path = Path::new("/home/pipi/0123-4567/ZIP");
+    let zip_dir_is_empty = zip_dir_path.read_dir().unwrap().next().is_none();
+    if !zip_dir_is_empty {
+        let _process_zip_files2 = zip::process_zip_files();
+    };
+
+    let gz_dir_path = Path:: new("/home/pipi/0123-4567/GZ1");
+    let gz_dir_is_empty = gz_dir_path.read_dir().unwrap().next().is_none();
+    if !gz_dir_is_empty {
+        let _process_gz_files2 = zip::process_gz_files();
+    };
+
+    let bz_dir_path = Path:: new("/home/pipi/0123-4567/BZ2");
+    let bz_dir_is_empty = bz_dir_path.read_dir().unwrap().next().is_none();
+    if !bz_dir_is_empty {
+        let _process_bz2_files2 = zip::process_bz2_files();
+    };
+
+    let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
 
     // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
 
-    // let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
-    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
-    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
 
 
-    // let _process_zip_files = zip::process_zip_files();
-
-
-    // let _process_gz_files = zip::process_gz_files();
-
-    // let _process_bz2_files = zip::process_bz2_files(url.clone());
-
-    // let extlist = factory::gen_ext_list(url.clone());
-    // println!("extlist: {:?}", extlist);
+    let extlist = factory::gen_ext_list(url.clone());
+    println!("extlist: {:?}", extlist);
     // let _rm_by_ext = rm_mv_unwanted::rm_by_extension(url.clone());
 
     // let new_ext_list = factory::gen_ext_list(url.clone());
@@ -132,7 +149,6 @@ fn prep_env() {
     zip_list.push(bz2_unzip_path);
 
     let _: Vec<_> = zip_list.iter().map(|x| pf_create_dir(x)).collect();
-
 }
 
 pub fn pf_create_dir(apath: &str) {
