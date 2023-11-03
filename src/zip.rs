@@ -9,7 +9,7 @@ use bzip2::read::BzDecoder;
 
 
 pub fn process_gz_files() {
-    let apath = "/media/pipi/0123-4567/GZ".to_string();
+    let apath = "/media/pipi/0123-4567/GZ1".to_string();
     let gzlist = ["gz", "GZ"];
 
     for e in WalkDir::new(apath)
