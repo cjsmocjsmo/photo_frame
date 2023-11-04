@@ -14,40 +14,40 @@ pub mod zip;
 fn main() {
     let start = Instant::now();
 
-    // let _prepenv = prep_env();
+    let _prepenv = prep_env();
     let url = "/media/pipi/0123-4567/Images".to_string();
-    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
 
-    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    // let _process_zip_files = zip::process_zip_files();
-    // let _process_gz_files = zip::process_gz_files();
-    // let _process_bz2_files = zip::process_bz2_files();
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    let _process_zip_files = zip::process_zip_files();
+    let _process_gz_files = zip::process_gz_files();
+    let _process_bz2_files = zip::process_bz2_files();
 
-    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    // let _process_zip_files2 = zip::process_zip_files();
-    // let _process_gz_files2 = zip::process_gz_files();
-    // let _process_bz2_files2 = zip::process_bz2_files();
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    let _process_zip_files2 = zip::process_zip_files();
+    let _process_gz_files2 = zip::process_gz_files();
+    let _process_bz2_files2 = zip::process_bz2_files();
 
-    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    // let _process_zip_files2 = zip::process_zip_files();
-    // let _process_gz_files2 = zip::process_gz_files();
-    // let _process_bz2_files2 = zip::process_bz2_files();
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    let _process_zip_files2 = zip::process_zip_files();
+    let _process_gz_files2 = zip::process_gz_files();
+    let _process_bz2_files2 = zip::process_bz2_files();
 
-    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
 
-    // let rm_unwanted_count = rm_mv_unwanted::rm_unwanted_files(url.clone());
+    let rm_unwanted_count = rm_mv_unwanted::rm_unwanted_files(url.clone());
 
-    // let extlist = factory::gen_ext_list(url.clone());
-    // println!("extlist: {:?}", extlist);
-    // let rm_by_ext_count = rm_mv_unwanted::rm_by_extension(url.clone());
+    let extlist = factory::gen_ext_list(url.clone());
+    println!("extlist: {:?}", extlist);
+    let rm_by_ext_count = rm_mv_unwanted::rm_by_extension(url.clone());
 
-    // let new_ext_list = factory::gen_ext_list(url.clone());
-    // println!("new_ext_list: {:?}", new_ext_list);
+    let new_ext_list = factory::gen_ext_list(url.clone());
+    println!("new_ext_list: {:?}", new_ext_list);
 
-    // let pic_list = walk_dirs::walk_dir(url.clone());
-    // for pic in pic_list.clone() {
-    //     let _sanatize = sanitize_filename(Path::new(&pic));
-    // }
+    let pic_list = walk_dirs::walk_dir(url.clone());
+    for pic in pic_list.clone() {
+        let _sanatize = sanitize_filename(Path::new(&pic));
+    }
 
     let pic_list2 = walk_dirs::walk_dir(url.clone());
     let pool = ThreadPool::new(num_cpus::get());
@@ -104,8 +104,8 @@ fn main() {
         dup_results.clone()
     );
 
-    // let total_rm_count = rm_unwanted_count + rm_by_ext_count;
-    // println!("Total files removed: {}", total_rm_count);
+    let total_rm_count = rm_unwanted_count + rm_by_ext_count;
+    println!("Total files removed: {}", total_rm_count);
 
     let elapsed = start.elapsed().as_secs_f64();
     println!("Execution time: {}", elapsed)

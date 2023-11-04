@@ -6,7 +6,7 @@ pub fn walk_dir(apath: String) -> Vec<String> {
     let mut keeper_vec = Vec::new();
     let mut idx = 0;
     let keeplist = [
-        "jpg", "JPG", "bmp", "BMP", "gif", "png", "tif", "jpeg", "PNG", "GIF",
+        "jpg", "JPG", "jpeg", "JPEG", "bmp", "BMP", "gif", "GIF", "png", "PNG", "tif", "TIF",
     ];
 
     for e in WalkDir::new(apath)
