@@ -98,8 +98,8 @@ pub fn process_zip_files() {
                                 std::io::copy(&mut file, &mut outfile).unwrap();
                             }
                         }
+                        fs::remove_file(fname.clone()).unwrap();
                     }
-                    fs::remove_file(fname.clone()).unwrap();
                 };
             };
         };
