@@ -11,7 +11,9 @@ pub struct ImgHashStruct {
 }
 pub fn calc_hash(apath: String) -> ImgHashStruct {
     let hasher_config = HasherConfig::new().to_hasher();
-    let image = image::open(apath.clone()).expect(&apath);
+    let image = image::open(apath.clone()).expect(apath.clone().as_str());
+
+
     let hashed = hasher_config.hash_image(&image);
     let imghash = ImgHashStruct {
         img_path: apath.clone(),
@@ -21,12 +23,27 @@ pub fn calc_hash(apath: String) -> ImgHashStruct {
     imghash
 }
 
+pub fn calc_hash_test(apath: String) -> bool {
+    // let hasher_config = HasherConfig::new().to_hasher();
+    let image_results = image::open(apath.clone());
+
+    let _image = match image_results {
+        Ok(_image) => return true,
+        Err(e) => {
+            println!("Error: {}", e);
+            return false;
+        }
+    };
+}
+
 #[derive(Serialize, Clone, Debug)]
 pub struct DupsEntry {
     pub filename: String,
     pub duplicates: Vec<String>,
 }
 pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsEntry {
+    let calc_test = calc_hash_test(afile.clone());
+    println!("calc_test: \n\t{}", calc_test);
     let info = calc_hash(afile.clone());
     let in_filename = info.img_path.clone();
     let in_hash = info.hash.clone();
