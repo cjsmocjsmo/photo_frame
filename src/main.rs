@@ -3,7 +3,6 @@ use std::fs;
 use std::path::Path;
 // use std::sync::mpsc::channel;
 use std::time::Instant;
-// use subprocess::Exec;
 // use threadpool::ThreadPool;
 
 pub mod dedup;
