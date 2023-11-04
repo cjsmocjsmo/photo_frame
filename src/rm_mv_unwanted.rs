@@ -1,9 +1,8 @@
 use std::fs;
-use walkdir::WalkDir;
 use std::path::Path;
+use walkdir::WalkDir;
 
-
-pub fn rm_unwanted_files(apath: String) {
+pub fn rm_unwanted_files(apath: String) -> i32 {
     let mut idx = 0;
     let mut rmcount = 0;
     for e in WalkDir::new(apath)
@@ -38,13 +37,13 @@ pub fn rm_unwanted_files(apath: String) {
             }
         }
     }
-    println!("Start count: {}\nFiles removed: {}", idx, rmcount);
+    println!("Start count: {}\nFiles removed: {}", idx, rmcount.clone());
+
+    rmcount
 }
 
 pub fn mv_zip_files(fname: String) {
-    let ziplist = [
-        "zip", "ZIP", "gz", "GZ", "bz2", "BZ2",
-    ];
+    let ziplist = ["zip", "ZIP", "gz", "GZ", "bz2", "BZ2"];
 
     // let save_dir = Path::new("/media/pipi/0123-4567/AV/");
     // if !fs::metadata(save_dir).unwrap().is_dir() {
@@ -87,7 +86,6 @@ pub fn mv_zip_files(fname: String) {
                     };
                 }
 
-
                 println!("Moved: {}", fname.clone())
             };
         }
@@ -127,8 +125,21 @@ pub fn mv_vid_files(fname: String) {
     }
 }
 
-pub fn rm_by_extension(apath: String) -> bool {
+pub fn rm_by_extension(apath: String) -> i32 {
     let rm_list = [
+        "yaml",
+        "py",
+        "sql",
+        "in",
+        "rst",
+        "sh",
+        "cfg",
+        "c",
+        "csv",
+        "mo",
+        "po",
+        "crt",
+        "ini",
         "m4p",
         "m4a",
         "key",
@@ -187,7 +198,7 @@ pub fn rm_by_extension(apath: String) -> bool {
             };
         };
     }
-    println!("Start count: {}\nFiles removed: {}", count, rmcount);
+    println!("Start count: {}\nFiles removed: {}", count, rmcount.clone());
 
-    true
+    rmcount.clone()
 }

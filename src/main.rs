@@ -1,5 +1,5 @@
 use std::fs;
-// use std::fs::rename;
+use std::fs::rename;
 use std::path::Path;
 // use std::sync::mpsc::channel;
 use std::time::Instant;
@@ -22,27 +22,32 @@ fn main() {
     let _process_zip_files = zip::process_zip_files();
     let _process_gz_files = zip::process_gz_files();
     let _process_bz2_files = zip::process_bz2_files();
-    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
 
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
     let _process_zip_files2 = zip::process_zip_files();
     let _process_gz_files2 = zip::process_gz_files();
     let _process_bz2_files2 = zip::process_bz2_files();
 
-    let _rm_unwanted = rm_mv_unwanted::rm_unwanted_files(url.clone());
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    let _process_zip_files2 = zip::process_zip_files();
+    let _process_gz_files2 = zip::process_gz_files();
+    let _process_bz2_files2 = zip::process_bz2_files();
 
-    // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+
+    let rm_unwanted_count = rm_mv_unwanted::rm_unwanted_files(url.clone());
 
     let extlist = factory::gen_ext_list(url.clone());
     println!("extlist: {:?}", extlist);
-    let _rm_by_ext = rm_mv_unwanted::rm_by_extension(url.clone());
+    let rm_by_ext_count = rm_mv_unwanted::rm_by_extension(url.clone());
 
     let new_ext_list = factory::gen_ext_list(url.clone());
     println!("new_ext_list: {:?}", new_ext_list);
 
-    // let pic_list = walk_dirs::walk_dir(url.clone());
-    // for pic in pic_list.clone() {
-    //     let _sanatize = sanitize_filename(Path::new(&pic));
-    // }
+    let pic_list = walk_dirs::walk_dir(url.clone());
+    for pic in pic_list.clone() {
+        let _sanatize = sanitize_filename(Path::new(&pic));
+    }
 
     // let pic_list2 = walk_dirs::walk_dir(url.clone());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -62,6 +67,8 @@ fn main() {
     //     let info = t;
     //     println!("info: {:?}", info)
     // }
+
+    // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
 
     // let pic_list2 = walk_dirs::walk_dir(url2.clone());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -96,7 +103,10 @@ fn main() {
     //     "dups_result count: {:#?}\n threads complete",
     //     dup_results.clone()
     // );
-    // let end = Instant::now();
+
+    let total_rm_count = rm_unwanted_count + rm_by_ext_count;
+    println!("Total files removed: {}", total_rm_count);
+
     let elapsed = start.elapsed().as_secs_f64();
     println!("Execution time: {}", elapsed)
 }
@@ -111,7 +121,6 @@ fn prep_env() {
     let converted_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/";
     let toremove_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/";
     let gz1_path = "/media/pipi/0123-4567/GZ1/";
-    let gz2_path = "/media/pipi/0123-4567/GZ2/";
     let zip_path = "/media/pipi/0123-4567/ZIP/";
     let bz2_path = "/media/pipi/0123-4567/BZ2/";
     let gz1_unzip_path = "/media/pipi/0123-4567/Images/GZ1_Unzip/";
@@ -123,7 +132,6 @@ fn prep_env() {
     zip_list.push(converted_path);
     zip_list.push(toremove_path);
     zip_list.push(gz1_path);
-    zip_list.push(gz2_path);
     zip_list.push(zip_path);
     zip_list.push(bz2_path);
     zip_list.push(gz1_unzip_path);
@@ -144,21 +152,21 @@ pub fn pf_create_dir(apath: &str) {
     }
 }
 
-// fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
-//     let filename = path.file_name().unwrap().to_str().unwrap();
-//     let mut new_filename = String::new();
-//     for c in filename.chars() {
-//         if c.is_alphanumeric() || c == '_' || c == '-' || c == '.' {
-//             new_filename.push(c);
-//         }
-//     }
-//     let new_filename = new_filename.to_lowercase();
-//     let new_path = path.parent().unwrap().join(&new_filename);
-//     println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
-//     rename(path, &new_path)?;
+fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
+    let filename = path.file_name().unwrap().to_str().unwrap();
+    let mut new_filename = String::new();
+    for c in filename.chars() {
+        if c.is_alphanumeric() || c == '_' || c == '-' || c == '.' {
+            new_filename.push(c);
+        }
+    }
+    let new_filename = new_filename.to_lowercase();
+    let new_path = path.parent().unwrap().join(&new_filename);
+    println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
+    rename(path, &new_path)?;
 
-//     Ok(new_filename)
-// }
+    Ok(new_filename)
+}
 
 // fn mv_to_banner_folder(apath: String) {
 //     let fparts = apath.split("/").collect::<Vec<&str>>();
