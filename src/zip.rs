@@ -71,27 +71,32 @@ pub fn process_zip_files() {
                 let parts = &fname.split(".").collect::<Vec<&str>>();
                 let ext = parts.last().unwrap();
                 if ziplist.contains(&ext) {
-                    let mut archive =
-                        ZipArchive::new(fs::File::open(fname.clone()).unwrap()).unwrap();
-                    let outdir = "/media/pipi/0123-4567/Images/ZIP_Unzip/".to_string() + &fdigest;
-                    let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
-                    let out_dir_path = Path::new(outdir.as_str());
-                    for i in 0..archive.len() {
-                        let mut file = archive.by_index(i).unwrap();
-                        let outpath = match file.enclosed_name() {
-                            Some(path) => out_dir_path.join(path.to_owned()),
-                            None => continue,
-                        };
-                        if (&*file.name()).ends_with('/') {
-                            fs::create_dir_all(&outpath).unwrap();
-                        } else {
-                            if let Some(p) = outpath.parent() {
-                                if !p.exists() {
-                                    fs::create_dir_all(&p).unwrap();
+                    if fname.contains("Email_Photos.ZIP") {
+                        fs::remove_file(fname.clone()).unwrap()
+                    } else {
+                        let mut archive =
+                            ZipArchive::new(fs::File::open(fname.clone()).unwrap()).unwrap();
+                        let outdir =
+                            "/media/pipi/0123-4567/Images/ZIP_Unzip/".to_string() + &fdigest;
+                        let _out_dir = fs::create_dir_all(outdir.clone()).unwrap();
+                        let out_dir_path = Path::new(outdir.as_str());
+                        for i in 0..archive.len() {
+                            let mut file = archive.by_index(i).unwrap();
+                            let outpath = match file.enclosed_name() {
+                                Some(path) => out_dir_path.join(path.to_owned()),
+                                None => continue,
+                            };
+                            if (&*file.name()).ends_with('/') {
+                                fs::create_dir_all(&outpath).unwrap();
+                            } else {
+                                if let Some(p) = outpath.parent() {
+                                    if !p.exists() {
+                                        fs::create_dir_all(&p).unwrap();
+                                    }
                                 }
+                                let mut outfile = fs::File::create(&outpath).unwrap();
+                                std::io::copy(&mut file, &mut outfile).unwrap();
                             }
-                            let mut outfile = fs::File::create(&outpath).unwrap();
-                            std::io::copy(&mut file, &mut outfile).unwrap();
                         }
                     }
                     fs::remove_file(fname.clone()).unwrap();

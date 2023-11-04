@@ -35,10 +35,10 @@ fn main() {
 
     let extlist = factory::gen_ext_list(url.clone());
     println!("extlist: {:?}", extlist);
-    // let _rm_by_ext = rm_mv_unwanted::rm_by_extension(url.clone());
+    let _rm_by_ext = rm_mv_unwanted::rm_by_extension(url.clone());
 
-    // let new_ext_list = factory::gen_ext_list(url.clone());
-    // println!("new_ext_list: {:?}", new_ext_list);
+    let new_ext_list = factory::gen_ext_list(url.clone());
+    println!("new_ext_list: {:?}", new_ext_list);
 
     // let pic_list = walk_dirs::walk_dir(url.clone());
     // for pic in pic_list.clone() {
