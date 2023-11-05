@@ -48,7 +48,9 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
     let in_hash = info.hash.clone();
     let mut duplicates = Vec::new();
     for bfile in img_hash_list.clone() {
-        let out_filename = bfile.img_path.clone();
+        let fnn = bfile.img_path.clone();
+        let fnn_split = fnn.split("/").collect::<Vec<&str>>();
+        let out_filename = fnn_split.last().unwrap().to_string();
         let out_hash = bfile.hash.clone();
         if in_filename != out_filename {
             let hammer = in_hash.dist(&out_hash);
