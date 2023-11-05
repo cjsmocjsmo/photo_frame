@@ -1,5 +1,5 @@
 use std::fs;
-use std::fs::rename;
+// use std::fs::rename;
 use std::path::Path;
 use std::sync::mpsc::channel;
 use std::time::Instant;
@@ -14,75 +14,75 @@ pub mod zip;
 fn main() {
     let start = Instant::now();
 
-    let _prepenv = prep_env();
-    let url = "/media/pipi/0123-4567/Images".to_string();
-    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    // let _prepenv = prep_env();
+    // let url = "/media/pipi/0123-4567/Images".to_string();
+    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
 
-    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    let _process_zip_files = zip::process_zip_files();
-    let _process_gz_files = zip::process_gz_files();
-    let _process_bz2_files = zip::process_bz2_files();
+    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    // let _process_zip_files = zip::process_zip_files();
+    // let _process_gz_files = zip::process_gz_files();
+    // let _process_bz2_files = zip::process_bz2_files();
 
-    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    let _process_zip_files2 = zip::process_zip_files();
-    let _process_gz_files2 = zip::process_gz_files();
-    let _process_bz2_files2 = zip::process_bz2_files();
+    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    // let _process_zip_files2 = zip::process_zip_files();
+    // let _process_gz_files2 = zip::process_gz_files();
+    // let _process_bz2_files2 = zip::process_bz2_files();
 
-    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    let _process_zip_files2 = zip::process_zip_files();
-    let _process_gz_files2 = zip::process_gz_files();
-    let _process_bz2_files2 = zip::process_bz2_files();
+    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    // let _process_zip_files2 = zip::process_zip_files();
+    // let _process_gz_files2 = zip::process_gz_files();
+    // let _process_bz2_files2 = zip::process_bz2_files();
 
-    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
 
-    let rm_unwanted_count = rm_mv_unwanted::rm_unwanted_files(url.clone());
+    // let rm_unwanted_count = rm_mv_unwanted::rm_unwanted_files(url.clone());
 
-    let extlist = factory::gen_ext_list(url.clone());
-    println!("extlist: {:?}", extlist);
-    let rm_by_ext_count = rm_mv_unwanted::rm_by_extension(url.clone());
+    // let extlist = factory::gen_ext_list(url.clone());
+    // println!("extlist: {:?}", extlist);
+    // let rm_by_ext_count = rm_mv_unwanted::rm_by_extension(url.clone());
 
-    let new_ext_list = factory::gen_ext_list(url.clone());
-    println!("new_ext_list: {:?}", new_ext_list);
+    // let new_ext_list = factory::gen_ext_list(url.clone());
+    // println!("new_ext_list: {:?}", new_ext_list);
 
-    let pic_list = walk_dirs::walk_dir(url.clone());
-    for pic in pic_list.clone() {
-        let _sanatize = sanitize_filename(Path::new(&pic));
-    }
+    // let pic_list = walk_dirs::walk_dir(url.clone());
+    // for pic in pic_list.clone() {
+    //     let _sanatize = sanitize_filename(Path::new(&pic));
+    // }
 
-    let pic_list2 = walk_dirs::walk_dir(url.clone());
-    let pool = ThreadPool::new(num_cpus::get());
-    let (tx, rx) = channel();
-    for pic in pic_list2.clone() {
-        println!("Pic {}", pic);
-        if !pic.contains(".jpg") {
-            let tx = tx.clone();
-            pool.execute(move || {
-                factory::convert_image_to_jpg(pic.clone());
-                tx.send(()).unwrap();
-            });
-        };
-    }
-    drop(tx);
-    for t in rx.iter() {
-        let info = t;
-        println!("info: {:?}", info)
-    }
+    // let pic_list2 = walk_dirs::walk_dir(url.clone());
+    // let pool = ThreadPool::new(num_cpus::get());
+    // let (tx, rx) = channel();
+    // for pic in pic_list2.clone() {
+    //     println!("Pic {}", pic);
+    //     if !pic.contains(".jpg") {
+    //         let tx = tx.clone();
+    //         pool.execute(move || {
+    //             factory::convert_image_to_jpg(pic.clone());
+    //             tx.send(()).unwrap();
+    //         });
+    //     };
+    // }
+    // drop(tx);
+    // for t in rx.iter() {
+    //     let info = t;
+    //     println!("info: {:?}", info)
+    // }
 
-    let pic_list3 = walk_dirs::walk_dir(url.clone());
-    let pool = ThreadPool::new(num_cpus::get());
-    let (tx, rx) = channel();
-    for pic in pic_list3.clone() {
-        let tx = tx.clone();
-        pool.execute(move || {
-            dedup::calc_hash_test(pic.clone());
-            tx.send(()).unwrap();
-        });
-    }
-    drop(tx);
-    for t in rx.iter() {
-        let info = t;
-        println!("info: {:?}", info)
-    }
+    // let pic_list3 = walk_dirs::walk_dir(url.clone());
+    // let pool = ThreadPool::new(num_cpus::get());
+    // let (tx, rx) = channel();
+    // for pic in pic_list3.clone() {
+    //     let tx = tx.clone();
+    //     pool.execute(move || {
+    //         dedup::calc_hash_test(pic.clone());
+    //         tx.send(()).unwrap();
+    //     });
+    // }
+    // drop(tx);
+    // for t in rx.iter() {
+    //     let info = t;
+    //     println!("info: {:?}", info)
+    // }
 
     let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
 
@@ -120,43 +120,43 @@ fn main() {
         dup_results.clone()
     );
 
-    let total_rm_count = rm_unwanted_count + rm_by_ext_count;
-    println!("Total files removed: {}", total_rm_count);
+    // let total_rm_count = rm_unwanted_count + rm_by_ext_count;
+    // println!("Total files removed: {}", total_rm_count);
 
     let elapsed = start.elapsed().as_secs_f64();
     println!("Execution time: {}", elapsed)
 }
 
-fn prep_env() {
-    let av_path = "/media/pipi/0123-4567/AV/";
-    let av_save_dir = Path::new(av_path);
-    if !fs::metadata(av_save_dir).is_ok() {
-        fs::create_dir(av_save_dir).expect("Unable to create AV directory");
-    }
+// fn prep_env() {
+//     let av_path = "/media/pipi/0123-4567/AV/";
+//     let av_save_dir = Path::new(av_path);
+//     if !fs::metadata(av_save_dir).is_ok() {
+//         fs::create_dir(av_save_dir).expect("Unable to create AV directory");
+//     }
 
-    let converted_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/";
-    let toremove_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/";
-    let gz1_path = "/media/pipi/0123-4567/GZ1/";
-    let zip_path = "/media/pipi/0123-4567/ZIP/";
-    let bz2_path = "/media/pipi/0123-4567/BZ2/";
-    let gz1_unzip_path = "/media/pipi/0123-4567/Images/GZ1_Unzip/";
-    let gz2_unzip_path = "/media/pipi/0123-4567/Images/GZ2_Unzip/";
-    let zip_unzip_path = "/media/pipi/0123-4567/Images/ZIP_Unzip/";
-    let bz2_unzip_path = "/media/pipi/0123-4567/Images/BZ2_Unzip/";
+//     let converted_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/";
+//     let toremove_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/";
+//     let gz1_path = "/media/pipi/0123-4567/GZ1/";
+//     let zip_path = "/media/pipi/0123-4567/ZIP/";
+//     let bz2_path = "/media/pipi/0123-4567/BZ2/";
+//     let gz1_unzip_path = "/media/pipi/0123-4567/Images/GZ1_Unzip/";
+//     let gz2_unzip_path = "/media/pipi/0123-4567/Images/GZ2_Unzip/";
+//     let zip_unzip_path = "/media/pipi/0123-4567/Images/ZIP_Unzip/";
+//     let bz2_unzip_path = "/media/pipi/0123-4567/Images/BZ2_Unzip/";
 
-    let mut zip_list = Vec::new();
-    zip_list.push(converted_path);
-    zip_list.push(toremove_path);
-    zip_list.push(gz1_path);
-    zip_list.push(zip_path);
-    zip_list.push(bz2_path);
-    zip_list.push(gz1_unzip_path);
-    zip_list.push(gz2_unzip_path);
-    zip_list.push(zip_unzip_path);
-    zip_list.push(bz2_unzip_path);
+//     let mut zip_list = Vec::new();
+//     zip_list.push(converted_path);
+//     zip_list.push(toremove_path);
+//     zip_list.push(gz1_path);
+//     zip_list.push(zip_path);
+//     zip_list.push(bz2_path);
+//     zip_list.push(gz1_unzip_path);
+//     zip_list.push(gz2_unzip_path);
+//     zip_list.push(zip_unzip_path);
+//     zip_list.push(bz2_unzip_path);
 
-    let _: Vec<_> = zip_list.iter().map(|x| pf_create_dir(x)).collect();
-}
+//     let _: Vec<_> = zip_list.iter().map(|x| pf_create_dir(x)).collect();
+// }
 
 pub fn pf_create_dir(apath: &str) {
     let save_dir = Path::new(apath);
@@ -168,21 +168,21 @@ pub fn pf_create_dir(apath: &str) {
     }
 }
 
-fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
-    let filename = path.file_name().unwrap().to_str().unwrap();
-    let mut new_filename = String::new();
-    for c in filename.chars() {
-        if c.is_alphanumeric() || c == '_' || c == '-' || c == '.' {
-            new_filename.push(c);
-        }
-    }
-    let new_filename = new_filename.to_lowercase();
-    let new_path = path.parent().unwrap().join(&new_filename);
-    println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
-    rename(path, &new_path)?;
+// fn sanitize_filename(path: &Path) -> Result<String, std::io::Error> {
+//     let filename = path.file_name().unwrap().to_str().unwrap();
+//     let mut new_filename = String::new();
+//     for c in filename.chars() {
+//         if c.is_alphanumeric() || c == '_' || c == '-' || c == '.' {
+//             new_filename.push(c);
+//         }
+//     }
+//     let new_filename = new_filename.to_lowercase();
+//     let new_path = path.parent().unwrap().join(&new_filename);
+//     println!("new_path: \n\t{:?}\n\t{:?}\n", path, new_path);
+//     rename(path, &new_path)?;
 
-    Ok(new_filename)
-}
+//     Ok(new_filename)
+// }
 
 // fn mv_to_banner_folder(apath: String) {
 //     let fparts = apath.split("/").collect::<Vec<&str>>();
