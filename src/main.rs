@@ -68,6 +68,22 @@ fn main() {
         println!("info: {:?}", info)
     }
 
+    let pic_list3 = walk_dirs::walk_dir(url.clone());
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for pic in pic_list3.clone() {
+        let tx = tx.clone();
+        pool.execute(move || {
+            dedup::calc_hash_test(pic.clone());
+            tx.send(()).unwrap();
+        });
+    }
+    drop(tx);
+    for t in rx.iter() {
+        let info = t;
+        println!("info: {:?}", info)
+    }
+
     let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
 
     let pic_list2 = walk_dirs::walk_dir(url2.clone());

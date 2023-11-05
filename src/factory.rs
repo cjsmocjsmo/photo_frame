@@ -115,8 +115,8 @@ pub fn convert_image_to_jpg(a_path: String) {
     };
     let outfile = pf.create_outfile();
     let image_results = image::open(apath);
-    let image = match image_results {
-        Ok(image) => image,
+    let myimage = match image_results {
+        Ok(myimage) => myimage,
         Err(e) => {
             println!("Error: {}", e);
             std::fs::remove_file(apath).unwrap();
@@ -124,6 +124,6 @@ pub fn convert_image_to_jpg(a_path: String) {
             return;
         }
     };
-    let _save_image = image.save(outfile).unwrap();
+    let _save_image = myimage.save(outfile).unwrap();
 }
 

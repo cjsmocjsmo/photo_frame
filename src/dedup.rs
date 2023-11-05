@@ -3,6 +3,7 @@ use crate::factory;
 use img_hash::{HasherConfig, ImageHash};
 use serde::Serialize;
 use std::io::Write;
+use std::fs;
 
 #[derive(Clone, Debug)]
 pub struct ImgHashStruct {
@@ -24,14 +25,14 @@ pub fn calc_hash(apath: String) -> ImgHashStruct {
 }
 
 pub fn calc_hash_test(apath: String) -> bool {
-    // let hasher_config = HasherConfig::new().to_hasher();
     let image_results = image::open(apath.clone());
-
     let _image = match image_results {
-        Ok(_image) => return true,
+        Ok(_) => return true,
         Err(e) => {
             println!("Error: {}", e);
-            return false;
+            fs::remove_file(apath.clone()).expect("Unable to delete file");
+            println!("Deleted: {}", apath.clone());
+            return false
         }
     };
 }
@@ -42,8 +43,6 @@ pub struct DupsEntry {
     pub duplicates: Vec<String>,
 }
 pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsEntry {
-    let calc_test = calc_hash_test(afile.clone());
-    println!("calc_test: \n\t{}", calc_test);
     let info = calc_hash(afile.clone());
     let in_filename = info.img_path.clone();
     let in_hash = info.hash.clone();
