@@ -32,20 +32,17 @@ impl Factory {
         addr
     }
 
-    pub fn create_dedup_output_file(&self) -> String {
+    pub fn create_dedup_filename(&self) -> String {
         let digest = compute(&self.path);
         let fdigest = format!("{:?}", digest);
-        let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/".to_string()
-            + &fdigest
-            + ".json";
+        let addr = fdigest + ".json";
 
         addr
     }
     pub fn create_gz_out_dir(&self) -> String {
         let digest = compute(&self.path);
         let fdigest = format!("{:?}", digest);
-        let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/GZ/".to_string()
-            + &fdigest;
+        let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/GZ/".to_string() + &fdigest;
 
         addr
     }
@@ -126,4 +123,3 @@ pub fn convert_image_to_jpg(a_path: String) {
     };
     let _save_image = myimage.save(outfile).unwrap();
 }
-

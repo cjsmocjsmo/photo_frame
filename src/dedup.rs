@@ -66,15 +66,18 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
     };
 
     if duplicates.len() > 0 {
-        let transform = transform_dup_entry_struct(dups_entry.clone());
-
-        let json = serde_json::to_string(&transform).unwrap();
         let f = factory::Factory {
             path: afile.clone(),
         };
-        let ddoutfile = f.create_dedup_output_file();
+        let ddoutfile = f.create_dedup_filename();
 
-        let mut output_file_results = std::fs::File::create(ddoutfile).unwrap();
+        let transform = transform_dup_entry_struct(dups_entry.clone(), ddoutfile.clone());
+
+        let json = serde_json::to_string(&transform).unwrap();
+
+        let ofile = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/".to_string() + ddoutfile.as_str();
+
+        let mut output_file_results = std::fs::File::create(ofile.clone()).unwrap();
         output_file_results.write_all(json.as_bytes()).unwrap();
     }
 
@@ -83,6 +86,7 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
 
 #[derive(Serialize, Clone, Debug)]
 pub struct TransDupsEntry {
+    pub jsonfilename: String,
     pub filename: String,
     pub httpfilename: String,
     pub duplicates: Vec<DupStruct>,
@@ -94,7 +98,7 @@ pub struct DupStruct {
     pub httpdups: String,
 }
 
-fn transform_dup_entry_struct(dups_entry: DupsEntry) -> TransDupsEntry {
+fn transform_dup_entry_struct(dups_entry: DupsEntry, jsonfilename: String) -> TransDupsEntry {
     let filename = dups_entry.filename.clone();
     let filename_parts = filename.split("/").collect::<Vec<&str>>();
     let fname = filename_parts.len() - 1;
@@ -113,6 +117,7 @@ fn transform_dup_entry_struct(dups_entry: DupsEntry) -> TransDupsEntry {
 
     let trans_dup_entry = TransDupsEntry {
         filename: filename.clone(),
+        jsonfilename: jsonfilename.clone(),
         httpfilename: http_filename.clone(),
         duplicates: comp_duplicates.clone(),
     };
