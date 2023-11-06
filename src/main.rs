@@ -68,7 +68,7 @@ fn main() {
     //     // println!("info: {:?}", info)
     // }
 
-    let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
+    let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
 
     // let pic_list3 = walk_dirs::walk_dir(url2.clone());
     // let pool = ThreadPool::new(num_cpus::get());
