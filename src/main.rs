@@ -129,6 +129,7 @@ fn main() {
         let dups_entry: dedup::DupsEntry = serde_json::from_str(&json).unwrap();
         let dups = dups_entry.duplicates.clone();
         for dup in dups {
+            println!("dup: {}", dup);
             let does_exist = Path::new(&dup.clone()).exists();
             if does_exist {
                 // let _rm_dup = fs::remove_file(dup.clone()).expect("Unable to delete file");
