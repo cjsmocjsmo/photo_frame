@@ -126,6 +126,7 @@ fn main() {
     for json in json_list.clone() {
         println!("pic: {}", json);
         let jsonn = fs::read_to_string(json.clone()).expect("Unable to read file");
+        println!("jsonn: {}", jsonn);
         let dups_entry: dedup::DupsEntry = serde_json::from_str(&jsonn).unwrap();
         println!("dups_entry: {:#?}", dups_entry);
         // let dups = dups_entry.duplicates.clone();
