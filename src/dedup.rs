@@ -2,6 +2,7 @@ extern crate img_hash;
 use crate::factory;
 use img_hash::{HasherConfig, ImageHash};
 use serde::Serialize;
+use serde::Deserialize;
 use std::io::Write;
 use std::fs;
 
@@ -37,7 +38,7 @@ pub fn calc_hash_test(apath: String) -> bool {
     };
 }
 
-#[derive(Serialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct DupsEntry {
     pub filename: String,
     pub duplicates: Vec<String>,
@@ -49,6 +50,11 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
     let mut duplicates = Vec::new();
     for bfile in img_hash_list.clone() {
         let fnn = bfile.img_path.clone();
+
+
+
+
+
         let fnn_split = fnn.split("/").collect::<Vec<&str>>();
         let out_filename = fnn_split.last().unwrap().to_string();
         let out_hash = bfile.hash.clone();
