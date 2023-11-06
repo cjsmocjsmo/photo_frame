@@ -64,8 +64,8 @@ fn main() {
     }
     drop(tx);
     for t in rx.iter() {
-        let info = t;
-        println!("info: {:?}", info)
+        let _info = t;
+        // println!("info: {:?}", info)
     }
 
     let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
