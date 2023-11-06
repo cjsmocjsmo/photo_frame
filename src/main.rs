@@ -68,7 +68,7 @@ fn main() {
     //     // println!("info: {:?}", info)
     // }
 
-    // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
+    let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
 
     // let pic_list3 = walk_dirs::walk_dir(url2.clone());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -129,12 +129,27 @@ fn main() {
         // println!("dups_entry: {:#?}", dups_entry);
         let keep_file = dups_entry.filename.clone();
         println!("keep_file: {:#?}", keep_file);
-        // let keep_this_file = Path::new(&keep_file).exists();
-        // if keep_this_file {
+        let keep_file_exists = Path::new(&keep_file).exists();
+        if keep_file_exists {
+            let keep_file_parts = keep_file.split("/").collect::<Vec<&str>>();
+            let fname = keep_file_parts.last().unwrap().to_string();
+            let url4 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Master/".to_string();
+            let newfilename = url4 + &fname;
+            println!("newfilename: {:#?}", newfilename);
+            // fs::rename(keep_file.clone(), newfilename.clone()).expect("Unable to rename file");
+            let dups = dups_entry.duplicates.clone();
+            for dup in dups {
+                let dup_url = url2.clone() + &dup.strdups.to_string();
+                let dup_url_exists = Path::new(&dup_url).exists();
+                if dup_url_exists {
+                    // let _rm_dup = fs::remove_file(dup_url.clone()).expect("Unable to delete file");
+                    println!("Deleted: \n\t{}", dup_url.clone());
+                } else {
+                    println!("File does not exist: \n\t{}", dup_url.clone());
+                }
+            }
+        }
 
-        // }
-
-        // let dups = dups_entry.duplicates.clone();
         // for dup in dups {
         //     let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
         //     let url = url3 + &dup.strdups.to_string();
