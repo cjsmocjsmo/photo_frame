@@ -126,10 +126,10 @@ fn main() {
     for json in json_list.clone() {
         let jsonn = fs::read_to_string(json.clone()).expect("Unable to read file");
         let dups_entry: dedup::TransDupsEntry = serde_json::from_str(&jsonn).unwrap();
-        println!("dups_entry: {:#?}", dups_entry);
+        // println!("dups_entry: {:#?}", dups_entry);
         let dups = dups_entry.duplicates.clone();
         for dup in dups {
-            println!("dup: {:#?}", dup);
+            println!("dup: {:#?}", dup.strdups);
         //     let does_exist = Path::new(&dup.clone()).exists();
         //     if does_exist {
         //         // let _rm_dup = fs::remove_file(dup.clone()).expect("Unable to delete file");
