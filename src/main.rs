@@ -136,13 +136,13 @@ fn main() {
             let url4 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Master/".to_string();
             let newfilename = url4 + &fname;
             println!("newfilename: {:#?}", newfilename);
-            // fs::rename(keep_file.clone(), newfilename.clone()).expect("Unable to rename file");
+            fs::rename(keep_file.clone(), newfilename.clone()).expect("Unable to rename file");
             let dups = dups_entry.duplicates.clone();
             for dup in dups {
                 let dup_url = url2.clone() + &dup.strdups.to_string();
                 let dup_url_exists = Path::new(&dup_url).exists();
                 if dup_url_exists {
-                    // let _rm_dup = fs::remove_file(dup_url.clone()).expect("Unable to delete file");
+                    let _rm_dup = fs::remove_file(dup_url.clone()).expect("Unable to delete file");
                     println!("Deleted: \n\t{}", dup_url.clone());
                 } else {
                     println!("File does not exist: \n\t{}", dup_url.clone());
