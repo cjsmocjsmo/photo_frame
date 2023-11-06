@@ -124,14 +124,12 @@ fn main() {
     let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove".to_string();
     let json_list = walk_dirs::walk_dir(url3.clone());
     for json in json_list.clone() {
-        println!("pic: {}", json);
         let jsonn = fs::read_to_string(json.clone()).expect("Unable to read file");
-        println!("jsonn: {}", jsonn);
         let dups_entry: dedup::TransDupsEntry = serde_json::from_str(&jsonn).unwrap();
         println!("dups_entry: {:#?}", dups_entry);
-        // let dups = dups_entry.duplicates.clone();
-        // for dup in dups {
-        //     println!("dup: {}", dup);
+        let dups = dups_entry.duplicates.clone();
+        for dup in dups {
+            println!("dup: {:#?}", dup);
         //     let does_exist = Path::new(&dup.clone()).exists();
         //     if does_exist {
         //         // let _rm_dup = fs::remove_file(dup.clone()).expect("Unable to delete file");
@@ -139,7 +137,7 @@ fn main() {
         //     } else {
         //         println!("File does not exist: {}", dup.clone());
         //     }
-        // }
+        }
     }
 
     // println!(
