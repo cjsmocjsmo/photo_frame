@@ -129,7 +129,9 @@ fn main() {
         // println!("dups_entry: {:#?}", dups_entry);
         let dups = dups_entry.duplicates.clone();
         for dup in dups {
-            println!("dup: {:#?}", dup.strdups);
+            let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted".to_string();
+            let url = url3 + &dup.strdups.to_string();
+            println!("dup: {:#?}", url.clone());
         //     let does_exist = Path::new(&dup.clone()).exists();
         //     if does_exist {
         //         // let _rm_dup = fs::remove_file(dup.clone()).expect("Unable to delete file");
