@@ -90,7 +90,7 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
     dups_entry
 }
 
-#[derive(Serialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct TransDupsEntry {
     pub jsonfilename: String,
     pub filename: String,
@@ -98,7 +98,7 @@ pub struct TransDupsEntry {
     pub duplicates: Vec<DupStruct>,
 }
 
-#[derive(Serialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct DupStruct {
     pub strdups: String,
     pub httpdups: String,
