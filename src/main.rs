@@ -132,7 +132,7 @@ fn main() {
             let does_exist = Path::new(&dup.clone()).exists();
             if does_exist {
                 // let _rm_dup = fs::remove_file(dup.clone()).expect("Unable to delete file");
-                println!("Deleted: {}", dup.clone());
+                println!("Deleted: \n\t{}", dup.clone());
             } else {
                 println!("File does not exist: {}", dup.clone());
             }
