@@ -123,23 +123,30 @@ fn main() {
 
     let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove".to_string();
     let json_list = walk_dirs::walk_dir(url3.clone());
-    for json in json_list.clone() {
-        let jsonn = fs::read_to_string(json.clone()).expect("Unable to read file");
-        let dups_entry: dedup::TransDupsEntry = serde_json::from_str(&jsonn).unwrap();
+    for json_file in json_list.clone() {
+        let json_content = fs::read_to_string(json_file.clone()).expect("Unable to read file");
+        let dups_entry: dedup::TransDupsEntry = serde_json::from_str(&json_content).unwrap();
         // println!("dups_entry: {:#?}", dups_entry);
-        let dups = dups_entry.duplicates.clone();
-        for dup in dups {
-            let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
-            let url = url3 + &dup.strdups.to_string();
-            println!("dup: {:#?}", url.clone());
-            let does_exist = Path::new(&url.clone()).exists();
-            if does_exist {
-                // let _rm_dup = fs::remove_file(dup.clone()).expect("Unable to delete file");
-                println!("Deleted: \n\t{}", url.clone());
-            } else {
-                println!("File does not exist: {}", url.clone());
-            }
-        }
+        let keep_file = dups_entry.filename.clone();
+        println!("keep_file: {:#?}", keep_file);
+        // let keep_this_file = Path::new(&keep_file).exists();
+        // if keep_this_file {
+
+        // }
+
+        // let dups = dups_entry.duplicates.clone();
+        // for dup in dups {
+        //     let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
+        //     let url = url3 + &dup.strdups.to_string();
+        //     // println!("dup: {:#?}", url.clone());
+        //     let does_exist = Path::new(&url.clone()).exists();
+        //     if does_exist {
+        //         let _rm_dup = fs::remove_file(url.clone()).expect("Unable to delete file");
+        //         println!("Deleted: \n\t{}", url.clone());
+        //     } else {
+        //         println!("File does not exist: \n\t{}", url.clone());
+        //     }
+        // }
     }
 
     // println!(
