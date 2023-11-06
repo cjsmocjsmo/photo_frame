@@ -124,7 +124,7 @@ fn main() {
     let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove".to_string();
     let pic_list3 = walk_dirs::walk_dir(url3.clone());
     for pic in pic_list3.clone() {
-
+        println!("pic: {}", pic);
         let json = fs::read_to_string(pic.clone()).expect("Unable to read file");
         let dups_entry: dedup::DupsEntry = serde_json::from_str(&json).unwrap();
         let dups = dups_entry.duplicates.clone();
