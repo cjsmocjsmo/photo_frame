@@ -125,8 +125,8 @@ fn main() {
     let json_list = walk_dirs::walk_dir(url3.clone());
     for json in json_list.clone() {
         println!("pic: {}", json);
-        let json = fs::read_to_string(json.clone()).expect("Unable to read file");
-        let dups_entry: dedup::DupsEntry = serde_json::from_str(&json).unwrap();
+        let jsonn = fs::read_to_string(json.clone()).expect("Unable to read file");
+        let dups_entry: dedup::DupsEntry = serde_json::from_str(&jsonn).unwrap();
         println!("dups_entry: {:#?}", dups_entry);
         // let dups = dups_entry.duplicates.clone();
         // for dup in dups {
