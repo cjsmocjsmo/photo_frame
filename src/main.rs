@@ -122,22 +122,22 @@ fn main() {
     // }
 
     let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove".to_string();
-    let pic_list3 = walk_dirs::walk_dir(url3.clone());
-    for pic in pic_list3.clone() {
-        println!("pic: {}", pic);
-        let json = fs::read_to_string(pic.clone()).expect("Unable to read file");
-        let dups_entry: dedup::DupsEntry = serde_json::from_str(&json).unwrap();
-        let dups = dups_entry.duplicates.clone();
-        for dup in dups {
-            println!("dup: {}", dup);
-            let does_exist = Path::new(&dup.clone()).exists();
-            if does_exist {
-                // let _rm_dup = fs::remove_file(dup.clone()).expect("Unable to delete file");
-                println!("Deleted: \n\t{}", dup.clone());
-            } else {
-                println!("File does not exist: {}", dup.clone());
-            }
-        }
+    let json_list = walk_dirs::walk_dir(url3.clone());
+    for json in json_list.clone() {
+        println!("pic: {}", json);
+        // let json = fs::read_to_string(pic.clone()).expect("Unable to read file");
+        // let dups_entry: dedup::DupsEntry = serde_json::from_str(&json).unwrap();
+        // let dups = dups_entry.duplicates.clone();
+        // for dup in dups {
+        //     println!("dup: {}", dup);
+        //     let does_exist = Path::new(&dup.clone()).exists();
+        //     if does_exist {
+        //         // let _rm_dup = fs::remove_file(dup.clone()).expect("Unable to delete file");
+        //         println!("Deleted: \n\t{}", dup.clone());
+        //     } else {
+        //         println!("File does not exist: {}", dup.clone());
+        //     }
+        // }
     }
 
     // println!(
