@@ -14,66 +14,48 @@ pub mod zip;
 fn main() {
     let start = Instant::now();
 
-    let _prepenv = prep_env();
-    let url = "/media/pipi/0123-4567/Images".to_string();
-    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    // let _prepenv = prep_env();
+    // let url = "/media/pipi/0123-4567/Images".to_string();
+    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
 
-    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    let _process_zip_files = zip::process_zip_files();
-    let _process_gz_files = zip::process_gz_files();
-    let _process_bz2_files = zip::process_bz2_files();
+    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    // let _process_zip_files = zip::process_zip_files();
+    // let _process_gz_files = zip::process_gz_files();
+    // let _process_bz2_files = zip::process_bz2_files();
 
-    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    let _process_zip_files2 = zip::process_zip_files();
-    let _process_gz_files2 = zip::process_gz_files();
-    let _process_bz2_files2 = zip::process_bz2_files();
+    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    // let _process_zip_files2 = zip::process_zip_files();
+    // let _process_gz_files2 = zip::process_gz_files();
+    // let _process_bz2_files2 = zip::process_bz2_files();
 
-    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    let _process_zip_files2 = zip::process_zip_files();
-    let _process_gz_files2 = zip::process_gz_files();
-    let _process_bz2_files2 = zip::process_bz2_files();
+    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    // let _process_zip_files2 = zip::process_zip_files();
+    // let _process_gz_files2 = zip::process_gz_files();
+    // let _process_bz2_files2 = zip::process_bz2_files();
 
-    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
 
-    let rm_unwanted_count = rm_mv_unwanted::rm_unwanted_files(url.clone());
+    // let rm_unwanted_count = rm_mv_unwanted::rm_unwanted_files(url.clone());
 
-    let extlist = factory::gen_ext_list(url.clone());
-    println!("extlist: {:?}", extlist);
-    let rm_by_ext_count = rm_mv_unwanted::rm_by_extension(url.clone());
+    // let extlist = factory::gen_ext_list(url.clone());
+    // println!("extlist: {:?}", extlist);
+    // let rm_by_ext_count = rm_mv_unwanted::rm_by_extension(url.clone());
 
-    let new_ext_list = factory::gen_ext_list(url.clone());
-    println!("new_ext_list: {:?}", new_ext_list);
+    // let new_ext_list = factory::gen_ext_list(url.clone());
+    // println!("new_ext_list: {:?}", new_ext_list);
 
-    let pic_list = walk_dirs::walk_dir(url.clone());
-    for pic in pic_list.clone() {
-        let _sanatize = sanitize_filename(Path::new(&pic));
-    }
+    // let pic_list = walk_dirs::walk_dir(url.clone());
+    // for pic in pic_list.clone() {
+    //     let _sanatize = sanitize_filename(Path::new(&pic));
+    // }
 
-    let pic_list2 = walk_dirs::walk_dir(url.clone());
-    let pool = ThreadPool::new(num_cpus::get());
-    let (tx, rx) = channel();
-    for pic in pic_list2.clone() {
-        let tx = tx.clone();
-        pool.execute(move || {
-            factory::convert_image_to_jpg(pic.clone());
-            tx.send(()).unwrap();
-        });
-    }
-    drop(tx);
-    for t in rx.iter() {
-        let _info = t;
-        // println!("info: {:?}", info)
-    }
-
-    // let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
-
-    // let pic_list3 = walk_dirs::walk_dir(url2.clone());
+    // let pic_list2 = walk_dirs::walk_dir(url.clone());
     // let pool = ThreadPool::new(num_cpus::get());
     // let (tx, rx) = channel();
-    // for pic in pic_list3.clone() {
+    // for pic in pic_list2.clone() {
     //     let tx = tx.clone();
     //     pool.execute(move || {
-    //         dedup::calc_hash_test(pic.clone());
+    //         factory::convert_image_to_jpg(pic.clone());
     //         tx.send(()).unwrap();
     //     });
     // }
@@ -82,6 +64,24 @@ fn main() {
     //     let _info = t;
     //     // println!("info: {:?}", info)
     // }
+
+    let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
+
+    let pic_list3 = walk_dirs::walk_dir(url2.clone());
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for pic in pic_list3.clone() {
+        let tx = tx.clone();
+        pool.execute(move || {
+            dedup::calc_hash_test(pic.clone());
+            tx.send(()).unwrap();
+        });
+    }
+    drop(tx);
+    for t in rx.iter() {
+        let _info = t;
+        // println!("info: {:?}", info)
+    }
 
     // let pic_list2 = walk_dirs::walk_dir(url2.clone());
     // let pool = ThreadPool::new(num_cpus::get());
@@ -107,15 +107,10 @@ fn main() {
 
     // let mut dup_results = Vec::new();
     // for jpg in file_list {
-    //     // let jpg_exists = Path::new(&jpg.clone()).exists();
-    //     // if jpg_exists {
-    //         println!("jpg: {}", jpg);
-    //         let image_hash_list2 = img_hash_list.clone();
-    //         let dd = dedup::compare_hashes(jpg.clone(), image_hash_list2.clone());
-    //         dup_results.push(dd.clone());
-    //     // } else {
-    //     //     println!("jpg does not exist: {}", jpg);
-    //     // }
+    //     println!("jpg: {}", jpg);
+    //     let image_hash_list2 = img_hash_list.clone();
+    //     let dd = dedup::compare_hashes(jpg.clone(), image_hash_list2.clone());
+    //     dup_results.push(dd.clone());
     // }
 
     // let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove".to_string();
@@ -153,8 +148,8 @@ fn main() {
     //     dup_results.clone().len()
     // );
 
-    let total_rm_count = rm_unwanted_count + rm_by_ext_count;
-    println!("Total files removed: {}", total_rm_count);
+    // let total_rm_count = rm_unwanted_count + rm_by_ext_count;
+    // println!("Total files removed: {}", total_rm_count);
 
     let elapsed = start.elapsed().as_secs_f64();
     println!("Execution time: {}", elapsed)
