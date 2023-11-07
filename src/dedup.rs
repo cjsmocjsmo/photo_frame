@@ -4,7 +4,7 @@ use img_hash::{HasherConfig, ImageHash};
 use serde::Serialize;
 use serde::Deserialize;
 use std::io::Write;
-use std::fs;
+// use std::fs;
 
 #[derive(Clone, Debug)]
 pub struct ImgHashStruct {
@@ -26,13 +26,17 @@ pub fn calc_hash(apath: String) -> ImgHashStruct {
 }
 
 pub fn calc_hash_test(apath: String) -> bool {
+    let bad_image_dir = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/BadImages/".to_string();
     let image_results = image::open(apath.clone());
     let _image = match image_results {
         Ok(_) => return true,
         Err(e) => {
             println!("Error: {}", e);
-            fs::remove_file(apath.clone()).expect("Unable to delete file");
-            println!("Deleted: {}", apath.clone());
+            let bisplit = apath.split("/").collect::<Vec<&str>>();
+            let bfilename = bisplit.last().unwrap().to_string();
+            let bad_image_path = bad_image_dir.clone() + bfilename.as_str();
+            let _ = std::fs::rename(apath.clone(), bad_image_path.clone());
+            println!("Moved: \n\t{} \nto \n\t{}", apath.clone(), bad_image_path.clone());
             return false
         }
     };
@@ -50,10 +54,6 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
     let mut duplicates = Vec::new();
     for bfile in img_hash_list.clone() {
         let fnn = bfile.img_path.clone();
-
-
-
-
 
         let fnn_split = fnn.split("/").collect::<Vec<&str>>();
         let out_filename = fnn_split.last().unwrap().to_string();

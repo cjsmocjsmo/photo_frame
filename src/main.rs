@@ -14,56 +14,56 @@ pub mod zip;
 fn main() {
     let start = Instant::now();
 
-    // let _prepenv = prep_env();
-    // let url = "/media/pipi/0123-4567/Images".to_string();
-    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    let _prepenv = prep_env();
+    let url = "/media/pipi/0123-4567/Images".to_string();
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
 
-    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    // let _process_zip_files = zip::process_zip_files();
-    // let _process_gz_files = zip::process_gz_files();
-    // let _process_bz2_files = zip::process_bz2_files();
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    let _process_zip_files = zip::process_zip_files();
+    let _process_gz_files = zip::process_gz_files();
+    let _process_bz2_files = zip::process_bz2_files();
 
-    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    // let _process_zip_files2 = zip::process_zip_files();
-    // let _process_gz_files2 = zip::process_gz_files();
-    // let _process_bz2_files2 = zip::process_bz2_files();
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    let _process_zip_files2 = zip::process_zip_files();
+    let _process_gz_files2 = zip::process_gz_files();
+    let _process_bz2_files2 = zip::process_bz2_files();
 
-    // let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
-    // let _process_zip_files2 = zip::process_zip_files();
-    // let _process_gz_files2 = zip::process_gz_files();
-    // let _process_bz2_files2 = zip::process_bz2_files();
+    let _mv_zip_files = rm_mv_unwanted::mv_zip_files(url.clone());
+    let _process_zip_files2 = zip::process_zip_files();
+    let _process_gz_files2 = zip::process_gz_files();
+    let _process_bz2_files2 = zip::process_bz2_files();
 
-    // let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
+    let _mv_vid_files = rm_mv_unwanted::mv_vid_files(url.clone());
 
-    // let rm_unwanted_count = rm_mv_unwanted::rm_unwanted_files(url.clone());
+    let rm_unwanted_count = rm_mv_unwanted::rm_unwanted_files(url.clone());
 
-    // let extlist = factory::gen_ext_list(url.clone());
-    // println!("extlist: {:?}", extlist);
-    // let rm_by_ext_count = rm_mv_unwanted::rm_by_extension(url.clone());
+    let extlist = factory::gen_ext_list(url.clone());
+    println!("extlist: {:?}", extlist);
+    let rm_by_ext_count = rm_mv_unwanted::rm_by_extension(url.clone());
 
-    // let new_ext_list = factory::gen_ext_list(url.clone());
-    // println!("new_ext_list: {:?}", new_ext_list);
+    let new_ext_list = factory::gen_ext_list(url.clone());
+    println!("new_ext_list: {:?}", new_ext_list);
 
-    // let pic_list = walk_dirs::walk_dir(url.clone());
-    // for pic in pic_list.clone() {
-    //     let _sanatize = sanitize_filename(Path::new(&pic));
-    // }
+    let pic_list = walk_dirs::walk_dir(url.clone());
+    for pic in pic_list.clone() {
+        let _sanatize = sanitize_filename(Path::new(&pic));
+    }
 
-    // let pic_list2 = walk_dirs::walk_dir(url.clone());
-    // let pool = ThreadPool::new(num_cpus::get());
-    // let (tx, rx) = channel();
-    // for pic in pic_list2.clone() {
-    //     let tx = tx.clone();
-    //     pool.execute(move || {
-    //         factory::convert_image_to_jpg(pic.clone());
-    //         tx.send(()).unwrap();
-    //     });
-    // }
-    // drop(tx);
-    // for t in rx.iter() {
-    //     let _info = t;
-    //     // println!("info: {:?}", info)
-    // }
+    let pic_list2 = walk_dirs::walk_dir(url.clone());
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for pic in pic_list2.clone() {
+        let tx = tx.clone();
+        pool.execute(move || {
+            factory::convert_image_to_jpg(pic.clone());
+            tx.send(()).unwrap();
+        });
+    }
+    drop(tx);
+    for t in rx.iter() {
+        let _info = t;
+        // println!("info: {:?}", info)
+    }
 
     let url2 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/".to_string();
 
@@ -83,73 +83,81 @@ fn main() {
         // println!("info: {:?}", info)
     }
 
-    // let pic_list2 = walk_dirs::walk_dir(url2.clone());
-    // let pool = ThreadPool::new(num_cpus::get());
-    // let (tx, rx) = channel();
-    // for jpg in pic_list2 {
-    //     println!("jpg {}", jpg);
-    //     let tx = tx.clone();
-    //     pool.execute(move || {
-    //         let dd = dedup::calc_hash(jpg.clone());
-    //         tx.send(dd).unwrap();
-    //     });
-    // }
-    // drop(tx);
-    // let mut img_hash_list = Vec::new();
-    // for t in rx.iter() {
-    //     let info = t;
-    //     img_hash_list.push(info.clone());
-    //     println!("info: {:?}", info.clone());
-    // }
+    let pic_list2 = walk_dirs::walk_dir(url2.clone());
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+    for jpg in pic_list2 {
+        println!("jpg {}", jpg);
+        let tx = tx.clone();
+        pool.execute(move || {
+            let dd = dedup::calc_hash(jpg.clone());
+            tx.send(dd).unwrap();
+        });
+    }
+    drop(tx);
+    let mut img_hash_list = Vec::new();
+    for t in rx.iter() {
+        let info = t;
+        img_hash_list.push(info.clone());
+        println!("info: {:?}", info.clone());
+    }
 
-    // println!("img_hash_list: {:?}", img_hash_list.clone().len());
-    // let file_list = walk_dirs::walk_dir(url2.clone());
+    println!("img_hash_list: {:?}", img_hash_list.clone().len());
+    let file_list = walk_dirs::walk_dir(url2.clone());
 
-    // let mut dup_results = Vec::new();
-    // for jpg in file_list {
-    //     println!("jpg: {}", jpg);
-    //     let image_hash_list2 = img_hash_list.clone();
-    //     let dd = dedup::compare_hashes(jpg.clone(), image_hash_list2.clone());
-    //     dup_results.push(dd.clone());
-    // }
+    let mut dup_results = Vec::new();
+    for jpg in file_list {
+        println!("jpg: {}", jpg);
+        let image_hash_list2 = img_hash_list.clone();
+        let dd = dedup::compare_hashes(jpg.clone(), image_hash_list2.clone());
+        dup_results.push(dd.clone());
+    }
 
-    // let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove".to_string();
-    // let json_list = walk_dirs::walk_dir(url3.clone());
-    // for json_file in json_list.clone() {
-    //     let json_content = fs::read_to_string(json_file.clone()).expect("Unable to read file");
-    //     let dups_entry: dedup::TransDupsEntry = serde_json::from_str(&json_content).unwrap();
-    //     // println!("dups_entry: {:#?}", dups_entry);
-    //     let keep_file = dups_entry.filename.clone();
-    //     println!("keep_file: {:#?}", keep_file);
-    //     let keep_file_exists = Path::new(&keep_file).exists();
-    //     if keep_file_exists {
-    //         let keep_file_parts = keep_file.split("/").collect::<Vec<&str>>();
-    //         let fname = keep_file_parts.last().unwrap().to_string();
-    //         let url4 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Master/".to_string();
-    //         let newfilename = url4 + &fname;
-    //         println!("newfilename: {:#?}", newfilename);
-    //         fs::rename(keep_file.clone(), newfilename.clone()).expect("Unable to rename file");
-    //         let dups = dups_entry.duplicates.clone();
-    //         for dup in dups {
-    //             let dup_url = url2.clone() + &dup.strdups.to_string();
-    //             let dup_url_exists = Path::new(&dup_url).exists();
-    //             if dup_url_exists {
-    //                 let _rm_dup = fs::remove_file(dup_url.clone()).expect("Unable to delete file");
-    //                 println!("Deleted: \n\t{}", dup_url.clone());
-    //             } else {
-    //                 println!("File does not exist: \n\t{}", dup_url.clone());
-    //             }
-    //         }
-    //     }
-    // }
+    let url3 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove".to_string();
+    let json_list = walk_dirs::walk_dir(url3.clone());
+    for json_file in json_list.clone() {
+        let json_content = fs::read_to_string(json_file.clone()).expect("Unable to read file");
+        let dups_entry: dedup::TransDupsEntry = serde_json::from_str(&json_content).unwrap();
+        // println!("dups_entry: {:#?}", dups_entry);
+        let keep_file = dups_entry.filename.clone();
+        println!("keep_file: {:#?}", keep_file);
+        let keep_file_exists = Path::new(&keep_file).exists();
+        if keep_file_exists {
+            let keep_file_parts = keep_file.split("/").collect::<Vec<&str>>();
+            let fname = keep_file_parts.last().unwrap().to_string();
+            let url4 = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Master/".to_string();
+            let newfilename = url4 + &fname;
+            println!("newfilename: {:#?}", newfilename);
+            fs::rename(keep_file.clone(), newfilename.clone()).expect("Unable to rename file");
+            let dups = dups_entry.duplicates.clone();
+            for dup in dups {
+                let dup_url = url2.clone() + &dup.strdups.to_string();
+                let dup_url_exists = Path::new(&dup_url).exists();
+                if dup_url_exists {
+                    let _rm_dup = fs::remove_file(dup_url.clone()).expect("Unable to delete file");
+                    println!("Deleted: \n\t{}", dup_url.clone());
+                } else {
+                    println!("File does not exist: \n\t{}", dup_url.clone());
+                }
+            }
+        }
+    }
 
-    // println!(
-    //     "dups_result count: {:#?}\n threads complete",
-    //     dup_results.clone().len()
-    // );
+    let f1 = factory::Factory {
+        path: url.clone(),
+    };
+    let original_count = f1.dir_count();
+    println!("original_count: {}", original_count);
 
-    // let total_rm_count = rm_unwanted_count + rm_by_ext_count;
-    // println!("Total files removed: {}", total_rm_count);
+    let f2 = factory::Factory {
+        path: url2.clone(),
+    };
+    let converted_count = f2.dir_count();
+    println!("converted_count: {}", converted_count);
+
+
+    let total_rm_count = rm_unwanted_count + rm_by_ext_count;
+    println!("Total files removed: {}", total_rm_count);
 
     let elapsed = start.elapsed().as_secs_f64();
     println!("Execution time: {}", elapsed)

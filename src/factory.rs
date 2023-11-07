@@ -2,7 +2,7 @@ use image::GenericImageView;
 use md5::compute;
 use std::path::Path;
 use walkdir::WalkDir;
-// use std::fs::File;
+use std::fs;
 // use std::path::PathBuf;
 // use flate2::read::GzDecoder;
 // use tar::Archive;
@@ -71,6 +71,20 @@ impl Factory {
             image::imageops::FilterType::Lanczos3,
         );
         let _save_image = resized.save(self.create_outfile()).unwrap();
+    }
+
+    pub fn dir_count(&self) -> i32 {
+        let mut file_count = 0;
+
+        for entry in fs::read_dir(self.path.clone()).unwrap() {
+            let entry = entry.unwrap();
+            let path = entry.path();
+            if path.is_file() {
+                file_count += 1;
+            }
+        }
+
+        file_count
     }
 }
 
