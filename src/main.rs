@@ -169,9 +169,12 @@ fn prep_env() {
 
     let converted_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Converted/";
     let toremove_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/";
+    let b_path = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/BadImages/";
+
     let gz1_path = "/media/pipi/0123-4567/GZ1/";
     let zip_path = "/media/pipi/0123-4567/ZIP/";
     let bz2_path = "/media/pipi/0123-4567/BZ2/";
+    let bad_path = "/media/pipi/0123-4567/BadImages/";
     let gz1_unzip_path = "/media/pipi/0123-4567/Images/GZ1_Unzip/";
     let gz2_unzip_path = "/media/pipi/0123-4567/Images/GZ2_Unzip/";
     let zip_unzip_path = "/media/pipi/0123-4567/Images/ZIP_Unzip/";
@@ -187,6 +190,8 @@ fn prep_env() {
     zip_list.push(gz2_unzip_path);
     zip_list.push(zip_unzip_path);
     zip_list.push(bz2_unzip_path);
+    zip_list.push(bad_path);
+    zip_list.push(b_path);
 
     let _: Vec<_> = zip_list.iter().map(|x| pf_create_dir(x)).collect();
 }
