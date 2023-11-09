@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the directory of photos to use for the wallpaper
-wallpaper_dir="/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Master"
+wallpaper_dir="/path/to/wallpaper/directory"
 
 # Set the interval in minutes between wallpaper rotations
 interval=2
