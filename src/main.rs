@@ -162,7 +162,7 @@ fn main() {
         println!("jpg {}", jpg);
         let tx = tx.clone();
         pool.execute(move || {
-            let filter_by_aspect_ratio = filter_by_aspect_ratio("/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Master/".to_string());
+            let filter_by_aspect_ratio = filter_by_aspect_ratio(jpg.clone());
             tx.send(filter_by_aspect_ratio).unwrap();
         });
     }
@@ -170,7 +170,7 @@ fn main() {
 
     for t in rx.iter() {
         let info = t;
-        println!("info: {:?}", info.clone());
+        println!("aspect-ratio: {:?}", info.clone());
     }
 
 
