@@ -3,6 +3,59 @@ use std::path::Path;
 use walkdir::WalkDir;
 
 pub fn rm_unwanted_files(apath: String) -> i32 {
+    let to_remove_list = [
+        "0611160110.jpg",
+        "0821161127a.jpg",
+        "0821161127.jpg",
+        "0821161128a.jpg",
+        "0821161128.jpg ",
+        "0821162314.jpg",
+        "0822161108a.jpg",
+        "0822161108.jpg",
+        "0906141903a.jpg",
+        "20150327_200735.jpg",
+        "DSCN1120.JPG",
+        "h150.jpg",
+        "h151.jpg",
+        "h152.jpg",
+        "h153.jpg",
+        "h154.jpg",
+        "h155.jpg",
+        "h156.jpg",
+        "h157.jpg",
+        "h158.jpg",
+        "h159.jpg",
+        "h15.jpg",
+        "h160.jpg",
+        "h161.jpg",
+        "h162.jpg",
+        "h163.jpg",
+        "h164.jpg",
+        "h165.jpg",
+        "h166.jpg",
+        "h167.jpg",
+        "h168.jpg",
+        "h169.jpg",
+        "h16.jpg",
+        "h170.jpg",
+        "h171.jpg",
+        "h172.jpg",
+        "h173.jpg",
+        "h17.jpg",
+        "h18.jpg",
+        "h19.jpg",
+        "my_touch_phone_023.gif",
+        "mytouchphone023.gif",
+        "normallit_16_h.png",
+        "normallit_16.png",
+        "PART_1454822819828_20160206_131602.jpg",
+        "phone_023.gif",
+        "phone023.gif",
+        "phone_270.gif",
+        "phone270.gif",
+        "phone276.jpg"
+    ];
+
     let mut idx = 0;
     let mut rmcount = 0;
     for e in WalkDir::new(apath)
@@ -13,6 +66,8 @@ pub fn rm_unwanted_files(apath: String) -> i32 {
         if e.metadata().unwrap().is_file() {
             idx += 1;
             let fname = e.path().to_string_lossy().to_string();
+            let tm = fname.split("/").collect::<Vec<&str>>();
+            let filename = tm.last().unwrap();
             if fname.contains("System/Apps") {
                 rmcount += 1;
                 println!("Removed: {}", &fname);
@@ -34,6 +89,10 @@ pub fn rm_unwanted_files(apath: String) -> i32 {
                 std::fs::remove_file(fname.clone()).unwrap();
             } else {
                 println!("fuck")
+            }
+
+            if to_remove_list.contains(filename) {
+                std::fs::remove_file(fname.clone()).expect("Unable to remove BadFile");
             }
         }
     }

@@ -1,8 +1,8 @@
 use image::GenericImageView;
 use md5::compute;
+use std::fs;
 use std::path::Path;
 use walkdir::WalkDir;
-use std::fs;
 // use std::path::PathBuf;
 // use flate2::read::GzDecoder;
 // use tar::Archive;
@@ -35,8 +35,7 @@ impl Factory {
     pub fn create_bad_image_output_file(&self) -> String {
         let fparts = self.path.split("/").collect::<Vec<&str>>();
         let filename = fparts.last().unwrap().replace(" ", "_");
-        let addr = "/media/pipi/0123-4567/BadImages/".to_string()
-        + &filename;
+        let addr = "/media/pipi/0123-4567/BadImages/".to_string() + &filename;
 
         // let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/BadImages/".to_string()
         //     + &filename
@@ -56,6 +55,16 @@ impl Factory {
         let digest = compute(&self.path);
         let fdigest = format!("{:?}", digest);
         let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/GZ/".to_string() + &fdigest;
+
+        addr
+    }
+
+    pub fn create_fixed_filename(&self) -> String {
+        let digest = compute(&self.path);
+        let fdigest = format!("{:?}", digest);
+        let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Master/".to_string()
+            + &fdigest
+            + ".jpg";
 
         addr
     }
@@ -150,4 +159,24 @@ pub fn convert_image_to_jpg(a_path: String) {
         }
     };
     let _save_image = myimage.save(outfile).unwrap();
+}
+
+
+pub fn rename_fixed_files(apath: String) {
+    for e in WalkDir::new(apath.clone())
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        if e.metadata().unwrap().is_file() {
+            let fname = e.path().to_string_lossy().to_string();
+            let pf = Factory {
+                path: fname.clone(),
+            };
+            let outfile = pf.create_fixed_filename();
+            fs::rename(fname, outfile.clone()).unwrap();
+            println!("Moved: {}", outfile);
+
+        }
+    }
 }
