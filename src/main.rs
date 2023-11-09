@@ -271,24 +271,41 @@ pub fn mv_to_banner_folder(apath: String) {
     };
 }
 
+pub fn mv_to_square_folder(apath: String) {
+    let fparts = apath.split("/").collect::<Vec<&str>>();
+    let filename = fparts.last().unwrap().replace(" ", "_");
+    let addr = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/Square/".to_string() + &filename;
+    println!("addr: {}\n apath: {}\n", addr, apath);
+    match fs::rename(&apath, &addr) {
+        Ok(_) => println!("Moved: {}", addr),
+        Err(e) => println!("Error: {}", e),
+    };
+}
+
 fn filter_by_aspect_ratio(apath: String) -> f64{
     let image = image::open(apath.clone()).expect(&apath);
     let (width, height) = image.dimensions();
     let oldwidth = width.clone() as f64;
     let oldheight = height.clone() as f64;
     let aspect_ratio = oldwidth / oldheight;
-    if oldwidth > oldheight {
-        println!("landscape");
-    } else if oldwidth < oldheight {
-        print!("portrait")
-    } else {
-        println!("square")
-    };
+    // if oldwidth > oldheight {
+    //     println!("landscape");
+    // } else if oldwidth < oldheight {
+    //     print!("portrait")
+    // } else {
+    //     println!("square")
+    // };
 
-    if aspect_ratio > 2.0 {
+    if aspect_ratio > 1.9 {
         let _mv_banner_image = mv_to_banner_folder(apath.clone());
         println!("Filename: {}\n aspect_ratio: {}\n", apath, aspect_ratio);
     };
+    if aspect_ratio == 1.0 {
+        let _mv_square_image = mv_to_square_folder(apath.clone());
+        println!("Filename: {}\n aspect_ratio: {}\n", apath, aspect_ratio);
+    };
+
+
 
     aspect_ratio
 }
