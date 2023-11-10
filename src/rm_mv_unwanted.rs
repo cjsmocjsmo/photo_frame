@@ -53,7 +53,8 @@ pub fn rm_unwanted_files(apath: String) -> i32 {
         "phone023.gif",
         "phone_270.gif",
         "phone270.gif",
-        "phone276.jpg"
+        "phone276.jpg",
+        ".mp3"
     ];
 
     let mut idx = 0;
