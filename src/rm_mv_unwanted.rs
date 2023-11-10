@@ -156,7 +156,6 @@ pub fn mv_vid_files(fname: String) {
     let mvlist = [
         "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "wav", "WAV",
     ];
-    let rmlist = ["mp3", "MP3"];
 
     let save_dir = Path::new("/media/pipi/0123-4567/AV/");
     if !fs::metadata(save_dir).unwrap().is_dir() {
