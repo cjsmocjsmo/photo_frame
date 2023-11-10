@@ -154,8 +154,9 @@ pub fn mv_zip_files(fname: String) {
 
 pub fn mv_vid_files(fname: String) {
     let mvlist = [
-        "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "mp3", "MP3", "wav", "WAV",
+        "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "wav", "WAV",
     ];
+    let rmlist = ["mp3", "MP3"];
 
     let save_dir = Path::new("/media/pipi/0123-4567/AV/");
     if !fs::metadata(save_dir).unwrap().is_dir() {
@@ -171,7 +172,9 @@ pub fn mv_vid_files(fname: String) {
             let fname = e.path().to_string_lossy().to_string();
             let parts = &fname.split(".").collect::<Vec<&str>>();
             let ext = parts.last().unwrap();
-            if mvlist.contains(&ext) {
+            if ext == &"mp3" || ext == &"MP3" {
+                std::fs::remove_file(fname.clone()).expect("Unable to remove BadFile");
+            } else if mvlist.contains(&ext) {
                 let fparts = fname.split("/").collect::<Vec<&str>>();
                 let filename = fparts.last().unwrap().replace(" ", "_");
                 let addr = "/media/pipi/0123-4567/AV/".to_string() + &filename;
