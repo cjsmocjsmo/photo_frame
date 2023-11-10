@@ -135,7 +135,7 @@ pub fn mv_zip_files(fname: String) {
                         Ok(_) => println!("Moved: {}", addr),
                         Err(e) => println!("GZ_Error: {}", e),
                     };
-                } else if ext == &"bz2" || ext == &"BZ2" {
+                } else if ext == &"bz2" || ext == &"BZ2" || ext == &"tar" || ext == &"TAR" {
                     let fparts = fname.split("/").collect::<Vec<&str>>();
                     let filename = fparts.last().unwrap().replace(" ", "_");
                     let addr = "/media/pipi/0123-4567/BZ2/".to_string() + &filename;
