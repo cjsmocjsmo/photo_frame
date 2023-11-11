@@ -185,8 +185,9 @@ fn main() {
     let converted_count = f2.dir_count();
     println!("converted_count: {}", converted_count);
 
-    // let master_count = f3.dir_count();
-    // println!("master_count: {}", master_count);
+    let f3 = factory::Factory { path: url4.clone() };
+    let master_count = f3.dir_count();
+    println!("master_count: {}", master_count);
 
     let total_rm_count = rm_unwanted_count + rm_by_ext_count;
     println!("Total files removed: {}", total_rm_count);
