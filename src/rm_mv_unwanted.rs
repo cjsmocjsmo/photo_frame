@@ -3,62 +3,58 @@ use std::path::Path;
 use walkdir::WalkDir;
 
 pub fn rm_unwanted_files(apath: String) -> i32 {
-    let to_remove_list = [
-        "0611160110.jpg",
-        "0821161127a.jpg",
-        "0821161127.jpg",
-        "0821161128a.jpg",
-        "0821161128.jpg ",
-        "0821162314.jpg",
-        "0822161108a.jpg",
-        "0822161108.jpg",
-        "0906141903a.jpg",
-        "20150327_200735.jpg",
-        "DSCN1120.JPG",
-        "h150.jpg",
-        "h151.jpg",
-        "h152.jpg",
-        "h153.jpg",
-        "h154.jpg",
-        "h155.jpg",
-        "h156.jpg",
-        "h157.jpg",
-        "h158.jpg",
-        "h159.jpg",
-        "h15.jpg",
-        "h160.jpg",
-        "h161.jpg",
-        "h162.jpg",
-        "h163.jpg",
-        "h164.jpg",
-        "h165.jpg",
-        "h166.jpg",
-        "h167.jpg",
-        "h168.jpg",
-        "h169.jpg",
-        "h16.jpg",
-        "h170.jpg",
-        "h171.jpg",
-        "h172.jpg",
-        "h173.jpg",
-        "h17.jpg",
-        "h18.jpg",
-        "h19.jpg",
-        "my_touch_phone_023.gif",
-        "mytouchphone023.gif",
-        "normallit_16_h.png",
-        "normallit_16.png",
-        "PART_1454822819828_20160206_131602.jpg",
-        "phone_023.gif",
-        "phone023.gif",
-        "phone_270.gif",
-        "phone270.gif",
-        "phone276.jpg",
-        ".mp3",
-        ".wav",
-        ".WAV",
-        "P-009.tar"
-    ];
+    // let to_remove_list = [
+    //     // "0611160110.jpg",
+    //     // "0821161127a.jpg",
+    //     // "0821161127.jpg",
+    //     // "0821161128a.jpg",
+    //     // "0821161128.jpg ",
+    //     // "0821162314.jpg",
+    //     // "0822161108a.jpg",
+    //     // "0822161108.jpg",
+    //     // "0906141903a.jpg",
+    //     // "20150327_200735.jpg",
+    //     // "DSCN1120.JPG",
+    //     // "h150.jpg",
+    //     // "h151.jpg",
+    //     // "h152.jpg",
+    //     // "h153.jpg",
+    //     // "h154.jpg",
+    //     // "h155.jpg",
+    //     // "h156.jpg",
+    //     // "h157.jpg",
+    //     // "h158.jpg",
+    //     // "h159.jpg",
+    //     // "h15.jpg",
+    //     // "h160.jpg",
+    //     // "h161.jpg",
+    //     // "h162.jpg",
+    //     // "h163.jpg",
+    //     // "h164.jpg",
+    //     // "h165.jpg",
+    //     // "h166.jpg",
+    //     // "h167.jpg",
+    //     // "h168.jpg",
+    //     // "h169.jpg",
+    //     // "h16.jpg",
+    //     // "h170.jpg",
+    //     // "h171.jpg",
+    //     // "h172.jpg",
+    //     // "h173.jpg",
+    //     // "h17.jpg",
+    //     // "h18.jpg",
+    //     // "h19.jpg",
+    //     // "my_touch_phone_023.gif",
+    //     // "mytouchphone023.gif",
+    //     // "normallit_16_h.png",
+    //     // "normallit_16.png",
+    //     // "PART_1454822819828_20160206_131602.jpg",
+    //     // "phone_023.gif",
+    //     // "phone023.gif",
+    //     // "phone_270.gif",
+    //     // "phone270.gif",
+    //     // "phone276.jpg",
+    // ];
 
     let mut idx = 0;
     let mut rmcount = 0;
@@ -91,16 +87,156 @@ pub fn rm_unwanted_files(apath: String) -> i32 {
             } else if fname.contains("pussy") {
                 rmcount += 1;
                 std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("0611160110.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("0821161127a.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("0821161127.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("0821161128a.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("0821161128.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("0821162314.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("0822161108a.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("0822161108.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("0906141903a.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("20150327_200735.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("DSCN1120.JPG") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h150.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h151.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h152.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h153.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h154.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h155.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h156.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h157.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h158.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h159.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h15.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h160.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h161.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h162.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h163.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h164.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h165.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h166.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h167.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h168.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h169.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h16.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h170.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h171.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h172.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h173.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h17.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h18.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("h19.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("my_touch_phone_023.gif") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("mytouchphone023.gif") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("normallit_16_h.png") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("normallit_16.png") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("PART_1454822819828_20160206_131602.jpg") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("phone_023.gif") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("phone023.gif") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("phone_270.gif") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
+            } else if fname.contains("phone270.gif") {
+                rmcount += 1;
+                std::fs::remove_file(fname.clone()).unwrap();
             } else {
                 println!("fuck")
             }
-
-            for rm in to_remove_list {
-                if filename.contains(rm) {
-                    std::fs::remove_file(fname.clone()).expect("Unable to remove BadFile");
-                }
-            }
-
         }
     }
     println!("Start count: {}\nFiles removed: {}", idx, rmcount.clone());
@@ -150,6 +286,18 @@ pub fn mv_zip_files(fname: String) {
                         Ok(_) => println!("Moved: {}", addr),
                         Err(e) => println!("BZ_Error: {}", e),
                     };
+                } else if ext == &"tar" {
+                    let fparts = fname.split("/").collect::<Vec<&str>>();
+                    let filename = fparts.last().unwrap();
+                    if fname == "P-009.tar" {
+                        std::fs::remove_file(fname.clone()).unwrap();
+                    } else {
+                        let addr = "/media/pipi/0123-4567/BZ2/".to_string() + &filename;
+                        match fs::rename(&fname, &addr) {
+                            Ok(_) => println!("Moved: {}", addr),
+                            Err(e) => println!("BZ_Error: {}", e),
+                        };
+                    }
                 }
 
                 println!("Moved: {}", fname.clone())
@@ -195,6 +343,10 @@ pub fn mv_vid_files(fname: String) {
 
 pub fn rm_by_extension(apath: String) -> i32 {
     let rm_list = [
+        "mp3",
+        "MP3",
+        "wav",
+        "WAV",
         "yaml",
         "py",
         "sql",
