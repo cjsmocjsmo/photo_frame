@@ -1,10 +1,11 @@
 extern crate img_hash;
 use crate::factory;
 use img_hash::{HasherConfig, ImageHash};
-use serde::Serialize;
 use serde::Deserialize;
+use serde::Serialize;
 use std::io::Write;
 // use std::fs;
+// use image::GenericImageView;
 
 #[derive(Clone, Debug)]
 pub struct ImgHashStruct {
@@ -12,11 +13,9 @@ pub struct ImgHashStruct {
     pub hash: ImageHash,
 }
 pub fn calc_hash(apath: String) -> ImgHashStruct {
+    let image_results = image::open(apath.clone()).expect(apath.clone().as_str());
     let hasher_config = HasherConfig::new().to_hasher();
-    let image = image::open(apath.clone()).expect(apath.clone().as_str());
-
-
-    let hashed = hasher_config.hash_image(&image);
+    let hashed = hasher_config.hash_image(&image_results);
     let imghash = ImgHashStruct {
         img_path: apath.clone(),
         hash: hashed,
@@ -36,8 +35,12 @@ pub fn calc_hash_test(apath: String) -> bool {
             let bfilename = bisplit.last().unwrap().to_string();
             let bad_image_path = bad_image_dir.clone() + bfilename.as_str();
             let _ = std::fs::rename(apath.clone(), bad_image_path.clone());
-            println!("Moved: \n\t{} \nto \n\t{}", apath.clone(), bad_image_path.clone());
-            return false
+            println!(
+                "Moved: \n\t{} \nto \n\t{}",
+                apath.clone(),
+                bad_image_path.clone()
+            );
+            return false;
         }
     };
 }
@@ -81,7 +84,8 @@ pub fn compare_hashes(afile: String, img_hash_list: Vec<ImgHashStruct>) -> DupsE
 
         let json = serde_json::to_string(&transform).unwrap();
 
-        let ofile = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/".to_string() + ddoutfile.as_str();
+        let ofile = "/media/pipi/e9535df1-d952-4d78-b5d7-b82e9aa3a975/ToRemove/".to_string()
+            + ddoutfile.as_str();
 
         let mut output_file_results = std::fs::File::create(ofile.clone()).unwrap();
         output_file_results.write_all(json.as_bytes()).unwrap();

@@ -54,7 +54,9 @@ pub fn rm_unwanted_files(apath: String) -> i32 {
         "phone_270.gif",
         "phone270.gif",
         "phone276.jpg",
-        ".mp3"
+        ".mp3",
+        ".wav",
+        ".WAV",
     ];
 
     let mut idx = 0;
@@ -92,9 +94,12 @@ pub fn rm_unwanted_files(apath: String) -> i32 {
                 println!("fuck")
             }
 
-            if to_remove_list.contains(filename) {
-                std::fs::remove_file(fname.clone()).expect("Unable to remove BadFile");
+            for rm in to_remove_list {
+                if filename.contains(rm) {
+                    std::fs::remove_file(fname.clone()).expect("Unable to remove BadFile");
+                }
             }
+
         }
     }
     println!("Start count: {}\nFiles removed: {}", idx, rmcount.clone());
@@ -154,7 +159,7 @@ pub fn mv_zip_files(fname: String) {
 
 pub fn mv_vid_files(fname: String) {
     let mvlist = [
-        "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI", "wav", "WAV",
+        "pdf", "PDF", "mp4", "mpg", "MPG", "avi", "AVI",
     ];
 
     let save_dir = Path::new("/media/pipi/0123-4567/AV/");
