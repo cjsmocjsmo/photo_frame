@@ -57,6 +57,7 @@ pub fn rm_unwanted_files(apath: String) -> i32 {
         ".mp3",
         ".wav",
         ".WAV",
+        "P-009.tar"
     ];
 
     let mut idx = 0;
